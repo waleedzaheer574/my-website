@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Light Color Scheme Preview</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f8fafc;
+      color: #111827;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(248, 250, 252, 0.96)),
+        #f8fafc;
+    }
+
+    main {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 44px 0;
+    }
+
+    .header {
+      margin-bottom: 28px;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: clamp(30px, 4vw, 48px);
+      line-height: 1.05;
+      letter-spacing: 0;
+    }
+
+    .header p {
+      max-width: 720px;
+      margin: 0;
+      color: #64748b;
+      font-size: 17px;
+      line-height: 1.7;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 18px;
+    }
+
+    .scheme {
+      overflow: hidden;
+      border: 1px solid rgba(15, 23, 42, 0.1);
+      border-radius: 8px;
+      background: var(--bg);
+      box-shadow: 0 18px 45px rgba(15, 23, 42, 0.08);
+    }
+
+    .scheme-preview {
+      min-height: 260px;
+      padding: 22px;
+      background:
+        linear-gradient(135deg, var(--bg), var(--secondary));
+      color: var(--text);
+    }
+
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 34px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .mark {
+      width: 32px;
+      height: 32px;
+      flex: 0 0 auto;
+      border-radius: 8px;
+      background: var(--primary);
+      box-shadow: 0 10px 20px color-mix(in srgb, var(--primary), transparent 72%);
+    }
+
+    .links {
+      display: flex;
+      gap: 10px;
+      color: color-mix(in srgb, var(--text), transparent 35%);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .hero-title {
+      margin: 0 0 12px;
+      font-size: 29px;
+      line-height: 1.12;
+      letter-spacing: 0;
+    }
+
+    .hero-copy {
+      margin: 0 0 20px;
+      color: color-mix(in srgb, var(--text), transparent 30%);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 22px;
+    }
+
+    .button {
+      border: 0;
+      border-radius: 8px;
+      padding: 11px 14px;
+      font: inherit;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: default;
+    }
+
+    .button.primary {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 12px 22px color-mix(in srgb, var(--primary), transparent 72%);
+    }
+
+    .button.secondary {
+      background: rgba(255, 255, 255, 0.72);
+      color: var(--primary);
+      border: 1px solid color-mix(in srgb, var(--primary), transparent 70%);
+    }
+
+    .mini-cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .mini-card {
+      min-height: 74px;
+      border-radius: 8px;
+      padding: 12px;
+      background: rgba(255, 255, 255, 0.74);
+      border: 1px solid rgba(15, 23, 42, 0.08);
+    }
+
+    .mini-card strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--primary);
+      font-size: 13px;
+    }
+
+    .line {
+      height: 7px;
+      border-radius: 999px;
+      background: var(--secondary);
+    }
+
+    .line + .line {
+      width: 70%;
+      margin-top: 7px;
+      background: var(--accent);
+      opacity: 0.42;
+    }
+
+    .details {
+      padding: 18px;
+      background: #fff;
+    }
+
+    .scheme-name {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+      color: #111827;
+      font-weight: 900;
+      font-size: 18px;
+    }
+
+    .pick {
+      flex: 0 0 auto;
+      border-radius: 999px;
+      padding: 6px 10px;
+      background: #f1f5f9;
+      color: #475569;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .swatches {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+    }
+
+    .swatch {
+      min-width: 0;
+    }
+
+    .color {
+      height: 42px;
+      border-radius: 8px;
+      border: 1px solid rgba(15, 23, 42, 0.1);
+      background: var(--color);
+    }
+
+    .hex {
+      margin-top: 7px;
+      color: #64748b;
+      font-size: 11px;
+      font-weight: 700;
+      word-break: break-word;
+    }
+
+    @media (max-width: 620px) {
+      main {
+        width: min(100% - 20px, 1180px);
+        padding: 26px 0;
+      }
+
+      .scheme-preview {
+        padding: 18px;
+      }
+
+      .links {
+        display: none;
+      }
+
+      .mini-cards {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section class="header">
+      <h1>Light Color Scheme Preview</h1>
+      <p>In options ko visual preview mein compare kar lo. Jo scheme pasand aaye, uska number ya naam bata dena, phir main website ki complete color scheme usi style mein change kar dunga.</p>
+    </section>
+
+    <section class="grid" aria-label="Color scheme previews">
+      <article class="scheme" style="--bg:#F6FAFF;--primary:#3B82F6;--secondary:#DBEAFE;--text:#1E293B;--accent:#38BDF8;">
+        <div class="scheme-preview">
+          <div class="nav">
+            <div class="brand"><span class="mark"></span> Soft Sky</div>
+            <div class="links"><span>Home</span><span>Work</span><span>Contact</span></div>
+          </div>
+          <h2 class="hero-title">Clean blue, modern aur professional.</h2>
+          <p class="hero-copy">Dashboard, business aur service website ke liye balanced light feel.</p>
+          <div class="actions">
+            <button class="button primary">Primary Button</button>
+            <button class="button secondary">View More</button>
+          </div>
+          <div class="mini-cards">
+            <div class="mini-card"><strong>01</strong><div class="line"></div><div class="line"></div></div>
+            <div class="mini-card"><strong>02</strong><div class="line"></div><div class="line"></div></div>
+            <div class="mini-card"><strong>03</strong><div class="line"></div><div class="line"></div></div>
+          </div>
+        </div>
+        <div class="details">
+          <div class="scheme-name">1. Soft Sky <span class="pick">Recommended</span></div>
+          <div class="swatches">
+            <div class="swatch"><div class="color" style="--color:#F6FAFF"></div><div class="hex">#F6FAFF</div></div>
+            <div class="swatch"><div class="color" style="--color:#3B82F6"></div><div class="hex">#3B82F6</div></div>
+            <div class="swatch"><div class="color" style="--color:#DBEAFE"></div><div class="hex">#DBEAFE</div></div>
+            <div class="swatch"><div class="color" style="--color:#1E293B"></div><div class="hex">#1E293B</div></div>
+            <div class="swatch"><div class="color" style="--color:#38BDF8"></div><div class="hex">#38BDF8</div></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="scheme" style="--bg:#F7FFFB;--primary:#10B981;--secondary:#D1FAE5;--text:#1F2937;--accent:#34D399;">
+        <div class="scheme-preview">
+          <div class="nav">
+            <div class="brand"><span class="mark"></span> Mint Fresh</div>
+            <div class="links"><span>Home</span><span>Work</span><span>Contact</span></div>
+          </div>
+          <h2 class="hero-title">Fresh green, soft aur friendly.</h2>
+          <p class="hero-copy">Clean brand, wellness, education ya light SaaS feel ke liye acha.</p>
+          <div class="actions">
+            <button class="button primary">Primary Button</button>
+            <button class="button secondary">View More</button>
+          </div>
+          <div class="mini-cards">
+            <div class="mini-card"><strong>01</strong><div class="line"></div><div class="line"></div></div>
+            <div class="mini-card"><strong>02</strong><div class="line"></div><div class="line"></div></div>
+            <div class="mini-card"><strong>03</strong><div class="line"></div><div class="line"></div></div>
+          </div>
+        </div>
+        <div class="details">
+          <div class="scheme-name">2. Mint Fresh <span class="pick">Clean</span></div>
+          <div class="swatches">
+            <div class="swatch"><div class="color" style="--color:#F7FFFB"></div><div class="hex">#F7FFFB</div></div>
+            <div class="swatch"><div class="color" style="--color:#10B981"></div><div class="hex">#10B981</div></div>
+            <div class="swatch"><div class="color" style="--color:#D1FAE5"></div><div class="hex">#D1FAE5</div></div>
+            <div class="swatch"><div class="color" style="--color:#1F2937"></div><div class="hex">#1F2937</div></div>
+            <div class="swatch"><div class="color" style="--color:#34D399"></div><div class="hex">#34D399</div></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="scheme" style="--bg:#FAF8FF;--primary:#8B5CF6;--secondary:#EDE9FE;--text:#2E2A3B;--accent:#A78BFA;">
+        <div class="scheme-preview">
+          <div class="nav">
+            <div class="brand"><span class="mark"></span> Lavender Calm</div>
+            <div class="links"><span>Home</span><span>Work</span><span>Contact</span></div>
+          </div>
+          <h2 class="hero-title">Soft purple, calm aur premium.</h2>
+          <p class="hero-copy">Creative, portfolio aur modern app style ke liye gentle look.</p>
+          <div class="actions">
+            <button class="button primary">Primary Button</button>
+            <button class="button secondary">View More</button>
+          </div>
+          <div class="mini-cards">
+            <div class="mini-card"><strong>01</strong><div class="line"></div><div class="line"></div></div>
+            <div class="mini-card"><strong>02</strong><div class="line"></div><div class="line"></div></div>
+            <div class="mini-card"><strong>03</strong><div class="line"></div><div class="line"></div></div>
+          </div>
+        </div>
+        <div class="details">
+          <div class="scheme-name">3. Lavender Calm <span class="pick">Premium</span></div>
+          <div class="swatches">
+            <div class="swatch"><div class="color" style="--color:#FAF8FF"></div><div class="hex">#FAF8FF</div></div>
+            <div class="swatch"><div class="color" style="--color:#8B5CF6"></div><div class="hex">#8B5CF6</div></div>
+            <div class="swatch"><div class="color" style="--color:#EDE9FE"></div><div class="hex">#EDE9FE</div></div>
+            <div class="swatch"><div class="color" style="--color:#2E2A3B"></div><div class="hex">#2E2A3B</div></div>
+            <div class="swatch"><div class="color" style="--color:#A78BFA"></div><div class="hex">#A78BFA</div></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="scheme" style="--bg:#FFFBF5;--primary:#9A5B2E;--secondary:#F4E4D0;--text:#2B2118;--accent:#D6A15F;">
+        <div class="scheme-preview">
+          <div class="nav">
+            <div class="brand"><span class="mark"></span> Soft Caramel</div>
+            <div class="links"><span>Home</span><span>Work</span><span>Contact</span></div>
+          </div>
+          <h2 class="hero-title">Light brown, warm aur classy.</h2>
+          <p class="hero-copy">Cafe, interior, lifestyle aur premium service website ke liye soft look.</p>
+          <div class="actions">
+            <button class="button primary">Primary Button</button>
+            <button class="button secondary">View More</button>
+          </div>
+          <div class="mini-cards">
+            <div class="mini-card"><strong>01</strong><div class="line"></div><div class="line"></div></div>
+            <div class="mini-card"><strong>02</strong><div class="line"></div><div class="line"></div></div>
+            <div class="mini-card"><strong>03</strong><div class="line"></div><div class="line"></div></div>
+          </div>
+        </div>
+        <div class="details">
+          <div class="scheme-name">4. Soft Caramel <span class="pick">Brown</span></div>
+          <div class="swatches">
+            <div class="swatch"><div class="color" style="--color:#FFFBF5"></div><div class="hex">#FFFBF5</div></div>
+            <div class="swatch"><div class="color" style="--color:#9A5B2E"></div><div class="hex">#9A5B2E</div></div>
+            <div class="swatch"><div class="color" style="--color:#F4E4D0"></div><div class="hex">#F4E4D0</div></div>
+            <div class="swatch"><div class="color" style="--color:#2B2118"></div><div class="hex">#2B2118</div></div>
+            <div class="swatch"><div class="color" style="--color:#D6A15F"></div><div class="hex">#D6A15F</div></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="scheme" style="--bg:#FDF8F1;--primary:#6F4E37;--secondary:#EAD8C0;--text:#251A13;--accent:#B9824A;">
+        <div class="scheme-preview">
+          <div class="nav">
+            <div class="brand"><span class="mark"></span> Coffee Cream</div>
+            <div class="links"><span>Home</span><span>Work</span><span>Contact</span></div>
+          </div>
+          <h2 class="hero-title">Coffee brown, elegant aur grounded.</h2>
+          <p class="hero-copy">Business, boutique, real estate aur professional brand ke liye mature feel.</p>
+          <div class="actions">
+            <button class="button primary">Primary Button</button>
+            <button class="button secondary">View More</button>
+          </div>
+          <div class="mini-cards">
+            <div class="mini-card"><strong>01</strong><div class="line"></div><div class="line"></div></div>
+            <div class="mini-card"><strong>02</strong><div class="line"></div><div class="line"></div></div>
+            <div class="mini-card"><strong>03</strong><div class="line"></div><div class="line"></div></div>
+          </div>
+        </div>
+        <div class="details">
+          <div class="scheme-name">5. Coffee Cream <span class="pick">Elegant</span></div>
+          <div class="swatches">
+            <div class="swatch"><div class="color" style="--color:#FDF8F1"></div><div class="hex">#FDF8F1</div></div>
+            <div class="swatch"><div class="color" style="--color:#6F4E37"></div><div class="hex">#6F4E37</div></div>
+            <div class="swatch"><div class="color" style="--color:#EAD8C0"></div><div class="hex">#EAD8C0</div></div>
+            <div class="swatch"><div class="color" style="--color:#251A13"></div><div class="hex">#251A13</div></div>
+            <div class="swatch"><div class="color" style="--color:#B9824A"></div><div class="hex">#B9824A</div></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="scheme" style="--bg:#FFF7FA;--primary:#8A1538;--secondary:#F8DCE7;--text:#2D1720;--accent:#C94A70;">
+        <div class="scheme-preview">
+          <div class="nav">
+            <div class="brand"><span class="mark"></span> Wine Rose</div>
+            <div class="links"><span>Home</span><span>Work</span><span>Contact</span></div>
+          </div>
+          <h2 class="hero-title">Wine tone, soft aur premium.</h2>
+          <p class="hero-copy">Beauty, fashion, luxury services aur elegant portfolio ke liye polished look.</p>
+          <div class="actions">
+            <button class="button primary">Primary Button</button>
+            <button class="button secondary">View More</button>
+          </div>
+          <div class="mini-cards">
+            <div class="mini-card"><strong>01</strong><div class="line"></div><div class="line"></div></div>
+            <div class="mini-card"><strong>02</strong><div class="line"></div><div class="line"></div></div>
+            <div class="mini-card"><strong>03</strong><div class="line"></div><div class="line"></div></div>
+          </div>
+        </div>
+        <div class="details">
+          <div class="scheme-name">6. Wine Rose <span class="pick">Luxury</span></div>
+          <div class="swatches">
+            <div class="swatch"><div class="color" style="--color:#FFF7FA"></div><div class="hex">#FFF7FA</div></div>
+            <div class="swatch"><div class="color" style="--color:#8A1538"></div><div class="hex">#8A1538</div></div>
+            <div class="swatch"><div class="color" style="--color:#F8DCE7"></div><div class="hex">#F8DCE7</div></div>
+            <div class="swatch"><div class="color" style="--color:#2D1720"></div><div class="hex">#2D1720</div></div>
+            <div class="swatch"><div class="color" style="--color:#C94A70"></div><div class="hex">#C94A70</div></div>
+          </div>
+        </div>
+      </article>
+    </section>
+  </main>
+</body>
+</html>
