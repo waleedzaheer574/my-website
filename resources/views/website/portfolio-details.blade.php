@@ -8,6 +8,7 @@
   $gallery = collect([$portfolio->image, $portfolio->secondary_image, $portfolio->detail_image])->filter()->unique()->values();
   $tags = collect(explode(',', (string) $portfolio->tags))->map(fn ($tag) => trim($tag))->filter()->values();
   $techItems = $tags->isNotEmpty() ? $tags : collect(array_filter([$portfolio->category, 'UI/UX', 'Development', 'Responsive Design', 'Performance']));
+  $demoUrl = $portfolio->demo_url ?: 'Available on request';
 @endphp
 
 @section('content')
@@ -18,6 +19,8 @@
           <a href="{{ url('/') }}">Home</a>
           <i class="fas fa-chevron-right"></i>
           <a href="{{ route('website.portfolio') }}">Portfolio</a>
+          <i class="fas fa-chevron-right"></i>
+          <span>{{ $portfolio->title }}</span>
         </nav>
 
         <div class="tcw-detail-hero-grid">
@@ -25,12 +28,6 @@
             <span class="tcw-detail-eyebrow">Featured Case Study</span>
             <h1>{{ $portfolio->title }} <span>{{ $portfolio->category ?: 'Project' }}</span></h1>
             <p>{{ $portfolio->short_description ?: \Illuminate\Support\Str::limit(strip_tags($description), 190) }}</p>
-            <div class="tcw-detail-actions">
-              <a href="{{ $portfolio->demo_url ?: url('/contact') }}" class="tcw-detail-btn tcw-detail-btn-primary" @if($portfolio->demo_url) target="_blank" rel="noopener" @endif>
-                {{ $portfolio->demo_url ? 'Launch Website' : 'Start Similar Project' }} <i class="fas fa-arrow-right"></i>
-              </a>
-              <a href="{{ route('website.portfolio') }}" class="tcw-detail-btn tcw-detail-btn-outline">View Portfolio</a>
-            </div>
           </div>
 
           <div class="tcw-detail-hero-media tcw-portfolio-device cs-lightgallery">
@@ -39,6 +36,13 @@
               <span class="tcw-blog-image-zoom"><i class="fas fa-search-plus"></i></span>
             </a>
           </div>
+
+          <div class="tcw-detail-actions">
+            <a href="{{ $portfolio->demo_url ?: url('/contact') }}" class="tcw-detail-btn tcw-detail-btn-primary" @if($portfolio->demo_url) target="_blank" rel="noopener" @endif>
+              {{ $portfolio->demo_url ? 'Launch Website' : 'Start Similar Project' }} <i class="fas fa-arrow-right"></i>
+            </a>
+            <a href="{{ route('website.portfolio') }}" class="tcw-detail-btn tcw-detail-btn-outline">View Portfolio <i class="far fa-eye"></i></a>
+          </div>
         </div>
       </div>
     </section>
@@ -46,7 +50,8 @@
     <section class="tcw-detail-section">
       <div class="container">
         <div class="tcw-detail-heading text-center">
-          <h2>Project <span>Process</span></h2>
+          <span class="tcw-detail-eyebrow">Our Process</span>
+          <h2>How We <span>Work</span></h2>
         </div>
         <div class="tcw-process-grid">
           <article class="tcw-process-card">
@@ -76,14 +81,16 @@
         <div class="tcw-about-detail-grid">
           <div>
             <div class="tcw-detail-heading">
-              <h2>About This <span>Project</span></h2>
+              <span class="tcw-detail-eyebrow">About The Project</span>
+              <h2>Project <span>Overview</span></h2>
             </div>
             <div class="tcw-detail-richtext">{!! nl2br(e($description)) !!}</div>
             <div class="tcw-feature-mini-grid tcw-portfolio-facts">
               <div class="tcw-feature-mini"><i class="fas fa-user-tie"></i><div><h4>Client</h4><p>{{ $portfolio->client ?: 'N/A' }}</p></div></div>
               <div class="tcw-feature-mini"><i class="fas fa-layer-group"></i><div><h4>Category</h4><p>{{ $portfolio->category ?: 'N/A' }}</p></div></div>
               <div class="tcw-feature-mini"><i class="fas fa-clock"></i><div><h4>Duration</h4><p>{{ $portfolio->duration ?: 'N/A' }}</p></div></div>
-              <div class="tcw-feature-mini"><i class="fas fa-tags"></i><div><h4>Tags</h4><p>{{ $portfolio->tags ?: 'N/A' }}</p></div></div>
+              <div class="tcw-feature-mini"><i class="fas fa-layer-group"></i><div><h4>Services</h4><p>{{ $portfolio->tags ?: ($portfolio->category ?: 'N/A') }}</p></div></div>
+              <div class="tcw-feature-mini tcw-portfolio-demo-fact"><i class="fas fa-link"></i><div><h4>Demo Link</h4><p>{{ $demoUrl }}</p></div></div>
             </div>
           </div>
 
@@ -99,7 +106,7 @@
               <div><i class="fas fa-user-tie"></i><strong>Client</strong><span>{{ $portfolio->client ?: 'N/A' }}</span></div>
               <div><i class="fas fa-layer-group"></i><strong>Category</strong><span>{{ $portfolio->category ?: 'N/A' }}</span></div>
               <div><i class="fas fa-clock"></i><strong>Duration</strong><span>{{ $portfolio->duration ?: 'N/A' }}</span></div>
-              <div><i class="fas fa-link"></i><strong>Demo Link</strong><span>{{ $portfolio->demo_url ?: 'Available on request' }}</span></div>
+              <div><i class="fas fa-link"></i><strong>Demo Link</strong><span>{{ $demoUrl }}</span></div>
             </div>
           </div>
         </div>
@@ -109,7 +116,7 @@
     <section class="tcw-detail-section pt-0">
       <div class="container">
         <div class="tcw-detail-heading text-center">
-          <h2>Project <span>Gallery</span></h2>
+          <h2><span>Project Gallery</span></h2>
         </div>
         <div class="tcw-project-gallery cs-lightgallery">
           @foreach($gallery as $image)
@@ -123,7 +130,7 @@
         </div>
 
         <div class="tcw-detail-heading text-center tcw-tech-heading">
-          <h2>Technologies <span>& Highlights</span></h2>
+          <h2><span>Technologies & Highlights</span></h2>
         </div>
         <div class="tcw-tech-grid">
           @foreach($techItems->take(8) as $tech)

@@ -100,14 +100,12 @@
       <div class="cs-main_header_right">
         <div class="tcw-header_actions">
           @auth
-            <a href="{{ auth()->user()->isAdmin() ? route('dashboard') : route('user.dashboard') }}" class="tcw-header_auth">
+            <a href="{{ auth()->user()->isAdmin() ? route('dashboard') : route('user.dashboard') }}" class="tcw-header_auth" aria-label="Dashboard" title="Dashboard">
               <i class="fas fa-user"></i>
-              <span>Dashboard</span>
             </a>
           @else
-            <a href="{{ route('login') }}" class="tcw-header_auth">
+            <a href="{{ route('login') }}" class="tcw-header_auth" aria-label="Login" title="Login">
               <i class="fas fa-user"></i>
-              <span>Login</span>
             </a>
           @endauth
           <a href="{{ url('/contact') }}" class="tcw-header_cta">Contact Us</a>

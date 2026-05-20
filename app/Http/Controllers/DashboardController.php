@@ -72,7 +72,7 @@ class DashboardController extends Controller
         );
 
         $recentBlogs = Blog::latest()->take(4)->get();
-        $recentServices = Service::latest()->take(4)->get();
+        $recentServices = Service::latest()->take(5)->get();
         $recentRequests = ServiceRequest::latest()->take(4)->get();
         $recentOrders = OfferOrder::with(['user', 'offer'])->latest()->take(4)->get();
         $recentProjects = AgencyProject::with(['user', 'order.offer'])->latest()->take(4)->get();
@@ -88,7 +88,7 @@ class DashboardController extends Controller
             'resolved' => ServiceRequest::where('status', 'completed')->count(),
         ];
 
-        $contentTotal = max(1, $stats['services'] + $stats['service_details'] + $stats['blogs'] + $stats['logos']);
+        $contentTotal = max(1, $stats['services'] + $stats['service_details'] + $stats['blogs'] + $stats['service_requests'] + $stats['logos']);
         $contentMix = [
             [
                 'label' => 'Services',
@@ -109,10 +109,16 @@ class DashboardController extends Controller
                 'color' => '#2563eb',
             ],
             [
+                'label' => 'Service Requests',
+                'count' => $stats['service_requests'],
+                'width' => round(($stats['service_requests'] / $contentTotal) * 100, 1),
+                'color' => '#f59e0b',
+            ],
+            [
                 'label' => 'Logos',
                 'count' => $stats['logos'],
                 'width' => round(($stats['logos'] / $contentTotal) * 100, 1),
-                'color' => '#f59e0b',
+                'color' => '#22c55e',
             ],
         ];
 

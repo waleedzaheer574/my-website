@@ -74,7 +74,7 @@
         <article class="admin-premium-card admin-premium-mix">
             <header><h2>Content Mix</h2></header>
             <div>
-                <figure style="--services: {{ $contentMix[0]['width'] }}%; --details: {{ $contentMix[1]['width'] }}%; --blogs: {{ $contentMix[2]['width'] }}%;">
+                <figure style="--services: {{ $contentMix[0]['width'] }}%; --details: {{ $contentMix[1]['width'] }}%; --blogs: {{ $contentMix[2]['width'] }}%; --requests: {{ $contentMix[3]['width'] }}%;">
                     <strong>{{ $contentTotalItems }}</strong>
                     <span>Total Items</span>
                 </figure>
@@ -86,7 +86,7 @@
             </div>
         </article>
 
-        <article class="admin-premium-card admin-premium-list">
+        <article class="admin-premium-card admin-premium-list admin-card-recent-services">
             <header><h2>Recent Services</h2><a href="{{ route('services.index') }}">View all</a></header>
             @forelse($recentServices as $service)
                 <div>
@@ -99,7 +99,7 @@
             @endforelse
         </article>
 
-        <article class="admin-premium-card admin-premium-list">
+        <article class="admin-premium-card admin-premium-list admin-card-service-requests">
             <header><h2>Service Requests</h2><a href="{{ route('requests.index') }}">View all</a></header>
             @forelse($recentRequests as $request)
                 <div>
@@ -115,7 +115,7 @@
             @endforelse
         </article>
 
-        <article class="admin-premium-card admin-premium-list is-wide">
+        <article class="admin-premium-card admin-premium-list is-wide admin-card-recent-blogs">
             <header><h2>Recent Blogs</h2><a href="{{ route('blogs.index') }}">View all</a></header>
             @forelse($recentBlogs as $blog)
                 <div>
@@ -128,7 +128,7 @@
             @endforelse
         </article>
 
-        <article class="admin-premium-card admin-premium-list">
+        <article class="admin-premium-card admin-premium-list admin-card-recent-orders">
             <header><h2>Recent Orders</h2><a href="{{ route('orders.admin.index') }}">View all</a></header>
             @forelse($recentOrders as $order)
                 <div>
@@ -140,7 +140,7 @@
             @endforelse
         </article>
 
-        <article class="admin-premium-card admin-premium-projects">
+        <article class="admin-premium-card admin-premium-projects admin-card-recent-projects">
             <header><h2>Recent Projects</h2><a href="{{ route('projects.admin.index') }}">View all</a></header>
             @forelse($recentProjects as $project)
                 <div>
@@ -154,7 +154,7 @@
             @endforelse
         </article>
 
-        <article class="admin-premium-card admin-premium-top">
+        <article class="admin-premium-card admin-premium-top admin-card-top-services">
             <header><h2>Top Services</h2><span>This Month <i class="fas fa-chevron-down"></i></span></header>
             @forelse($topServices as $service)
                 <div>
@@ -167,7 +167,7 @@
             @endforelse
         </article>
 
-        <article class="admin-premium-card admin-premium-actions">
+        <article class="admin-premium-card admin-premium-actions admin-card-quick-actions">
             <header><h2>Quick Actions</h2></header>
             <div>
                 <a href="{{ route('services.create') }}"><i class="fas fa-plus-circle"></i><span>Add Service</span></a>

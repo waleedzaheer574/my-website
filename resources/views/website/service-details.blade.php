@@ -9,18 +9,38 @@
   $description = $serviceDetail->description ?: 'We build modern, responsive and high-performance digital solutions that help businesses grow online.';
   $hasVideo = filled($serviceDetail->video_url);
   $videoPreviewImage = $serviceDetail->video_thumbnail ?: $serviceDetail->primary_image;
+  $highlightText = trim($serviceDetail->title_highlight ?: 'Services');
+  $highlightParts = preg_split('/\s+/', $highlightText) ?: [];
+  $highlightTail = count($highlightParts) > 1 ? array_pop($highlightParts) : '';
+  $highlightLead = trim(implode(' ', $highlightParts)) ?: $highlightText;
   $processItems = collect([
       ['title' => $serviceDetail->process_one_title ?: 'Planning & Strategy', 'text' => $serviceDetail->process_one_text ?: 'We analyze your goals, audience, and requirements to create a clear roadmap for success.', 'icon' => 'fa-clipboard-list'],
       ['title' => $serviceDetail->process_two_title ?: 'Design & Development', 'text' => $serviceDetail->process_two_text ?: 'Our team creates polished user experiences and builds scalable, high-performance solutions.', 'icon' => 'fa-code'],
       ['title' => $serviceDetail->process_three_title ?: 'Testing & Launch', 'text' => $serviceDetail->process_three_text ?: 'We test performance, responsiveness, and quality before launch so everything runs smoothly.', 'icon' => 'fa-rocket'],
   ])->filter(fn ($item) => $item['title'] || $item['text'])->values();
 
-  $techItems = ['Laravel', 'PHP', 'Vue.js', 'React', 'MySQL', 'REST API', 'AWS', 'Docker'];
+  $statItems = [
+      ['value' => '120+', 'label' => 'Projects Delivered', 'icon' => 'fa-rocket'],
+      ['value' => '50+', 'label' => 'Happy Clients', 'icon' => 'fa-users'],
+      ['value' => '5+', 'label' => 'Years Experience', 'icon' => 'fa-trophy'],
+      ['value' => '24/7', 'label' => 'Support', 'icon' => 'fa-headset'],
+  ];
+  $techItems = [
+      ['label' => 'AWS', 'icon' => 'fab fa-aws', 'tone' => 'orange'],
+      ['label' => 'Docker', 'icon' => 'fab fa-docker', 'tone' => 'cyan'],
+      ['label' => 'Kubernetes', 'icon' => 'fas fa-dharmachakra', 'tone' => 'blue'],
+      ['label' => 'GitHub Actions', 'icon' => 'fas fa-network-wired', 'tone' => 'sky'],
+      ['label' => 'Terraform', 'icon' => 'fas fa-cubes', 'tone' => 'violet'],
+      ['label' => 'Jenkins', 'icon' => 'fab fa-jenkins', 'tone' => 'cream'],
+      ['label' => 'Prometheus', 'icon' => 'fas fa-fire', 'tone' => 'red'],
+      ['label' => 'Grafana', 'icon' => 'fas fa-chart-line', 'tone' => 'orange'],
+  ];
   $featureItems = [
-      ['title' => 'Responsive Design', 'text' => 'Perfect display on all devices and screen sizes.', 'icon' => 'fa-mobile-screen-button'],
-      ['title' => 'High Performance', 'text' => 'Optimized code and fast loading speed.', 'icon' => 'fa-gauge-high'],
-      ['title' => 'Secure & Reliable', 'text' => 'Industry-standard security and data protection.', 'icon' => 'fa-shield-halved'],
-      ['title' => 'Scalable Solutions', 'text' => 'Built to grow with your business needs.', 'icon' => 'fa-diagram-project'],
+      ['title' => 'High Performance & Scalability', 'icon' => 'fa-gauge-high'],
+      ['title' => 'Secure & Reliable Infrastructure', 'icon' => 'fa-shield-halved'],
+      ['title' => 'Cost Optimization', 'icon' => 'fa-circle-dollar-to-slot'],
+      ['title' => 'Automated Workflows', 'icon' => 'fa-gears'],
+      ['title' => '24/7 Monitoring & Support', 'icon' => 'fa-headset'],
   ];
 @endphp
 
@@ -38,8 +58,8 @@
 
         <div class="tcw-detail-hero-grid">
           <div class="tcw-detail-hero-copy">
-            <span class="tcw-detail-eyebrow">Our Professional</span>
-            <h1>{{ $serviceDetail->title_prefix ?: 'Digital' }} <span>{{ $serviceDetail->title_highlight ?: 'Services' }}</span></h1>
+            <span class="tcw-detail-eyebrow">Our Professional Service</span>
+            <h1>{{ $serviceDetail->title_prefix ?: 'Digital' }} <span>{{ $highlightLead }}</span>@if($highlightTail) <b>{{ $highlightTail }}</b>@endif</h1>
             <p>{!! nl2br(e($description)) !!}</p>
             <div class="tcw-detail-actions">
               <a href="{{ url('/contact') }}" class="tcw-detail-btn tcw-detail-btn-primary">
@@ -57,13 +77,25 @@
             </a>
           </div>
         </div>
+
+        <div class="tcw-service-stats">
+          @foreach($statItems as $stat)
+            <article>
+              <i class="fas {{ $stat['icon'] }}" aria-hidden="true"></i>
+              <strong>{{ $stat['value'] }}</strong>
+              <span>{{ $stat['label'] }}</span>
+            </article>
+          @endforeach
+        </div>
       </div>
     </section>
 
     <section class="tcw-detail-section">
       <div class="container">
         <div class="tcw-detail-heading text-center">
+          <span class="tcw-detail-eyebrow">Our Workflow</span>
           <h2>Our <span>{{ $serviceDetail->process_heading ?: 'Development Process' }}</span></h2>
+          <p>We follow a proven process to deliver robust and scalable cloud solutions.</p>
         </div>
         <div class="tcw-process-grid">
           @foreach($processItems as $index => $item)
@@ -80,40 +112,31 @@
 
     <section class="tcw-detail-section tcw-about-detail-section">
       <div class="container">
-        <div class="tcw-about-detail-grid {{ $hasVideo ? 'has-video' : 'has-no-video' }}">
-          <div>
+        <div class="tcw-benefits-tech-grid">
+          <div class="tcw-benefits-panel">
             <div class="tcw-detail-heading">
-              <h2>About Our <span>{{ $serviceName }}</span></h2>
+              <span class="tcw-detail-eyebrow">What You Get</span>
+              <h2>Benefits of Our <span>{{ $serviceName }}</span></h2>
             </div>
-            <div class="tcw-detail-richtext">{!! nl2br(e($description)) !!}</div>
-            <div class="tcw-feature-mini-grid">
+            <p>We deliver modern cloud solutions that help your business scale, perform, and grow without limits.</p>
+            <ul class="tcw-benefit-list">
               @foreach($featureItems as $feature)
-                <div class="tcw-feature-mini">
-                  <div>
-                    <h4>{{ $feature['title'] }}</h4>
-                    <p>{{ $feature['text'] }}</p>
-                  </div>
-                </div>
+                <li><i class="fas fa-check"></i><span>{{ $feature['title'] }}</span></li>
               @endforeach
-            </div>
+            </ul>
           </div>
 
-          <div>
-            @if($hasVideo && $videoPreviewImage)
-              <div class="tcw-detail-video cs-lightgallery">
-                <a href="{{ asset($videoPreviewImage) }}" class="tcw-service-image-link cs-lightbox-item" aria-label="Open full video preview image">
-                  <img src="{{ asset($videoPreviewImage) }}" alt="{{ $serviceTitle }} video" width="720" height="405" loading="lazy" decoding="async">
-                  <span class="tcw-blog-image-zoom"><i class="fas fa-search-plus"></i></span>
-                </a>
-                <a href="{{ $serviceDetail->video_url }}" class="cs-video_open tcw-video-play" aria-label="Play service video"><i class="fas fa-play"></i></a>
-              </div>
-            @endif
-
-            <div class="tcw-detail-info-card">
-              <div><i class="fas fa-screwdriver-wrench"></i><strong>Technologies</strong><span>{{ implode(', ', array_slice($techItems, 0, 5)) }}</span></div>
-              <div><i class="fas fa-calendar-check"></i><strong>Development Time</strong><span>2 - 6 Weeks (Depending on Project Size)</span></div>
-              <div><i class="fas fa-layer-group"></i><strong>Service Type</strong><span>{{ $serviceName }}</span></div>
-              <div><i class="fas fa-headset"></i><strong>Support</strong><span>3 Months Free Support</span></div>
+          <div class="tcw-service-tech-panel">
+            <div class="tcw-detail-heading">
+              <span class="tcw-detail-eyebrow">Technologies We Use</span>
+            </div>
+            <div class="tcw-tech-grid">
+              @foreach($techItems as $tech)
+                <div class="tcw-tech-card is-{{ $tech['tone'] }}">
+                  <i class="{{ $tech['icon'] }}"></i>
+                  <span>{{ $tech['label'] }}</span>
+                </div>
+              @endforeach
             </div>
           </div>
         </div>
@@ -122,30 +145,12 @@
 
     <section class="tcw-detail-section pt-0">
       <div class="container">
-        <div class="tcw-detail-heading text-center">
-          <h2>Technologies <span>We Use</span></h2>
-        </div>
-        <div class="tcw-tech-grid">
-          @foreach($techItems as $tech)
-            <div class="tcw-tech-card">
-              <i class="fas fa-code"></i>
-              <span>{{ $tech }}</span>
-            </div>
-          @endforeach
-        </div>
-
         <div class="tcw-detail-cta">
           <div>
             <h2>Ready To Build Your Next Digital Product?</h2>
             <p>Let's create something amazing together.</p>
-            <a href="{{ url('/contact') }}" class="tcw-detail-btn tcw-detail-btn-light">Get Free Consultation <i class="fas fa-arrow-right"></i></a>
           </div>
-          <div class="tcw-cta-stats">
-            <div><i class="fas fa-users"></i><strong>120+</strong><span>Projects Completed</span></div>
-            <div><i class="fas fa-face-smile"></i><strong>50+</strong><span>Happy Clients</span></div>
-            <div><i class="fas fa-trophy"></i><strong>5+</strong><span>Years Experience</span></div>
-            <div><i class="fas fa-globe"></i><strong>10+</strong><span>Countries Served</span></div>
-          </div>
+          <a href="{{ url('/contact') }}" class="tcw-detail-btn tcw-detail-btn-light">Get Free Consultation <i class="fas fa-arrow-right"></i></a>
         </div>
 
       </div>
