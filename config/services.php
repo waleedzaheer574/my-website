@@ -62,4 +62,8 @@ return [
         'base_url' => env('WHATSAPP_BASE_URL', 'https://graph.facebook.com/v23.0'),
     ],
 
+    'vapi' => [
+        'webhook_secret' => env('VAPI_WEBHOOK_SECRET'),
+    ],
+
 ];

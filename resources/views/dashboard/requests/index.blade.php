@@ -11,7 +11,7 @@
         <div class="admin-requests-head">
             <div>
                 <h3>All Incoming Requests</h3>
-                <p>All requests submitted through the website home form will appear here.</p>
+                <p>All requests submitted through the website forms and AI receptionist calls will appear here.</p>
             </div>
             <div class="admin-requests-total">
                 <span>Total: {{ $serviceRequests->total() }}</span>
@@ -29,6 +29,8 @@
                         <th>Phone</th>
                         <th>Country</th>
                         <th>Service</th>
+                        <th>Source</th>
+                        <th>Budget</th>
                         <th>Website</th>
                         <th>Submitted</th>
                         <th>Status</th>
@@ -53,6 +55,8 @@
                             <td>{{ $request->phone_no ?: 'N/A' }}</td>
                             <td>{{ $request->country ?: 'N/A' }}</td>
                             <td>{{ $request->service_type }}</td>
+                            <td>{{ $request->source === 'ai_call' ? 'AI Call' : 'Website' }}</td>
+                            <td>{{ $request->budget ?: 'N/A' }}</td>
                             <td>
                                 @if($request->company_website)
                                     <a href="{{ $request->company_website }}" target="_blank" rel="noopener noreferrer">
@@ -88,7 +92,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td class="admin-u-015" colspan="10">No service requests found yet.</td>
+                            <td class="admin-u-015" colspan="12">No service requests found yet.</td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -114,7 +118,7 @@
                             </select>
                         </form>
                     </header>
-                    <p>{{ $request->service_type }}</p>
+                    <p>{{ $request->service_type }} · {{ $request->source === 'ai_call' ? 'AI Call' : 'Website' }}{{ $request->budget ? ' · '.$request->budget : '' }}</p>
                     @if($request->company_website)
                         <a href="{{ $request->company_website }}" target="_blank" rel="noopener noreferrer">
                             {{ str($request->company_website)->replace(['https://', 'http://'], '')->trim('/') }}

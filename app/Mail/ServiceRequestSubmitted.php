@@ -18,7 +18,9 @@ class ServiceRequestSubmitted extends Mailable
 
     public function build()
     {
-        return $this->subject('New Service Request')
+        $source = $this->serviceRequest->source === 'ai_call' ? 'AI Call Lead' : 'Service Request';
+
+        return $this->subject('New '.$source)
             ->view('emails.service-request-submitted');
     }
 }

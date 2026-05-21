@@ -32,6 +32,18 @@ class ServiceRequest extends Model
         'country',
         'service_type',
         'status',
+        'source',
+        'budget',
+        'requirement',
+        'vapi_call_id',
+        'call_status',
+        'call_summary',
+        'call_transcript',
+        'raw_payload',
+    ];
+
+    protected $casts = [
+        'raw_payload' => 'array',
     ];
 
     public function user()

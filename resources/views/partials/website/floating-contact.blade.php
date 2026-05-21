@@ -182,6 +182,98 @@
   z-index: 99999;
 }
 
+.tcw-floating-contact__button {
+  border: 0;
+  cursor: pointer;
+}
+
+.tcw-ai-call-flow {
+  display: grid;
+  gap: 10px;
+  margin: 20px 0;
+  padding: 16px;
+  border: 1px solid rgba(56, 189, 248, 0.2);
+  border-radius: 18px;
+  background: rgba(15, 23, 42, 0.04);
+}
+
+.tcw-ai-call-flow span {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  align-items: center;
+  gap: 10px;
+  color: #0f172a;
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.tcw-ai-call-flow i {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  color: #fff;
+  background: linear-gradient(135deg, #38BDF8, #2563EB);
+  font-style: normal;
+  font-size: 12px;
+}
+
+.tcw-ai-api-box {
+  margin-top: 14px;
+  padding: 14px;
+  border: 1px solid rgba(2, 132, 199, 0.2);
+  border-radius: 14px;
+  color: #334155;
+  background: #f8fafc;
+  font-size: 13px;
+  line-height: 1.65;
+}
+
+.tcw-ai-api-box code {
+  display: block;
+  margin-top: 8px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: #0369a1;
+  background: #e0f2fe;
+  overflow-wrap: anywhere;
+}
+
+.tcw-ai-call-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.tcw-ai-call-actions a,
+.tcw-ai-call-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+  padding: 12px 16px;
+  border-radius: 14px;
+  font-size: 13px;
+  font-weight: 900;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.tcw-ai-call-primary {
+  border: 1px solid #38BDF8;
+  color: #fff;
+  background: linear-gradient(135deg, #38BDF8, #2563EB);
+}
+
+.tcw-ai-call-secondary {
+  border: 1px solid rgba(15, 23, 42, 0.16);
+  color: #0f172a;
+  background: #fff;
+}
+
 @media (max-width: 767px) {
   .tcw-popup {
     padding: 30px 18px 22px;
@@ -210,6 +302,10 @@
     font-size: 20px;
     top: 15px;
     right: 15px;
+  }
+
+  .tcw-ai-call-actions {
+    grid-template-columns: 1fr;
   }
 }
 
@@ -295,15 +391,47 @@
     @endif
 
     @if($floatingPhone)
-      <a href="tel:{{ preg_replace('/\s+/', '', $floatingPhone) }}" class="tcw-floating-contact__icon" aria-label="Call us">
+      <button type="button" id="openAiCallFlow" class="tcw-floating-contact__icon tcw-floating-contact__button" aria-label="AI call workflow">
         <i class="fas fa-phone"></i>
-      </a>
+      </button>
     @endif
   </div>
 
   <a href="{{ route('website.quote-generator') }}" class="tcw-floating-contact__quote">
     <span>Get A Quote!</span>
   </a>
+</div>
+
+<div id="aiCallFlowPopup" class="tcw-popup-overlay">
+  <div class="tcw-popup">
+    <button class="tcw-popup-close" id="closeAiCallFlow" type="button">&times;</button>
+
+    <div class="tcw-popup-kicker">AI receptionist</div>
+    <h2>AI Call Lead Workflow</h2>
+    <p class="tcw-form-intro">Visitor call karega, AI receptionist requirement samjhega, lead information collect karega, Laravel API call hogi, lead database me save hogi aur admin ko email mil jayegi.</p>
+
+    <div class="tcw-ai-call-flow" aria-label="AI call workflow">
+      <span><i>01</i> Visitor calls AI number</span>
+      <span><i>02</i> Vapi AI receptionist answers and greets customer</span>
+      <span><i>03</i> AI understands requirement and explains Multitechwave services</span>
+      <span><i>04</i> AI collects name, email, phone, budget and requirement</span>
+      <span><i>05</i> AI calls Laravel API and lead is saved in database</span>
+      <span><i>06</i> Admin receives email and contacts customer</span>
+    </div>
+
+    <div class="tcw-ai-api-box">
+      <strong>Call agent integration API</strong>
+      <code>POST {{ url('/api/ai-call-leads') }}</code>
+      Send JSON fields: <strong>full_name/name</strong>, <strong>email/company_email</strong>, <strong>phone/phone_no</strong>, <strong>budget</strong>, <strong>requirement</strong>, <strong>service_type</strong>, <strong>summary</strong>, <strong>transcript</strong>, <strong>vapi_call_id/call_id</strong>.
+    </div>
+
+    <div class="tcw-ai-call-actions">
+      @if($floatingPhone)
+        <a href="tel:{{ preg_replace('/\s+/', '', $floatingPhone) }}" class="tcw-ai-call-primary">Call AI Number</a>
+      @endif
+      <button type="button" class="tcw-ai-call-secondary" id="closeAiCallFlowSecondary">Close</button>
+    </div>
+  </div>
 </div>
 
 <div id="quotePopup" class="tcw-popup-overlay">
@@ -367,6 +495,29 @@ document.addEventListener("DOMContentLoaded", function () {
   const openBtn = document.getElementById('openQuotePopup');
   const popup = document.getElementById('quotePopup');
   const closeBtn = document.getElementById('closeQuotePopup');
+  const aiCallOpenBtn = document.getElementById('openAiCallFlow');
+  const aiCallPopup = document.getElementById('aiCallFlowPopup');
+  const aiCallCloseBtn = document.getElementById('closeAiCallFlow');
+  const aiCallSecondaryCloseBtn = document.getElementById('closeAiCallFlowSecondary');
+
+  if (aiCallOpenBtn && aiCallPopup && aiCallCloseBtn) {
+    aiCallOpenBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      aiCallPopup.style.display = 'flex';
+    });
+
+    [aiCallCloseBtn, aiCallSecondaryCloseBtn].forEach(function(button) {
+      button?.addEventListener('click', function() {
+        aiCallPopup.style.display = 'none';
+      });
+    });
+
+    window.addEventListener('click', function(e) {
+      if (e.target === aiCallPopup) {
+        aiCallPopup.style.display = 'none';
+      }
+    });
+  }
 
   if (!openBtn || !popup || !closeBtn) {
     return;
