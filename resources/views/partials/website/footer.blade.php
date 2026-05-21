@@ -9,12 +9,10 @@
   $footerServices = ($websiteServices ?? collect())->take(6);
   $newsletterError = session('errors')?->getBag('newsletter')?->first('email');
   $footerSocialLinks = [
+    ['url' => '#', 'icon' => 'fab fa-fonticons-fi', 'label' => 'Fiverr'],
     ['url' => $companySetting?->facebook ?: '#', 'icon' => 'fab fa-facebook-f', 'label' => 'Facebook'],
-    ['url' => $companySetting?->instagram ?: '#', 'icon' => 'fab fa-instagram', 'label' => 'Instagram'],
-    ['url' => $companySetting?->pinterest ?: '#', 'icon' => 'fab fa-pinterest-p', 'label' => 'Pinterest'],
-    ['url' => $companySetting?->youtube ?: '#', 'icon' => 'fab fa-youtube', 'label' => 'YouTube'],
-    ['url' => $companySetting?->tiktok ?: '#', 'icon' => 'fab fa-tiktok', 'label' => 'TikTok'],
     ['url' => $companySetting?->linkedin ?: '#', 'icon' => 'fab fa-linkedin-in', 'label' => 'LinkedIn'],
+    ['url' => $companySetting?->instagram ?: '#', 'icon' => 'fab fa-instagram', 'label' => 'Instagram'],
   ];
 @endphp
 

@@ -33,12 +33,23 @@
   <section class="tcw-client-main" id="overview">
     @include('user.partials.client-header')
 
-    <div class="tcw-premium-stat-grid">
-      <article class="is-purple"><i class="far fa-file-alt"></i><div><span>Total Requests</span><strong>{{ str_pad((string) $totalRequests, 2, '0', STR_PAD_LEFT) }}</strong><small>+20% from last month</small></div><b></b></article>
-      <article class="is-blue"><i class="fas fa-wave-square"></i><div><span>In Progress</span><strong>{{ str_pad((string) $inProgressProjects, 2, '0', STR_PAD_LEFT) }}</strong><small>Active projects</small></div><b></b></article>
-      <article class="is-green"><i class="far fa-check-circle"></i><div><span>Completed</span><strong>{{ str_pad((string) $completedProjects, 2, '0', STR_PAD_LEFT) }}</strong><small>+25% from last month</small></div><b></b></article>
-      <article class="is-orange"><i class="fas fa-dollar-sign"></i><div><span>Total Spent</span><strong>AED {{ number_format($totalSpent) }}</strong><small>+18% from last month</small></div><b></b></article>
-      <article class="is-red"><i class="far fa-credit-card"></i><div><span>Pending Payments</span><strong>{{ str_pad((string) $pendingPayments, 2, '0', STR_PAD_LEFT) }}</strong><small>Awaiting payment</small></div><b></b></article>
+    <div class="tcw-dashboard-overview-row">
+      <div class="tcw-premium-stat-grid">
+        <article class="is-purple"><i class="far fa-file-alt"></i><div><span>Total Requests</span><strong>{{ str_pad((string) $totalRequests, 2, '0', STR_PAD_LEFT) }}</strong><small>+20% from last month</small></div><svg class="tcw-client-stat-spark" viewBox="0 0 120 56" preserveAspectRatio="none" aria-hidden="true"><polyline points="4,50 18,43 30,47 43,34 57,38 72,24 88,28 104,14 116,18"></polyline></svg></article>
+        <article class="is-blue"><i class="fas fa-wave-square"></i><div><span>In Progress</span><strong>{{ str_pad((string) $inProgressProjects, 2, '0', STR_PAD_LEFT) }}</strong><small>Active projects</small></div><svg class="tcw-client-stat-spark" viewBox="0 0 120 56" preserveAspectRatio="none" aria-hidden="true"><polyline points="4,46 18,42 32,39 46,35 60,30 74,32 88,26 102,20 116,16"></polyline></svg></article>
+        <article class="is-green"><i class="far fa-check-circle"></i><div><span>Completed</span><strong>{{ str_pad((string) $completedProjects, 2, '0', STR_PAD_LEFT) }}</strong><small>+25% from last month</small></div><svg class="tcw-client-stat-spark" viewBox="0 0 120 56" preserveAspectRatio="none" aria-hidden="true"><polyline points="4,42 17,36 31,46 45,28 58,30 72,18 87,22 101,10 116,21"></polyline></svg></article>
+        <article class="is-orange"><i class="fas fa-dollar-sign"></i><div><span>Total Spent</span><strong>AED {{ number_format($totalSpent) }}</strong><small>+18% from last month</small></div><svg class="tcw-client-stat-spark" viewBox="0 0 120 56" preserveAspectRatio="none" aria-hidden="true"><polyline points="4,47 18,39 32,42 46,31 60,44 75,26 89,21 103,9 116,17"></polyline></svg></article>
+        <article class="is-red"><i class="far fa-credit-card"></i><div><span>Pending Payments</span><strong>{{ str_pad((string) $pendingPayments, 2, '0', STR_PAD_LEFT) }}</strong><small>Awaiting payment</small></div><svg class="tcw-client-stat-spark" viewBox="0 0 120 56" preserveAspectRatio="none" aria-hidden="true"><polyline points="4,45 18,38 31,40 45,29 59,42 74,25 88,18 103,13 116,18"></polyline></svg></article>
+      </div>
+
+      <section class="tcw-client-panel tcw-updates-card">
+        <div class="tcw-client-panel-head"><h2>Recent Updates</h2><a href="{{ route('user.notifications') }}">View All</a></div>
+        @forelse(($recentRequests ?? collect())->take(4) as $recentRequest)
+          <article><i class="{{ $recentRequest['type'] === 'quote' ? 'far fa-envelope' : 'far fa-comment-dots' }}"></i><p>{{ $recentRequest['title'] }} status changed to <b>{{ $recentRequest['subtitle'] }}</b></p><time>{{ $recentRequest['date']->diffForHumans() }}</time></article>
+        @empty
+          <article><i class="far fa-comment-dots"></i><p>No recent updates yet.</p><time>Now</time></article>
+        @endforelse
+      </section>
     </div>
 
     <div class="tcw-dashboard-grid">
@@ -91,15 +102,6 @@
             <span>End</span>
           </div>
         </div>
-      </section>
-
-      <section class="tcw-client-panel tcw-updates-card">
-        <div class="tcw-client-panel-head"><h2>Recent Updates</h2><a href="{{ route('user.notifications') }}">View All</a></div>
-        @forelse(($recentRequests ?? collect())->take(4) as $recentRequest)
-          <article><i class="{{ $recentRequest['type'] === 'quote' ? 'far fa-envelope' : 'far fa-comment-dots' }}"></i><p>{{ $recentRequest['title'] }} status changed to <b>{{ $recentRequest['subtitle'] }}</b></p><time>{{ $recentRequest['date']->diffForHumans() }}</time></article>
-        @empty
-          <article><i class="far fa-comment-dots"></i><p>No recent updates yet.</p><time>Now</time></article>
-        @endforelse
       </section>
 
       <section class="tcw-client-panel tcw-recent-requests-card">

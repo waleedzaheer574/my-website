@@ -47,7 +47,7 @@
       <div class="tcw-offers-toolbar">
         <div class="tcw-offers-filters" aria-label="Offer categories">
           @foreach($categories as $category)
-            <a href="#offers" class="{{ $loop->first ? 'is-active' : '' }}">{{ $category }}</a>
+            <a href="#offers" class="{{ $loop->first ? 'is-active' : '' }}" data-offer-category="{{ $category }}">{{ $category }}</a>
           @endforeach
         </div>
         <div class="tcw-billing-toggle" aria-label="Billing options">
@@ -65,7 +65,7 @@
             $icon = $meta['icon'] ?? 'fas fa-layer-group';
             $tone = $meta['tone'] ?? 'blue';
           @endphp
-          <article class="tcw-offer-card tcw-premium-offer-card {{ $isFeatured ? 'is-featured' : '' }}">
+          <article class="tcw-offer-card tcw-premium-offer-card {{ $isFeatured ? 'is-featured' : '' }}" data-offer-card data-offer-category="{{ $offer->category ?: 'Uncategorized' }}">
             <div class="tcw-offer-card-top">
               <span class="tcw-offer-icon is-{{ $tone }}"><i class="{{ $icon }}"></i></span>
               @if($badge)
@@ -129,3 +129,31 @@
   </section>
 </main>
 @endsection
+
+@push('js')
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const filters = document.querySelectorAll('.tcw-offers-filters [data-offer-category]');
+    const cards = document.querySelectorAll('[data-offer-card]');
+
+    if (!filters.length || !cards.length) return;
+
+    const normalize = (value) => String(value || '').trim().toLowerCase();
+
+    filters.forEach((filter) => {
+      filter.addEventListener('click', function (event) {
+        event.preventDefault();
+
+        const selected = normalize(this.dataset.offerCategory);
+        filters.forEach((item) => item.classList.toggle('is-active', item === this));
+
+        cards.forEach((card) => {
+          const category = normalize(card.dataset.offerCategory);
+          const shouldShow = selected === 'all offers' || category === selected;
+          card.classList.toggle('is-hidden', !shouldShow);
+        });
+      });
+    });
+  });
+</script>
+@endpush
