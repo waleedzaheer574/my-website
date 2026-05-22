@@ -8,6 +8,7 @@ use App\Models\MailSetting;
 use App\Models\ServiceRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -15,6 +16,13 @@ class AiCallLeadController extends Controller
 {
     public function store(Request $request): JsonResponse
     {
+        Log::info('VAPI REQUEST RECEIVED', [
+            'payload' => $request->all(),
+            'has_bearer_token' => filled($request->bearerToken()),
+            'has_x_vapi_secret' => filled($request->header('X-Vapi-Secret')),
+            'ip' => $request->ip(),
+        ]);
+
         $secret = config('services.vapi.webhook_secret');
 
         if ($secret && ! hash_equals($secret, (string) $request->bearerToken()) && ! hash_equals($secret, (string) $request->header('X-Vapi-Secret'))) {
@@ -65,6 +73,12 @@ class AiCallLeadController extends Controller
         $phone = $validated['phone_no'] ?? $validated['phone'] ?? $validated['phone_number'] ?? $validated['number'] ?? null;
         $requirement = $validated['requirement'] ?? $validated['requirements'] ?? $validated['summary'] ?? null;
         $serviceType = $validated['service_type'] ?? $validated['service'] ?? 'AI Receptionist Lead';
+
+       \Log::info('VAPI DEBUG', [
+    'validated' => $validated,
+    'email' => $email,
+    'phone' => $phone,
+]);
 
         if (! $email && ! $phone) {
             return response()->json([
