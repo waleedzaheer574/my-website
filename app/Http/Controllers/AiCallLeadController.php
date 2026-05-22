@@ -103,6 +103,13 @@ class AiCallLeadController extends Controller
             'vapi_call_id' => $vapiCallId,
         ]);
 
+        Log::info('VAPI DEBUG', [
+            'request' => $request->all(),
+            'validated' => $validated,
+            'email' => $email,
+            'phone' => $phone,
+        ]);
+
         if (! $email && ! $phone) {
             Log::warning('VAPI LEAD MISSING CONTACT', [
                 'payload' => $payload,
