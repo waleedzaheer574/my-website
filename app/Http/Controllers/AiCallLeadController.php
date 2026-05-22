@@ -16,6 +16,11 @@ class AiCallLeadController extends Controller
 {
     public function store(Request $request): JsonResponse
     {
+         file_put_contents(
+        storage_path('logs/vapi-request.json'),
+        json_encode($request->all(), JSON_PRETTY_PRINT) . PHP_EOL . PHP_EOL,
+        FILE_APPEND
+    );
         Log::info('VAPI REQUEST RECEIVED', [
             'payload' => $request->all(),
             'has_bearer_token' => filled($request->bearerToken()),
