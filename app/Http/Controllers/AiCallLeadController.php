@@ -17,6 +17,10 @@ class AiCallLeadController extends Controller
 {
     public function store(Request $request): JsonResponse
     {
+            return response()->json([
+        'received' => $request->all()
+    ]);
+
         \Log::info('VAPI REQUEST RECEIVED', $request->all());
         $payload = $request->all();
 
