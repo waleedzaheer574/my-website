@@ -37,6 +37,7 @@ class AiCallLeadController extends Controller
         }
 
         $data = $this->flattenLeadPayload($payload);
+        $data = $this->normalizeLeadEmail($data);
         $validator = Validator::make($data, [
             'full_name' => ['nullable', 'string', 'max:255'],
             'name' => ['nullable', 'string', 'max:255'],
@@ -157,6 +158,24 @@ class AiCallLeadController extends Controller
             if (is_array($nested)) {
                 $data = array_merge($data, $nested);
             }
+        }
+
+        return $data;
+    }
+
+    protected function normalizeLeadEmail(array $data): array
+    {
+        foreach (['email', 'company_email'] as $key) {
+            if (empty($data[$key]) || ! is_string($data[$key])) {
+                continue;
+            }
+
+            $data[$key] = strtolower($data[$key]);
+            $data[$key] = str_replace(
+                [' at ', ' dot ', 'g mail'],
+                ['@', '.', 'gmail'],
+                $data[$key]
+            );
         }
 
         return $data;
