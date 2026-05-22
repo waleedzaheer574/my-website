@@ -10,19 +10,17 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
 class AiCallLeadController extends Controller
 {
     public function store(Request $request): JsonResponse
     {
-         file_put_contents(
-        storage_path('logs/vapi-request.json'),
-        json_encode($request->all(), JSON_PRETTY_PRINT) . PHP_EOL . PHP_EOL,
-        FILE_APPEND
-    );
+        $payload = $request->all();
+
         Log::info('VAPI REQUEST RECEIVED', [
-            'payload' => $request->all(),
+            'payload' => $payload,
             'has_bearer_token' => filled($request->bearerToken()),
             'has_x_vapi_secret' => filled($request->header('X-Vapi-Secret')),
             'ip' => $request->ip(),
@@ -37,18 +35,8 @@ class AiCallLeadController extends Controller
             ], 401);
         }
 
-        $payload = $request->all();
-        $data = $payload;
-
-        foreach (['lead', 'customer', 'analysis', 'structuredData', 'message.analysis.structuredData', 'message.artifact', 'message.call.customer'] as $path) {
-            $nested = data_get($payload, $path);
-
-            if (is_array($nested)) {
-                $data = array_merge($data, $nested);
-            }
-        }
-
-        $validated = validator($data, [
+        $data = $this->flattenLeadPayload($payload);
+        $validator = Validator::make($data, [
             'full_name' => ['nullable', 'string', 'max:255'],
             'name' => ['nullable', 'string', 'max:255'],
             'company_name' => ['nullable', 'string', 'max:255'],
@@ -71,21 +59,53 @@ class AiCallLeadController extends Controller
             'status' => ['nullable', 'string', 'max:255'],
             'vapi_call_id' => ['nullable', 'string', 'max:255'],
             'call_id' => ['nullable', 'string', 'max:255'],
-        ])->validate();
+        ]);
 
-        $name = $validated['full_name'] ?? $validated['name'] ?? 'AI Call Visitor';
-        $email = $validated['company_email'] ?? $validated['email'] ?? null;
-        $phone = $validated['phone_no'] ?? $validated['phone'] ?? $validated['phone_number'] ?? $validated['number'] ?? null;
-        $requirement = $validated['requirement'] ?? $validated['requirements'] ?? $validated['summary'] ?? null;
-        $serviceType = $validated['service_type'] ?? $validated['service'] ?? 'AI Receptionist Lead';
+        if ($validator->fails()) {
+            Log::warning('INVALID VAPI DATA', [
+                'errors' => $validator->errors()->toArray(),
+                'payload' => $payload,
+            ]);
 
-       \Log::info('VAPI DEBUG', [
-    'validated' => $validated,
-    'email' => $email,
-    'phone' => $phone,
-]);
+            return response()->json([
+                'ok' => false,
+                'message' => 'Invalid lead data.',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        $validated = $validator->validated();
+
+        $name = $this->firstFilled($validated, ['full_name', 'name']) ?: 'AI Call Visitor';
+        $email = $this->firstFilled($validated, ['company_email', 'email']);
+        $phone = $this->firstFilled($validated, ['phone_no', 'phone', 'phone_number', 'number']);
+        $requirement = $this->firstFilled($validated, ['requirement', 'requirements', 'summary']);
+        $serviceType = $this->firstFilled($validated, ['service_type', 'service']) ?: 'AI Receptionist Lead';
+        $vapiCallId = $this->firstFilled($validated, ['vapi_call_id', 'call_id'])
+            ?: data_get($payload, 'call.id')
+            ?: data_get($payload, 'message.call.id');
+        $callStatus = $this->firstFilled($validated, ['call_status', 'status'])
+            ?: data_get($payload, 'message.type');
+        $callSummary = $validated['summary']
+            ?? data_get($payload, 'summary')
+            ?? data_get($payload, 'message.analysis.summary');
+        $callTranscript = $validated['transcript']
+            ?? data_get($payload, 'transcript')
+            ?? data_get($payload, 'message.artifact.transcript');
+
+        Log::info('VALIDATED VAPI DATA', [
+            'name' => $name,
+            'email' => $email,
+            'phone' => $phone,
+            'service' => $serviceType,
+            'vapi_call_id' => $vapiCallId,
+        ]);
 
         if (! $email && ! $phone) {
+            Log::warning('VAPI LEAD MISSING CONTACT', [
+                'payload' => $payload,
+            ]);
+
             return response()->json([
                 'ok' => false,
                 'message' => 'Please provide at least customer email or phone.',
@@ -104,11 +124,16 @@ class AiCallLeadController extends Controller
             'source' => 'ai_call',
             'budget' => $validated['budget'] ?? null,
             'requirement' => $requirement,
-            'vapi_call_id' => $validated['vapi_call_id'] ?? $validated['call_id'] ?? data_get($payload, 'call.id') ?? data_get($payload, 'message.call.id'),
-            'call_status' => $validated['call_status'] ?? $validated['status'] ?? data_get($payload, 'message.type'),
-            'call_summary' => $validated['summary'] ?? data_get($payload, 'summary') ?? data_get($payload, 'message.analysis.summary'),
-            'call_transcript' => $validated['transcript'] ?? data_get($payload, 'transcript') ?? data_get($payload, 'message.artifact.transcript'),
+            'vapi_call_id' => $vapiCallId,
+            'call_status' => $callStatus,
+            'call_summary' => $callSummary,
+            'call_transcript' => $callTranscript,
             'raw_payload' => $payload,
+        ]);
+
+        Log::info('VAPI LEAD SAVED', [
+            'lead_id' => $serviceRequest->id,
+            'vapi_call_id' => $serviceRequest->vapi_call_id,
         ]);
 
         $this->notifyAdmin($serviceRequest);
@@ -119,6 +144,49 @@ class AiCallLeadController extends Controller
             'lead_id' => $serviceRequest->id,
             'next_step' => 'Admin will contact the customer.',
         ], 201);
+    }
+
+    protected function flattenLeadPayload(array $payload): array
+    {
+        $data = $payload;
+
+        foreach ($this->leadPayloadPaths() as $path) {
+            $nested = data_get($payload, $path);
+
+            if (is_array($nested)) {
+                $data = array_merge($data, $nested);
+            }
+        }
+
+        return $data;
+    }
+
+    protected function leadPayloadPaths(): array
+    {
+        return [
+            'lead',
+            'customer',
+            'analysis',
+            'structuredData',
+            'message.analysis.structuredData',
+            'message.artifact',
+            'message.artifact.messages.0',
+            'message.call.customer',
+            'call.customer',
+        ];
+    }
+
+    protected function firstFilled(array $data, array $keys): ?string
+    {
+        foreach ($keys as $key) {
+            $value = $data[$key] ?? null;
+
+            if (filled($value)) {
+                return (string) $value;
+            }
+        }
+
+        return null;
     }
 
     protected function notifyAdmin(ServiceRequest $serviceRequest): void
