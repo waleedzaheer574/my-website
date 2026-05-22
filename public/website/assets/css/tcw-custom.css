@@ -18801,6 +18801,19 @@ body {
   gap: 18px;
 }
 
+.tcw-service-spend-card .tcw-donut-wrap.is-small {
+  grid-template-columns: minmax(96px, 110px) minmax(0, 1fr);
+}
+
+.tcw-service-spend-card .tcw-donut-legend p {
+  grid-template-columns: 12px minmax(0, 1fr) max-content;
+}
+
+.tcw-service-spend-card .tcw-donut-legend b {
+  justify-self: end;
+  white-space: nowrap;
+}
+
 .tcw-donut-wrap.is-small .tcw-css-donut {
   width: 100px;
   height: 100px;
@@ -18971,6 +18984,34 @@ body {
     gap: 16px;
   }
 
+  .tcw-service-spend-card {
+    overflow: hidden;
+  }
+
+  .tcw-service-spend-card .tcw-client-panel-head {
+    margin-bottom: 14px;
+  }
+
+  .tcw-service-spend-card .tcw-donut-wrap.is-small {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: 18px;
+  }
+
+  .tcw-service-spend-card .tcw-donut-legend {
+    width: 100%;
+  }
+
+  .tcw-service-spend-card .tcw-donut-legend p {
+    grid-template-columns: 12px minmax(0, 1fr) max-content;
+    gap: 8px 10px;
+    line-height: 1.25;
+  }
+
+  .tcw-service-spend-card .tcw-donut-legend b {
+    font-size: 0.95rem;
+  }
+
   .tcw-css-donut {
     width: 132px;
     height: 132px;
@@ -19005,6 +19046,17 @@ body {
 
   .tcw-quick-actions-card > div:not(.tcw-client-panel-head) {
     grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 420px) {
+  .tcw-service-spend-card .tcw-donut-legend p {
+    grid-template-columns: 12px minmax(0, 1fr);
+  }
+
+  .tcw-service-spend-card .tcw-donut-legend b {
+    grid-column: 2;
+    justify-self: start;
   }
 }
 
