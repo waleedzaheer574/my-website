@@ -37,7 +37,7 @@ use App\Http\Controllers\AdminCommerceController;
 
 
 
-Route::get('/test-dd', function () {
+Route::get('/test-ddd', function () {
     dd('working');
 });
 Route::get('/sitemap.xml', [SeoController::class, 'sitemap'])->name('seo.sitemap');
