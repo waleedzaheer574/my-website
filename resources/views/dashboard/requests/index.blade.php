@@ -135,7 +135,7 @@
         </div>
 
         @if($serviceRequests->hasPages())
-            <div class="admin-requests-pagination">
+            <div class="admin-requests-pagination admin-u-016">
                 {{ $serviceRequests->links() }}
             </div>
         @endif

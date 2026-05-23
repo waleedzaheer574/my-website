@@ -4718,7 +4718,37 @@ body.admin-dashboard-theme {
 
 .admin-requests-pagination {
   border-top: 1px solid rgba(148, 163, 184, 0.1);
+  margin-top: 0;
   padding: 18px 22px;
+}
+
+.admin-requests-pagination nav > div {
+  justify-content: space-between;
+}
+
+.admin-requests-pagination p {
+  color: #9fb0ca;
+}
+
+.admin-requests-pagination a,
+.admin-requests-pagination span[aria-disabled] > span {
+  background: rgba(255, 255, 255, 0.025);
+  border-color: rgba(148, 163, 184, 0.16);
+  color: #c7d5eb;
+}
+
+.admin-requests-pagination a:hover {
+  background: rgba(37, 99, 235, 0.14);
+  border-color: rgba(96, 165, 250, 0.54);
+  color: #fff;
+}
+
+.admin-requests-pagination span[aria-current] > span {
+  background: linear-gradient(135deg, #0ea5e9, #2563eb);
+}
+
+.admin-requests-pagination span[aria-disabled] > span {
+  color: #64748b;
 }
 
 .admin-requests-mobile-list {
@@ -5307,7 +5337,20 @@ body.admin-dashboard-theme {
   }
 
   .admin-requests-pagination {
-    padding: 14px 16px;
+    margin-top: 0;
+    padding: 14px 12px;
+  }
+
+  .admin-requests-pagination nav > div {
+    align-items: start;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .admin-requests-pagination nav > div > div:last-child {
+    max-width: 100%;
+    overflow-x: auto;
+    padding-bottom: 2px;
   }
 
   .admin-support-layout {
