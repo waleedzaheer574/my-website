@@ -39,7 +39,11 @@ class AiCallLeadController extends Controller
                 'message' => 'Unauthorized webhook request.',
             ], 401);
         }
-
+    Log::info('RAW EMAIL DEBUG', [
+    'email' => $data['email'] ?? null,
+    'company_email' => $data['company_email'] ?? null,
+    'payload' => $data,
+]);
         $data = $this->flattenLeadPayload($payload);
         $data = $this->normalizeLeadEmail($data);
         $validator = Validator::make($data, [
