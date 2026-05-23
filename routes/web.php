@@ -34,6 +34,12 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\AgencyProjectController;
 use App\Http\Controllers\AdminCommerceController;
 
+
+
+
+Route::get('/test-dd', function () {
+    dd('working');
+});
 Route::get('/sitemap.xml', [SeoController::class, 'sitemap'])->name('seo.sitemap');
 Route::get('/', [HomeController::class, 'home'])->name('website.home');
 Route::get('/about', [HomeController::class, 'about'])->name('website.about');
