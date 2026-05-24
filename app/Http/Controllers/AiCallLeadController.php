@@ -21,6 +21,7 @@ class AiCallLeadController extends Controller
 ]);
 
         \Log::info('VAPI REQUEST RECEIVED', $request->all());
+        dd($request->all());
         $payload = $request->all();
 
         Log::info('VAPI REQUEST RECEIVED', [
