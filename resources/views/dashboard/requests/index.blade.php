@@ -48,9 +48,13 @@
                             </td>
                             <td>{{ $request->company_name }}</td>
                             <td>
-                                <a href="mailto:{{ $request->company_email }}">
-                                    {{ $request->company_email }}
-                                </a>
+                                @if($request->company_email)
+                                    <a href="mailto:{{ $request->company_email }}">
+                                        {{ $request->company_email }}
+                                    </a>
+                                @else
+                                    N/A
+                                @endif
                             </td>
                             <td>{{ $request->phone_no ?: 'N/A' }}</td>
                             <td>{{ $request->country ?: 'N/A' }}</td>
@@ -85,7 +89,9 @@
                             </td>
                             <td>
                                 <div class="admin-request-actions">
-                                    <a href="mailto:{{ $request->company_email }}" aria-label="Email {{ $request->full_name }}">@</a>
+                                    @if($request->company_email)
+                                        <a href="mailto:{{ $request->company_email }}" aria-label="Email {{ $request->full_name }}">@</a>
+                                    @endif
                                     <a href="tel:{{ $request->phone_no }}" aria-label="Call {{ $request->full_name }}">+</a>
                                 </div>
                             </td>

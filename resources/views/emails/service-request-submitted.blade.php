@@ -2,7 +2,7 @@
 
 <p><strong>Name:</strong> {{ $serviceRequest->full_name }}</p>
 <p><strong>Company:</strong> {{ $serviceRequest->company_name }}</p>
-<p><strong>Email:</strong> {{ $serviceRequest->company_email }}</p>
+<p><strong>Email:</strong> {{ $serviceRequest->company_email ?: 'N/A' }}</p>
 <p><strong>Phone:</strong> {{ $serviceRequest->phone_no }}</p>
 <p><strong>Website:</strong> {{ $serviceRequest->company_website ?: 'N/A' }}</p>
 <p><strong>Country:</strong> {{ $serviceRequest->country ?: 'N/A' }}</p>

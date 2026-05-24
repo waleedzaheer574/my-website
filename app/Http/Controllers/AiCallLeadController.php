@@ -11,7 +11,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 
 class AiCallLeadController extends Controller
 {
@@ -118,22 +117,11 @@ class AiCallLeadController extends Controller
             'phone' => $phone,
         ]);
 
-        if (! $email && ! $phone) {
-            Log::warning('VAPI LEAD MISSING CONTACT', [
-                'payload' => $payload,
-            ]);
-
-            return response()->json([
-                'ok' => false,
-                'message' => 'Please provide at least customer email or phone.',
-            ], 422);
-        }
-
         $serviceRequest = ServiceRequest::create([
             'full_name' => $name,
             'company_name' => $validated['company_name'] ?? 'AI Call Lead',
             'company_website' => $validated['company_website'] ?? null,
-            'company_email' => $email ?: 'unknown+'.Str::uuid().'@ai-call.local',
+            'company_email' => $email,
             'phone_no' => $phone ?: 'N/A',
             'country' => $validated['country'] ?? null,
             'service_type' => $serviceType,
