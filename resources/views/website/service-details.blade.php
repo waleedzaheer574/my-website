@@ -70,7 +70,7 @@
           </div>
 
           <div class="tcw-detail-hero-media cs-lightgallery">
-            @php($heroImage = $serviceDetail->primary_image ?: 'website/assets/img/design-agency/hero-img.png')
+            @php($heroImage = $serviceDetail->primary_image ?: 'website/assets/img/generated/home-hero-optimized.jpg')
             <a href="{{ asset($heroImage) }}" class="tcw-service-image-link cs-lightbox-item" aria-label="Open full service image">
               <img src="{{ asset($heroImage) }}" alt="{{ $serviceTitle }}" width="720" height="540" loading="eager" decoding="async" fetchpriority="high">
               <span class="tcw-blog-image-zoom"><i class="fas fa-search-plus"></i></span>

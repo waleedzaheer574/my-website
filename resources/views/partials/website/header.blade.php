@@ -17,7 +17,6 @@
   $isHome = request()->is('/');
 @endphp
 
-
 <!-- Start Preloader -->
 <div class="cs-preloader cs-accent_color cs-white_bg">
   <div class="cs-preloader_bg cs-center cs-accent_4_bg">

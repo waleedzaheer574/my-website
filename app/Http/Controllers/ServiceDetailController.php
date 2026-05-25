@@ -79,7 +79,14 @@ class ServiceDetailController extends Controller
 
     public function webShow(?ServiceDetail $serviceDetail = null)
     {
-        $serviceDetail ??= ServiceDetail::with('service')->latest()->firstOrFail();
+        if (! $serviceDetail) {
+            $serviceDetail = ServiceDetail::with('service')->latest()->firstOrFail();
+
+            if ($serviceDetail->slug) {
+                return redirect()->route('website.service-details.show', $serviceDetail->slug, 301);
+            }
+        }
+
         $serviceDetail->loadMissing('service');
 
         return view('website.service-details', compact('serviceDetail'));

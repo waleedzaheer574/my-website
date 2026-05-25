@@ -5656,7 +5656,7 @@ body {
   padding: clamp(58px, 8vw, 92px) 0 clamp(54px, 7vw, 82px);
   background:
     linear-gradient(90deg, rgba(2, 6, 23, 0.86) 0%, rgba(15, 23, 42, 0.74) 46%, rgba(15, 23, 42, 0.56) 100%),
-    url("../img/design-agency/banner-1.jpg") center / cover no-repeat,
+    url("../img/generated/home-hero-optimized.jpg") center / cover no-repeat,
     var(--tcw-navy);
 }
 
@@ -7021,7 +7021,7 @@ body {
 .cs-bg[data-src*="icon-box-bg"] {
   background:
     linear-gradient(90deg, rgba(2, 6, 23, 0.86) 0%, rgba(15, 23, 42, 0.72) 48%, rgba(15, 23, 42, 0.52) 100%),
-    url("../img/design-agency/banner-1.jpg") center / cover no-repeat !important;
+    url("../img/generated/home-hero-optimized.jpg") center / cover no-repeat !important;
 }
 
 .cs-hero.cs-style8.cs-type1 {
@@ -7238,7 +7238,7 @@ body {
 .tcw-contact-form-shell .cs-contact_left {
   background:
     linear-gradient(135deg, rgba(37, 99, 235, 0.92), rgba(34, 197, 94, 0.78)),
-    url("../img/design-agency/banner-1.jpg") center / cover no-repeat !important;
+    url("../img/generated/home-hero-optimized.jpg") center / cover no-repeat !important;
 }
 
 .tcw-contact-form-shell .cs-contact_right {
@@ -23506,5 +23506,162 @@ body:has(.tcw-article-page) {
     height: 38px;
     writing-mode: horizontal-tb;
     transform: rotate(-90deg);
+  }
+}
+
+/* Match testimonial and blog carousel navigation on the home page. */
+.tcw-it-home .tcw-review-arrow,
+.tcw-it-home .tcw-blog-rail_arrow {
+  border: 1px solid rgba(123, 148, 255, 0.28) !important;
+  background: rgba(9, 16, 38, 0.96) !important;
+  color: #ffffff !important;
+}
+
+.tcw-it-home .tcw-review-arrow:hover,
+.tcw-it-home .tcw-blog-rail_arrow:hover {
+  border-color: transparent !important;
+  background: linear-gradient(135deg, #1768ff, #345dff) !important;
+  color: #ffffff !important;
+}
+
+/* Give About testimonials the same visual treatment as the Home review rail. */
+.tcw-about-page .tcw-reviews-section.client-reviews {
+  background:
+    radial-gradient(circle at 82% 8%, rgba(56, 189, 248, 0.16), transparent 28%),
+    radial-gradient(circle at 12% 24%, rgba(37, 99, 235, 0.13), transparent 30%),
+    linear-gradient(180deg, #050915 0%, #081122 48%, #040816 100%) !important;
+}
+
+.tcw-about-page .tcw-reviews-section::before {
+  display: block !important;
+  background:
+    linear-gradient(90deg, rgba(56, 189, 248, 0.04) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(56, 189, 248, 0.04) 1px, transparent 1px) !important;
+  background-size: 42px 42px !important;
+  opacity: 0.28;
+}
+
+.tcw-about-page .tcw-reviews-section .cs-section_title,
+.tcw-about-page .tcw-reviews-section .cs-section_title *,
+.tcw-about-page .tcw-reviews-section .cs-section_title b {
+  color: #ffffff !important;
+}
+
+.tcw-about-page .tcw-reviews-section .cs-section_subtitle {
+  color: var(--tcw-sky, #38BDF8) !important;
+}
+
+.tcw-about-page .tcw-reviews-section .client-review-role,
+.tcw-about-page .tcw-reviews-section .client-review-card p {
+  color: #a8b7d0 !important;
+}
+
+.tcw-about-page .tcw-reviews-section .client-review-card,
+.tcw-about-page .tcw-reviews-section .client-review-card.is-featured {
+  border: 1px solid rgba(125, 211, 252, 0.18) !important;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(56, 189, 248, 0.16), transparent 36%),
+    linear-gradient(155deg, rgba(15, 23, 42, 0.95), rgba(7, 12, 26, 0.98)) !important;
+  box-shadow:
+    0 22px 54px rgba(0, 0, 0, 0.32),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05) !important;
+}
+
+.tcw-about-page .tcw-reviews-section .client-review-card:hover {
+  border-color: rgba(56, 189, 248, 0.58) !important;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(56, 189, 248, 0.24), transparent 38%),
+    linear-gradient(155deg, rgba(15, 23, 42, 0.98), rgba(11, 29, 49, 0.96)) !important;
+  box-shadow:
+    0 28px 70px rgba(0, 0, 0, 0.42),
+    0 0 0 1px rgba(56, 189, 248, 0.08) !important;
+}
+
+.tcw-about-page .tcw-reviews-section .client-review-author h3,
+.tcw-about-page .tcw-reviews-section .tcw-testimonial-card-head h3 {
+  color: #ffffff !important;
+}
+
+.tcw-about-page .tcw-reviews-section .client-review-avatar,
+.tcw-about-page .tcw-reviews-section .tcw-testimonial-avatar {
+  border: 1px solid rgba(125, 211, 252, 0.26) !important;
+  background: linear-gradient(135deg, var(--tcw-sky, #38BDF8), var(--tcw-blue, #2563EB)) !important;
+  color: #ffffff !important;
+  box-shadow: 0 16px 32px rgba(37, 99, 235, 0.26);
+}
+
+.tcw-about-page .tcw-review-arrow {
+  border: 1px solid rgba(123, 148, 255, 0.28) !important;
+  background: rgba(9, 16, 38, 0.96) !important;
+  color: #ffffff !important;
+}
+
+.tcw-about-page .tcw-review-arrow:hover {
+  border-color: transparent !important;
+  background: linear-gradient(135deg, #1768ff, #345dff) !important;
+  color: #ffffff !important;
+}
+
+@media (max-width: 767px) {
+  .tcw-about-page .tcw-reviews-section.client-reviews {
+    padding-top: 0;
+  }
+
+  .tcw-about-page .tcw-reviews-section .cs-height_135 {
+    height: 42px !important;
+  }
+
+  .tcw-about-page .tcw-reviews-section .cs-height_90,
+  .tcw-about-page .tcw-reviews-section .cs-height_140 {
+    height: 24px !important;
+  }
+
+  .tcw-about-page .tcw-reviews-section .cs-section_heading {
+    padding: 0 16px;
+  }
+
+  .tcw-about-page .tcw-reviews-section .cs-section_title {
+    font-size: clamp(1.45rem, 7vw, 1.95rem);
+    line-height: 1.18;
+  }
+
+  .tcw-about-page .tcw-review-slider-wrap {
+    --tcw-review-edge: 16px;
+    padding-top: 4px;
+    padding-bottom: 24px;
+  }
+
+  .tcw-about-page .tcw-review-slide {
+    flex-basis: calc(100vw - 32px);
+  }
+
+  .tcw-about-page .tcw-review-slider {
+    gap: 14px;
+    padding-left: 0;
+  }
+
+  .tcw-about-page .client-review-card,
+  .tcw-about-page .client-review-card.is-featured {
+    min-height: 300px;
+    padding: 22px 18px;
+    border-radius: 18px;
+  }
+
+  .tcw-about-page .client-review-copy p {
+    font-size: 0.9rem;
+    line-height: 1.65;
+  }
+
+  .tcw-about-page .tcw-review-arrow {
+    width: 38px;
+    height: 38px;
+  }
+
+  .tcw-about-page .tcw-review-prev {
+    left: 8px;
+  }
+
+  .tcw-about-page .tcw-review-next {
+    right: 8px;
   }
 }

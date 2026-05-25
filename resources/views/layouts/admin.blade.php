@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="robots" content="noindex, nofollow, noarchive">
     @php
         $adminBaseTitle = 'Multitechwave Admin';
         $adminNavCounts = [

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Blog;
+use App\Models\Offer;
 use App\Models\Portfolio;
 use App\Models\ServiceDetail;
 use Illuminate\Http\Response;
@@ -20,6 +21,7 @@ class SeoController extends Controller
             ['loc' => route('website.portfolio'), 'priority' => '0.8', 'changefreq' => 'weekly', 'lastmod' => now()],
             ['loc' => route('website.testimonials'), 'priority' => '0.6', 'changefreq' => 'monthly', 'lastmod' => now()],
             ['loc' => route('website.blog'), 'priority' => '0.8', 'changefreq' => 'weekly', 'lastmod' => now()],
+            ['loc' => route('website.offers'), 'priority' => '0.8', 'changefreq' => 'weekly', 'lastmod' => now()],
             ['loc' => url('/contact'), 'priority' => '0.8', 'changefreq' => 'monthly', 'lastmod' => now()],
             ['loc' => url('/privacy-policy'), 'priority' => '0.3', 'changefreq' => 'yearly', 'lastmod' => now()],
             ['loc' => url('/terms'), 'priority' => '0.3', 'changefreq' => 'yearly', 'lastmod' => now()],
@@ -61,7 +63,19 @@ class SeoController extends Controller
                 'lastmod' => $blog->updated_at ?: $blog->published_at,
             ]);
 
-        $urls = $urls->merge($serviceUrls)->merge($portfolioUrls)->merge($blogUrls);
+        $offerUrls = Offer::query()
+            ->where('is_active', true)
+            ->whereNotNull('slug')
+            ->latest('updated_at')
+            ->get()
+            ->map(fn (Offer $offer) => [
+                'loc' => route('website.offers.show', $offer->slug),
+                'priority' => '0.8',
+                'changefreq' => 'monthly',
+                'lastmod' => $offer->updated_at,
+            ]);
+
+        $urls = $urls->merge($serviceUrls)->merge($portfolioUrls)->merge($blogUrls)->merge($offerUrls);
 
         $xml = '<?xml version="1.0" encoding="UTF-8"?>'."\n";
         $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'."\n";
@@ -70,7 +84,7 @@ class SeoController extends Controller
             $xml .= "  <url>\n";
             $xml .= '    <loc>'.e($url['loc'])."</loc>\n";
 
-            if (!empty($url['lastmod'])) {
+            if (! empty($url['lastmod'])) {
                 $xml .= '    <lastmod>'.e($url['lastmod']->toAtomString())."</lastmod>\n";
             }
 
@@ -81,6 +95,8 @@ class SeoController extends Controller
 
         $xml .= '</urlset>';
 
-        return response($xml, 200)->header('Content-Type', 'application/xml; charset=UTF-8');
+        return response($xml, 200)
+            ->header('Content-Type', 'application/xml; charset=UTF-8')
+            ->header('Cache-Control', 'public, max-age=3600');
     }
 }

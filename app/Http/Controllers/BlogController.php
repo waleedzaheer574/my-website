@@ -107,7 +107,7 @@ class BlogController extends Controller
     public function webShow(?Blog $blog = null)
     {
         if ($blog) {
-            $isPublished = $blog->is_active && (!$blog->published_at || $blog->published_at->lte(now()));
+            $isPublished = $blog->is_active && (! $blog->published_at || $blog->published_at->lte(now()));
 
             abort_unless($isPublished, 404);
 
@@ -122,6 +122,10 @@ class BlogController extends Controller
                 ->latest('published_at')
                 ->latest()
                 ->firstOrFail();
+
+            if ($blog->slug) {
+                return redirect()->route('website.blog-details.show', $blog->slug, 301);
+            }
         }
 
         $relatedBlogs = Blog::where('id', '!=', $blog->id)
@@ -144,7 +148,7 @@ class BlogController extends Controller
             'author_name' => 'required|string|max:255',
             'category' => 'nullable|string|max:255',
             'author_image' => 'nullable|image|mimes:jpg,jpeg,png,webp,svg|max:1024',
-            'featured_image' => ($id ? 'nullable' : 'required') . '|image|mimes:jpg,jpeg,png,webp,svg|max:2048',
+            'featured_image' => ($id ? 'nullable' : 'required').'|image|mimes:jpg,jpeg,png,webp,svg|max:2048',
             'excerpt' => 'nullable|string',
             'content' => 'required|string',
             'author_bio' => 'nullable|string',
@@ -172,19 +176,19 @@ class BlogController extends Controller
     {
         $destination = public_path('uploads/blogs');
 
-        if (!File::exists($destination)) {
+        if (! File::exists($destination)) {
             File::makeDirectory($destination, 0755, true);
         }
 
-        $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+        $fileName = time().'_'.uniqid().'.'.$file->getClientOriginalExtension();
         $file->move($destination, $fileName);
 
-        return 'uploads/blogs/' . $fileName;
+        return 'uploads/blogs/'.$fileName;
     }
 
     protected function deleteImage(?string $path): void
     {
-        if (!$path) {
+        if (! $path) {
             return;
         }
 
@@ -206,7 +210,7 @@ class BlogController extends Controller
                 ->where('slug', $slug)
                 ->exists()
         ) {
-            $slug = $originalSlug . '-' . $counter;
+            $slug = $originalSlug.'-'.$counter;
             $counter++;
         }
 

@@ -115,7 +115,7 @@
                   <div class="cs-slide">
                     <a href="{{ route('website.portfolio-details.show', $portfolio->slug) }}" class="cs-portfolio cs-style3">
                       <div class="cs-portfolio_img">
-                        <img src="{{ asset($portfolio->image ?: 'website/assets/img/design-agency/portfolio1.jpg') }}" alt="{{ $portfolio->title }}" width="560" height="380" loading="lazy" decoding="async">
+                        <img src="{{ asset($portfolio->image ?: 'website/assets/img/generated/home-hero-optimized.jpg') }}" alt="{{ $portfolio->title }}" width="560" height="380" loading="lazy" decoding="async">
                       </div>
                       <h2 class="cs-portfolio_title">{{ $portfolio->title }}</h2>
                     </a>
@@ -124,7 +124,7 @@
                   <div class="cs-slide">
                     <a href="{{ route('website.portfolio') }}" class="cs-portfolio cs-style3">
                       <div class="cs-portfolio_img">
-                        <img src="{{ asset('website/assets/img/design-agency/portfolio1.jpg') }}" alt="Portfolio" width="560" height="380" loading="lazy" decoding="async">
+                        <img src="{{ asset('website/assets/img/generated/home-hero-optimized.jpg') }}" alt="Portfolio" width="560" height="380" loading="lazy" decoding="async">
                       </div>
                       <h2 class="cs-portfolio_title">Portfolio coming soon</h2>
                     </a>
@@ -144,7 +144,7 @@
 
   <!-- Start CTA -->
   <div class="cs-height_30 cs-height_lg_0"></div>
-  <div class="cs-cta cs-style5 cs-bg" data-src="{{ asset('website/assets/img/design-agency/cta-bg.jpg') }}">
+  <div class="cs-cta cs-style5 cs-bg" data-src="{{ asset('website/assets/img/generated/home-hero-optimized.jpg') }}">
     <div class="container wow fadeIn" data-wow-duration="1s" data-wow-delay="0.3s">
       <div class="row">
         <div class="col-lg-6">

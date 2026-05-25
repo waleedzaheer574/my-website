@@ -2,6 +2,10 @@
 
 @section('title', 'Home')
 
+@push('css')
+  <link rel="preload" href="{{ asset('website/assets/img/generated/home-hero-optimized.jpg') }}" as="image" fetchpriority="high">
+@endpush
+
 @section('content')
 @php
   $heroServices = $services;

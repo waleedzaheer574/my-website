@@ -99,10 +99,16 @@ class PortfolioController extends Controller
 
     public function webShow(?Portfolio $portfolio = null)
     {
-        $portfolio = $portfolio ?: Portfolio::where('is_active', true)
-            ->orderBy('sort_order')
-            ->latest()
-            ->firstOrFail();
+        if (! $portfolio) {
+            $portfolio = Portfolio::where('is_active', true)
+                ->orderBy('sort_order')
+                ->latest()
+                ->firstOrFail();
+
+            if ($portfolio->slug) {
+                return redirect()->route('website.portfolio-details.show', $portfolio->slug, 301);
+            }
+        }
 
         abort_unless($portfolio->is_active, 404);
 
@@ -138,19 +144,19 @@ class PortfolioController extends Controller
     {
         $destination = public_path('uploads/portfolios');
 
-        if (!File::exists($destination)) {
+        if (! File::exists($destination)) {
             File::makeDirectory($destination, 0755, true);
         }
 
-        $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+        $fileName = time().'_'.uniqid().'.'.$file->getClientOriginalExtension();
         $file->move($destination, $fileName);
 
-        return 'uploads/portfolios/' . $fileName;
+        return 'uploads/portfolios/'.$fileName;
     }
 
     protected function deleteImage(?string $path): void
     {
-        if (!$path) {
+        if (! $path) {
             return;
         }
 
@@ -172,7 +178,7 @@ class PortfolioController extends Controller
                 ->where('slug', $slug)
                 ->exists()
         ) {
-            $slug = $originalSlug . '-' . $counter;
+            $slug = $originalSlug.'-'.$counter;
             $counter++;
         }
 

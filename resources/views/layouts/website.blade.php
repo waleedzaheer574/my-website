@@ -2,33 +2,6 @@
 <html class="no-js" lang="en">
 
 <head>
-  <link rel="preconnect" href="https://www.googletagmanager.com">
-  <link rel="preconnect" href="https://www.google-analytics.com">
-  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
-  <link rel="preconnect" href="https://www.clarity.ms" crossorigin>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-5R1JC6PGJL"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-
-    gtag('config', 'G-5R1JC6PGJL');
-  </script>
-  <script type="text/javascript">
-      (function(c,l,a,r,i,t,y){
-          c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-          t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-          y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-      })(window, document, "clarity", "script", "wmtz88l2lf");
-  </script>
-  <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-WBPLDHC2');</script>
-  <!-- End Google Tag Manager -->
   @php
     $websiteBaseTitle = 'Multitechwave';
     $websiteTitle = trim($__env->yieldContent('title'));
@@ -80,8 +53,8 @@
     $seoCompanyName = $websiteCompanyName ?? 'Multitechwave';
     $seoSiteUrl = url('/');
     $seoCanonical = url()->current();
-    $seoLogo = asset('website/assets/img/design-agency/logo.png');
-    $seoDefaultImage = asset('website/assets/img/design-agency/cover.png');
+    $seoLogo = asset('website/assets/img/design-agency/logo.svg');
+    $seoDefaultImage = asset('website/assets/img/generated/home-hero-optimized.jpg');
 
     $descriptionMap = [
         '' => 'Multitechwave helps businesses grow with website design, development, SEO, branding, digital marketing, and conversion-focused online experiences.',
@@ -136,6 +109,9 @@
             $seoImage = $portfolio->image ? asset($portfolio->image) : $seoDefaultImage;
             $seoType = 'article';
             $seoKeywords = $seoKeywords ?: trim(implode(', ', array_filter([$portfolio->category, $portfolio->tags, 'portfolio', 'Multitechwave'])));
+        } elseif (!empty($offer)) {
+            $seoDescription = $offer->description ?: 'Explore '.$offer->title.' services and pricing from Multitechwave.';
+            $seoKeywords = $seoKeywords ?: trim(implode(', ', array_filter([$offer->category, $offer->title, 'digital services', 'Multitechwave'])));
         } else {
             $seoDescription = $descriptionMap[$pageKey] ?? 'Multitechwave provides web design, development, SEO, branding, and digital marketing services for growing businesses.';
             $seoKeywords = $seoKeywords ?: ($keywordsMap[$pageKey] ?? 'Multitechwave, web design, SEO, digital marketing, branding');
@@ -143,7 +119,15 @@
     }
 
     $seoDescription = \Illuminate\Support\Str::limit(trim(preg_replace('/\s+/', ' ', strip_tags($seoDescription))), 160, '');
-    $seoRobots = in_array($pageKey, ['login', 'forgot-password'], true) ? 'noindex, nofollow' : 'index, follow, max-image-preview:large';
+    $seoShouldNoIndex = request()->routeIs(
+        'login',
+        'register',
+        'password.*',
+        'user.*',
+        'website.quote-generator*',
+        'website.checkout'
+    ) || request()->is('dashboard*', 'requests*', 'profile');
+    $seoRobots = $seoShouldNoIndex ? 'noindex, nofollow, noarchive' : 'index, follow, max-image-preview:large';
     $themeSetting = $websiteCompanySetting ?? null;
     $validThemeColor = fn ($color, $fallback) => preg_match('/^#[0-9A-Fa-f]{6}$/', (string) $color) ? $color : $fallback;
     $themePrimary = $validThemeColor($themeSetting?->theme_primary_color, '#38BDF8');
@@ -184,7 +168,10 @@
             'about' => ['@id' => $seoSiteUrl.'/#organization'],
             'primaryImageOfPage' => ['@type' => 'ImageObject', 'url' => $seoImage],
         ],
-        [
+    ];
+
+    if ($pageKey !== '') {
+        $schemaGraph[] = [
             '@type' => 'BreadcrumbList',
             'itemListElement' => [
                 [
@@ -200,8 +187,8 @@
                     'item' => $seoCanonical,
                 ],
             ],
-        ],
-    ];
+        ];
+    }
 
     if (!empty($blog)) {
         $schemaGraph[] = [
@@ -230,6 +217,22 @@
             'description' => $seoDescription,
             'image' => $seoImage,
             'creator' => ['@id' => $seoSiteUrl.'/#organization'],
+            'url' => $seoCanonical,
+        ];
+    } elseif (!empty($offer)) {
+        $schemaGraph[] = [
+            '@type' => 'Service',
+            'name' => $offer->title,
+            'description' => $seoDescription,
+            'category' => $offer->category ?: 'Digital services',
+            'provider' => ['@id' => $seoSiteUrl.'/#organization'],
+            'offers' => [
+                '@type' => 'Offer',
+                'url' => $seoCanonical,
+                'priceCurrency' => $offer->currency,
+                'price' => $offer->price,
+                'availability' => 'https://schema.org/InStock',
+            ],
             'url' => $seoCanonical,
         ];
     }
@@ -283,12 +286,18 @@
   <title>{{ $websiteTitle }}</title>
   <link rel="stylesheet" href="{{ asset('website/assets/css/plugins/fontawesome.min.css') }}">
   <link rel="stylesheet" href="{{ asset('website/assets/css/plugins/bootstrap.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('website/assets/css/plugins/lightgallery.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('website/assets/css/plugins/slick.css') }}">
-  <link rel="stylesheet" href="{{ asset('website/assets/css/plugins/animate.css') }}">
+  <link rel="stylesheet" href="{{ asset('website/assets/css/plugins/lightgallery.min.css') }}" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="{{ asset('website/assets/css/plugins/slick.css') }}" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="{{ asset('website/assets/css/plugins/animate.css') }}" media="print" onload="this.media='all'">
+  <noscript>
+    <link rel="stylesheet" href="{{ asset('website/assets/css/plugins/lightgallery.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('website/assets/css/plugins/slick.css') }}">
+    <link rel="stylesheet" href="{{ asset('website/assets/css/plugins/animate.css') }}">
+  </noscript>
   <link rel="stylesheet" href="{{ asset('website/assets/css/style.css') }}">
   <link rel="stylesheet" href="{{ asset('website/assets/css/theme_7.css') }}">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" media="print" onload="this.media='all'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"></noscript>
   <link rel="stylesheet" href="{{ asset('website/assets/css/tcw-custom.css') }}">
   @php
   @endphp
@@ -628,5 +637,44 @@
 
     @stack('js')
     <script defer src="{{ asset('website/assets/js/tcw-custom.js') }}"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-5R1JC6PGJL');
+
+      (function () {
+        var loadTracking = function () {
+          if (window.__tcwTrackingLoaded) {
+            return;
+          }
+
+          window.__tcwTrackingLoaded = true;
+          window.dataLayer.push({
+            'gtm.start': new Date().getTime(),
+            event: 'gtm.js'
+          });
+
+          [
+            'https://www.googletagmanager.com/gtag/js?id=G-5R1JC6PGJL',
+            'https://www.googletagmanager.com/gtm.js?id=GTM-WBPLDHC2',
+            'https://www.clarity.ms/tag/wmtz88l2lf'
+          ].forEach(function (src) {
+            var script = document.createElement('script');
+            script.async = true;
+            script.src = src;
+            document.head.appendChild(script);
+          });
+        };
+
+        window.addEventListener('load', function () {
+          if ('requestIdleCallback' in window) {
+            window.requestIdleCallback(loadTracking, { timeout: 2500 });
+          } else {
+            window.setTimeout(loadTracking, 1500);
+          }
+        }, { once: true });
+      }());
+    </script>
 </body>
 </html>
