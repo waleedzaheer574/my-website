@@ -8370,7 +8370,7 @@ body:has(.tcw-it-home) {
 
 @media (max-width: 767px) {
   .tcw-floating-contact {
-    display: none !important;
+    display: flex !important;
   }
 }
 
@@ -23458,5 +23458,53 @@ body:has(.tcw-article-page) {
 
   .tcw-article-card {
     min-height: 0;
+  }
+}
+
+/* Keep quick-contact actions accessible as a compact side rail on phones. */
+@media (max-width: 767px) {
+  .tcw-floating-contact,
+  .tcw-floating-contact.is-visible {
+    top: 50% !important;
+    right: 0 !important;
+    bottom: auto !important;
+    z-index: 99999;
+    display: flex !important;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(-50%) !important;
+    pointer-events: none;
+  }
+
+  .tcw-floating-contact__icons {
+    flex-direction: column;
+    gap: 8px;
+    padding-right: 8px;
+  }
+
+  .tcw-floating-contact__icon {
+    width: 34px;
+    height: 34px;
+    font-size: 14px;
+  }
+
+  .tcw-floating-contact__quote {
+    width: 38px;
+    min-width: 38px;
+    height: 108px;
+    min-height: 108px !important;
+    padding: 0 !important;
+    border-radius: 12px 0 0 12px !important;
+    pointer-events: auto;
+  }
+
+  .tcw-floating-contact__quote span {
+    width: 108px;
+    height: 38px;
+    writing-mode: horizontal-tb;
+    transform: rotate(-90deg);
   }
 }
