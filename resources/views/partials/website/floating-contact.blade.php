@@ -608,7 +608,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
       if (!vapiPromise) {
         vapiPromise = import('https://cdn.jsdelivr.net/npm/@vapi-ai/web@latest/+esm')
-          .then(({ default: Vapi }) => {
+          .then((vapiModule) => {
+            const Vapi = typeof vapiModule.default === 'function'
+              ? vapiModule.default
+              : vapiModule.default?.default;
+
+            if (typeof Vapi !== 'function') {
+              throw new Error('Vapi SDK constructor could not be loaded.');
+            }
+
             vapi = new Vapi(publicKey);
 
             vapi.on('call-start', () => {
@@ -623,10 +631,24 @@ document.addEventListener("DOMContentLoaded", function () {
               setStatus('Ended');
             });
 
+            vapi.on('call-start-progress', (progress) => {
+              if (progress?.status !== 'started') {
+                return;
+              }
+
+              if (progress.stage === 'web-call-creation') {
+                setStatus('Authorizing call...', 'is-connecting');
+              }
+
+              if (progress.stage === 'daily-call-object-creation') {
+                setStatus('Starting audio session...', 'is-connecting');
+              }
+            });
+
             vapi.on('error', (error) => {
               isStarting = false;
               isConnected = false;
-              setStatus('Connection error');
+              setStatus(getStartErrorMessage(error));
               console.error('Vapi voice call error.', error);
             });
 
@@ -641,6 +663,55 @@ document.addEventListener("DOMContentLoaded", function () {
       return vapiPromise;
     };
 
+    const getStartErrorMessage = (error) => {
+      const errorText = [
+        error?.message,
+        error?.error?.message,
+        error?.response?.data?.message,
+        error?.data?.message,
+      ].filter(Boolean).join(' ').toLowerCase();
+      const visibleError = [
+        error?.error?.message,
+        error?.response?.data?.message,
+        error?.data?.message,
+        error?.message,
+      ].find(Boolean);
+
+      if (!window.isSecureContext && !['localhost', '127.0.0.1', '[::1]'].includes(window.location.hostname)) {
+        return 'HTTPS is required for microphone access';
+      }
+
+      if (error?.name === 'NotAllowedError' || error?.name === 'SecurityError') {
+        return 'Microphone permission denied';
+      }
+
+      if (error?.name === 'NotFoundError') {
+        return 'No microphone found';
+      }
+
+      if (error?.name === 'NotReadableError') {
+        return 'Microphone is being used by another app';
+      }
+
+      if (errorText.includes('failed to fetch')) {
+        return 'Voice service could not be reached';
+      }
+
+      if (errorText.includes('unauthorized') || errorText.includes('public key') || errorText.includes('api key')) {
+        return 'Vapi public key is not authorized';
+      }
+
+      if (errorText.includes('assistant')) {
+        return 'Assistant is unavailable for web calls';
+      }
+
+      if (visibleError) {
+        return `Audio connection failed: ${String(visibleError).slice(0, 80)}`;
+      }
+
+      return 'Audio connection failed in this browser';
+    };
+
     const startCall = async () => {
       showPopup();
 
@@ -653,15 +724,8 @@ document.addEventListener("DOMContentLoaded", function () {
       setStatus('Connecting...', 'is-connecting');
 
       try {
-        if (!navigator.mediaDevices?.getUserMedia) {
-          throw new Error('Microphone access is not supported in this browser.');
-        }
-
-        const microphoneStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        microphoneStream.getTracks().forEach((track) => track.stop());
-
-        if (activeAttempt !== callAttempt) {
-          return;
+        if (!window.isSecureContext && !['localhost', '127.0.0.1', '[::1]'].includes(window.location.hostname)) {
+          throw new Error('HTTPS_REQUIRED');
         }
 
         const client = await getVapi();
@@ -677,7 +741,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         isStarting = false;
-        setStatus(error?.name === 'NotAllowedError' ? 'Microphone permission denied' : 'Unable to connect');
+        setStatus(getStartErrorMessage(error));
         console.error('Vapi voice call could not start.', error);
       }
     };
