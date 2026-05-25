@@ -23,7 +23,7 @@
     <div class="container">
       <div class="row align-items-center mb-4">
         <div class="col-12">
-          <h2 class="mb-0">Frequently Asked Questions</h2>
+          <h2 class="mb-0">{{ __('website.faq.title') }}</h2>
         </div>
       </div>
 
@@ -31,7 +31,7 @@
         <div class="col-12">
           @foreach($faqs as $faq)
             <div class="faq-item mb-3">
-              <h4 class="faq-question p-3 fw-bold">{{ $faq->question }}</h4>
+              <h4 class="faq-question p-3 fw-bold">{{ $faq->localized('question') }}</h4>
               <div class="faq-answer px-3">
                 <div class="faq-answer-content">{!! $faq->formatted_answer !!}</div>
               </div>

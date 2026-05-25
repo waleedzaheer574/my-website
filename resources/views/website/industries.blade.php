@@ -6,11 +6,11 @@
       <div class="container">
         <div class="tcw-dimensional-hero-grid">
           <div class="tcw-dimensional-hero-copy wow fadeInUp" data-wow-duration="1s">
-            <span class="tcw-detail-eyebrow">Industries</span>
-            <h1>Digital systems shaped for <span>real business sectors</span></h1>
-            <p>Explore the industries managed from your dashboard and see how each offer, result, and call-to-action is presented on the public site.</p>
+            <span class="tcw-detail-eyebrow">{{ __('website.industries.label') }}</span>
+            <h1>{{ __('website.industries.heading') }} <span>{{ __('website.industries.highlight') }}</span></h1>
+            <p>{{ __('website.industries.intro') }}</p>
             <a href="#page-content" class="tcw-it-btn tcw-it-btn-primary cs-smoth_scroll">
-              Explore Industries <i class="fas fa-arrow-down"></i>
+              {{ __('website.industries.explore') }} <i class="fas fa-arrow-down"></i>
             </a>
           </div>
 
@@ -39,8 +39,8 @@
     <section id="page-content" class="tcw-dimensional-section">
       <div class="container">
         <div class="tcw-detail-heading text-center wow fadeInUp" data-wow-duration="1s">
-          <span class="tcw-detail-eyebrow">Focused Solutions</span>
-          <h2>Built for the needs of <span>modern businesses</span></h2>
+          <span class="tcw-detail-eyebrow">{{ __('website.industries.solutions') }}</span>
+          <h2>{{ __('website.industries.section_heading') }} <span>{{ __('website.industries.section_highlight') }}</span></h2>
         </div>
 
         <div class="tcw-dimensional-grid tcw-industry-grid" data-load-more-grid data-load-more-step="6">
@@ -65,29 +65,29 @@
               <div class="tcw-industry-card-top">
                 <div class="tcw-industry-icon">
                   @if($industry->icon)
-                    <img src="{{ asset($industry->icon) }}" alt="{{ $industry->title }}" loading="lazy" decoding="async">
+                    <img src="{{ asset($industry->icon) }}" alt="{{ $industry->localized('title') }}" loading="lazy" decoding="async">
                   @else
                     <i class="{{ $industryIconClass }}"></i>
                   @endif
                 </div>
-                <span>{{ $industry->category ?: 'Industry' }}</span>
+                <span>{{ $industry->localized('category') ?: __('website.industries.label') }}</span>
               </div>
 
               <div class="tcw-industry-card-body">
-                @if($industry->result)
-                  <strong>{{ $industry->result }}</strong>
+                @if($industry->localized('result'))
+                  <strong>{{ $industry->localized('result') }}</strong>
                 @endif
-                <h3>{{ $industry->title }}</h3>
-                <p>{{ $industry->description }}</p>
+                <h3>{{ $industry->localized('title') }}</h3>
+                <p>{{ $industry->localized('description') }}</p>
               </div>
 
               <a href="{{ $industry->cta_url ?: url('/contact') }}" class="tcw-dimensional-link">
-                Discuss This Industry <i class="fas fa-arrow-right"></i>
+                {{ __('website.industries.discuss') }} <i class="fas fa-arrow-right"></i>
               </a>
             </article>
           @empty
             <div class="tcw-dimensional-empty">
-              Industries will appear here after you add them from the dashboard.
+              {{ __('website.industries.empty') }}
             </div>
           @endforelse
         </div>
@@ -95,7 +95,7 @@
         @if($industries->count() > 6)
           <div class="tcw-load-more-wrap">
             <button type="button" class="tcw-load-more-btn" data-load-more-button>
-              <i class="fas fa-sync-alt"></i> Load More
+              <i class="fas fa-sync-alt"></i> {{ __('website.common.load_more') }}
             </button>
           </div>
         @endif

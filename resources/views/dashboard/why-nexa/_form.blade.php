@@ -22,6 +22,18 @@
     @error('description') <small class="admin-u-021">{{ $message }}</small> @enderror
 </div>
 
+<h3>Arabic Content</h3>
+<div class="form-group">
+    <label for="title_ar">Title (Arabic)</label>
+    <input type="text" name="title_ar" id="title_ar" class="form-control" dir="rtl" lang="ar" value="{{ old('title_ar', $whyNexa?->title_ar) }}">
+    @error('title_ar') <small class="admin-u-021">{{ $message }}</small> @enderror
+</div>
+<div class="form-group">
+    <label for="description_ar">Description (Arabic)</label>
+    <textarea name="description_ar" id="description_ar" class="form-control" dir="rtl" lang="ar" rows="5">{{ old('description_ar', $whyNexa?->description_ar) }}</textarea>
+    @error('description_ar') <small class="admin-u-021">{{ $message }}</small> @enderror
+</div>
+
 <div class="admin-u-042">
     <div class="form-group">
         <label for="icon">Icon Image</label>

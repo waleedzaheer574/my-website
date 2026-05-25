@@ -8,42 +8,42 @@
           <div class="tcw-quote-result-glow" aria-hidden="true"></div>
           <div class="tcw-quote-result-card">
             <div class="tcw-quote-result-left">
-              <span class="tcw-detail-eyebrow">Instant quotation</span>
+              <span class="tcw-detail-eyebrow">{{ __('website.quote.instant') }}</span>
               <h1>{{ $quote->reference }}</h1>
-              <p>Your estimated investment for <strong>{{ $quote->service_title }}</strong> is ready. Download the proposal or review the scope before starting another quote.</p>
+              <p>{{ __('website.quote.ready', ['service' => $quote->service_title]) }}</p>
               <div class="tcw-quote-actions">
                 <a href="{{ route('website.quote-generator.download', $quote->public_token) }}" class="tcw-quote-submit">
-                  Download PDF Proposal <i class="fas fa-file-pdf"></i>
+                  {{ __('website.quote.download') }} <i class="fas fa-file-pdf"></i>
                 </a>
-                <a href="{{ route('website.quote-generator.proposal', $quote->public_token) }}" class="tcw-quote-secondary">View Proposal</a>
-                <a href="{{ route('website.quote-generator') }}" class="tcw-quote-secondary">Create Another Quote</a>
+                <a href="{{ route('website.quote-generator.proposal', $quote->public_token) }}" class="tcw-quote-secondary">{{ __('website.quote.view_proposal') }}</a>
+                <a href="{{ route('website.quote-generator') }}" class="tcw-quote-secondary">{{ __('website.quote.another') }}</a>
               </div>
             </div>
 
             <div class="tcw-quote-result-panel">
               <div class="tcw-quote-result-panel-top">
-                <span>Estimated Investment</span>
+                <span>{{ __('website.quote.investment') }}</span>
                 <i class="fas fa-file-invoice-dollar"></i>
               </div>
               <div class="tcw-quote-price">
-                <span>Total estimated budget</span>
+                <span>{{ __('website.quote.total_budget') }}</span>
                 <strong>{{ $quote->estimate_label }}</strong>
-                <small>Flexible budget based on scope and requirements.</small>
+                <small>{{ __('website.quote.flexible') }}</small>
               </div>
               <div class="tcw-quote-result-grid">
                 <div>
                   <i class="far fa-user"></i>
-                  <span>Client</span>
+                  <span>{{ __('website.quote.client') }}</span>
                   <strong>{{ $quote->client_name }}</strong>
                 </div>
                 <div>
                   <i class="fas fa-dollar-sign"></i>
-                  <span>Budget selected</span>
+                  <span>{{ __('website.quote.budget_selected') }}</span>
                   <strong>{{ $quote->budget_label }}</strong>
                 </div>
                 <div>
                   <i class="far fa-calendar-alt"></i>
-                  <span>Timeline</span>
+                  <span>{{ __('website.quote.timeline') }}</span>
                   <strong>{{ $quote->timeline_label }}</strong>
                 </div>
               </div>
@@ -51,7 +51,7 @@
           </div>
           <div class="tcw-quote-result-note">
             <i class="fas fa-info-circle"></i>
-            <span>This is an estimated budget. The final proposal may vary based on detailed discussion and project requirements.</span>
+            <span>{{ __('website.quote.estimate_notice') }}</span>
           </div>
         </div>
       </div>

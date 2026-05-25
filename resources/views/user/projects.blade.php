@@ -1,6 +1,6 @@
 @extends('layouts.website')
 
-@section('title', 'Projects')
+@section('title', __('website.client.projects'))
 @section('hide_global_faqs', '1')
 
 @push('css')
@@ -9,28 +9,28 @@
 
 @section('content')
 @php($activeClientNav = 'projects')
-@php($clientHeaderTitle = 'Projects')
-@php($clientHeaderSubtitle = 'Follow active workspaces, progress, and delivery milestones.')
+@php($clientHeaderTitle = __('website.client.projects'))
+@php($clientHeaderSubtitle = __('website.client.projects_subtitle'))
 <main class="tcw-client-dashboard tcw-premium-client-dashboard">
   @include('user.partials.client-sidebar')
   <section class="tcw-client-main">
     @include('user.partials.client-header')
     <section class="tcw-client-panel">
       <div class="tcw-client-panel-head">
-        <h2>Projects</h2>
-        <a href="{{ route('website.offers') }}">Start project</a>
+        <h2>{{ __('website.client.projects') }}</h2>
+        <a href="{{ route('website.offers') }}">{{ __('website.client.start_project') }}</a>
       </div>
       <div class="tcw-project-list">
         @forelse($projects as $project)
           <a href="{{ route('user.projects.show', $project) }}">
             <div>
               <strong>{{ $project->title }}</strong>
-              <span>{{ $project->order?->reference ?: 'Project workspace' }} · {{ $project->status_label }}</span>
+              <span>{{ $project->order?->reference ?: __('website.client.project_workspace') }} · {{ $project->status_label }}</span>
             </div>
             <b style="--progress: {{ $project->progress }}%"><i></i>{{ $project->progress }}%</b>
           </a>
         @empty
-          <p>No projects yet.</p>
+          <p>{{ __('website.client.no_projects') }}</p>
         @endforelse
       </div>
       {{ $projects->links() }}

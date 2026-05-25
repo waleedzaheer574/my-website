@@ -6,30 +6,30 @@
       <div class="container">
         <div class="tcw-dimensional-hero-grid">
           <div class="tcw-dimensional-hero-copy wow fadeInUp" data-wow-duration="1s">
-            <span class="tcw-detail-eyebrow">Testimonials</span>
-            <h1>Client stories with <span>proof, ratings, and trust</span></h1>
-            <p>Every card below is powered by the client reviews you manage from the dashboard.</p>
+            <span class="tcw-detail-eyebrow">{{ __('website.testimonials.label') }}</span>
+            <h1>{{ __('website.testimonials.heading') }} <span>{{ __('website.testimonials.highlight') }}</span></h1>
+            <p>{{ __('website.testimonials.intro') }}</p>
             <a href="#page-content" class="tcw-it-btn tcw-it-btn-primary cs-smoth_scroll">
-              View Feedback <i class="fas fa-arrow-down"></i>
+              {{ __('website.testimonials.view') }} <i class="fas fa-arrow-down"></i>
             </a>
           </div>
 
           <div class="tcw-dimensional-hero-stage wow fadeIn" data-wow-duration="1s" data-wow-delay="0.15s" aria-hidden="true">
             <div class="tcw-orbit-card tcw-orbit-card-1">
               <i class="fas fa-star"></i>
-              <span>Ratings</span>
+              <span>{{ __('website.testimonials.ratings') }}</span>
             </div>
             <div class="tcw-orbit-card tcw-orbit-card-2">
               <i class="fas fa-quote-left"></i>
-              <span>Feedback</span>
+              <span>{{ __('website.testimonials.feedback') }}</span>
             </div>
             <div class="tcw-orbit-card tcw-orbit-card-3">
               <i class="fas fa-user-check"></i>
-              <span>Trust</span>
+              <span>{{ __('website.testimonials.trust') }}</span>
             </div>
             <div class="tcw-dimensional-core">
               <span>{{ $reviews->count() }}</span>
-              <strong>Reviews</strong>
+              <strong>{{ __('website.testimonials.reviews') }}</strong>
             </div>
           </div>
         </div>
@@ -39,8 +39,8 @@
     <section id="page-content" class="tcw-dimensional-section">
       <div class="container">
         <div class="tcw-detail-heading text-center wow fadeInUp" data-wow-duration="1s">
-          <span class="tcw-detail-eyebrow">Clients feedback</span>
-          <h2>What our <span>clients say</span></h2>
+          <span class="tcw-detail-eyebrow">{{ __('website.reviews.label') }}</span>
+          <h2>{{ __('website.reviews.title_prefix') }} <span>{{ __('website.reviews.title_highlight') }}</span></h2>
         </div>
 
         <div class="tcw-dimensional-grid tcw-testimonial-grid" data-load-more-grid data-load-more-step="6">
@@ -54,27 +54,27 @@
                 <div class="tcw-testimonial-avatar">{{ \Illuminate\Support\Str::of($review->client_name)->substr(0, 1)->upper() }}</div>
                 <div>
                   <h3>{{ $review->client_name }}</h3>
-                  @if($review->designation)
-                    <span>{{ $review->designation }}</span>
+                  @if($review->localized('designation'))
+                    <span>{{ $review->localized('designation') }}</span>
                   @endif
                 </div>
               </div>
 
-              <div class="tcw-testimonial-rating" aria-label="{{ $rating }} out of 5 stars">
+              <div class="tcw-testimonial-rating" aria-label="{{ __('website.reviews.rating', ['rating' => $rating]) }}">
                 @for($i = 1; $i <= 5; $i++)
                   <span class="{{ $i <= $rating ? 'is-filled' : '' }}" aria-hidden="true">&#9733;</span>
                 @endfor
               </div>
 
-              @if($review->badge)
-                <div class="tcw-testimonial-badge">{{ $review->badge }}</div>
+              @if($review->localized('badge'))
+                <div class="tcw-testimonial-badge">{{ $review->localized('badge') }}</div>
               @endif
 
-              <p>{{ $review->review_text }}</p>
+              <p>{{ $review->localized('review_text') }}</p>
             </article>
           @empty
             <div class="tcw-dimensional-empty">
-              Client reviews will appear here after you add active reviews from the dashboard.
+              {{ __('website.reviews.empty') }}
             </div>
           @endforelse
         </div>
@@ -82,7 +82,7 @@
         @if($reviews->count() > 6)
           <div class="tcw-load-more-wrap">
             <button type="button" class="tcw-load-more-btn" data-load-more-button>
-              <i class="fas fa-sync-alt"></i> Load More
+              <i class="fas fa-sync-alt"></i> {{ __('website.common.load_more') }}
             </button>
           </div>
         @endif

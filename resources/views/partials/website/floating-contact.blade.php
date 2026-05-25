@@ -1,15 +1,9 @@
 @php
   $floatingCompanySetting = $websiteCompanySetting ?? null;
-  $floatingEmail = $floatingCompanySetting?->email;
   $floatingPhone = $floatingCompanySetting?->phone;
   $floatingWhatsapp = $floatingCompanySetting?->whatsapp_number ?: $floatingPhone;
   $floatingWhatsappDigits = $floatingWhatsapp ? preg_replace('/\D+/', '', $floatingWhatsapp) : null;
-  $floatingQuoteLink = $floatingCompanySetting?->quote_link ?: url('/contact');
   $services = $websiteServices ?? collect();
-
-  if ($floatingQuoteLink && ! str_starts_with($floatingQuoteLink, 'http') && ! str_starts_with($floatingQuoteLink, '/')) {
-      $floatingQuoteLink = url($floatingQuoteLink);
-  }
 @endphp
 <style>
 .tcw-popup-overlay {
@@ -438,24 +432,18 @@
 <div class="tcw-floating-contact" aria-label="Quick contact links">
   <div class="tcw-floating-contact__icons">
     @if($floatingWhatsappDigits)
-      <a href="https://wa.me/{{ $floatingWhatsappDigits }}" class="tcw-floating-contact__icon" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
+      <a href="https://wa.me/{{ $floatingWhatsappDigits }}" class="tcw-floating-contact__icon" target="_blank" rel="noopener noreferrer" aria-label="{{ __('website.floating.whatsapp') }}">
         <i class="fab fa-whatsapp"></i>
       </a>
     @endif
 
-    @if($floatingEmail)
-      <a href="mailto:{{ $floatingEmail }}" class="tcw-floating-contact__icon" aria-label="Send email">
-        <i class="far fa-envelope"></i>
-      </a>
-    @endif
-
-    <button type="button" id="openAiCallFlow" class="tcw-floating-contact__icon tcw-floating-contact__button" aria-label="Call AI receptionist">
+    <button type="button" id="openAiCallFlow" class="tcw-floating-contact__icon tcw-floating-contact__button" aria-label="{{ __('website.floating.call') }}">
       <i class="fas fa-phone"></i>
     </button>
   </div>
 
   <a href="{{ route('website.quote-generator') }}" class="tcw-floating-contact__quote">
-    <span>Get A Quote!</span>
+    <span>{{ __('website.floating.quote') }}</span>
   </a>
 </div>
 
@@ -463,22 +451,22 @@
   <div class="tcw-popup tcw-voice-popup" data-vapi-call-panel>
     <button class="tcw-popup-close" id="closeAiCallFlow" type="button">&times;</button>
 
-    <div class="tcw-popup-kicker">AI receptionist</div>
+    <div class="tcw-popup-kicker">{{ __('website.floating.receptionist') }}</div>
     <span class="tcw-voice-orb" aria-hidden="true">
       <i class="fas fa-phone"></i>
     </span>
-    <h2>Talk to Our AI Receptionist</h2>
-    <p class="tcw-voice-help">Available 24/7 to answer your questions and collect project requirements.</p>
+    <h2>{{ __('website.floating.title') }}</h2>
+    <p class="tcw-voice-help">{{ __('website.floating.description') }}</p>
 
     <div class="tcw-voice-status" role="status" aria-live="polite">
       <i></i>
-      <span data-vapi-status>Ready to connect</span>
+      <span data-vapi-status>{{ __('website.floating.ready') }}</span>
     </div>
 
     <div class="tcw-ai-call-actions">
-      <button type="button" class="tcw-ai-call-primary" data-vapi-start-call>Start Call</button>
-      <button type="button" class="tcw-ai-end-call" data-vapi-end-call>End Call</button>
-      <button type="button" class="tcw-ai-call-secondary" id="closeAiCallFlowSecondary">Close</button>
+      <button type="button" class="tcw-ai-call-primary" data-vapi-start-call>{{ __('website.floating.start_call') }}</button>
+      <button type="button" class="tcw-ai-end-call" data-vapi-end-call>{{ __('website.floating.end_call') }}</button>
+      <button type="button" class="tcw-ai-call-secondary" id="closeAiCallFlowSecondary">{{ __('website.floating.close') }}</button>
     </div>
   </div>
 </div>
@@ -487,50 +475,50 @@
   <div class="tcw-popup">
     <button class="tcw-popup-close" id="closeQuotePopup">&times;</button>
     
-    <div class="tcw-popup-kicker">Free consultation</div>
-    <h2>Start Your Digital Growth Journey</h2>
-    <p class="tcw-form-intro">Tell us about your brand, services, or business goals, and we’ll help you choose the right marketing strategy to scale your online presence and maximize conversions.</p>
+    <div class="tcw-popup-kicker">{{ __('website.common.free_consultation') }}</div>
+    <h2>{{ __('website.home.consultation_title') }}</h2>
+    <p class="tcw-form-intro">{{ __('website.contact.consultation_text') }}</p>
 
     <form action="{{ route('services.store.public') }}" method="POST" data-service-request-form novalidate>
       @csrf
 
       <div class="tcw-form-row">
         <div class="tcw-form-field">
-          <input type="text" name="full_name" placeholder="Full Name" required>
+          <input type="text" name="full_name" placeholder="{{ __('website.common.full_name') }}" required>
         </div>
         <div class="tcw-form-field">
-          <input type="text" name="company_name" placeholder="Company Name" required>
+          <input type="text" name="company_name" placeholder="{{ __('website.common.company_name') }}" required>
         </div>
       </div>
 
       <div class="tcw-form-row">
         <div class="tcw-form-field">
-          <input type="text" name="company_website" placeholder="Company Website">
+          <input type="text" name="company_website" placeholder="{{ __('website.common.company_website') }}">
         </div>
         <div class="tcw-form-field">
-          <input type="email" name="company_email" placeholder="Company Email" required>
+          <input type="email" name="company_email" placeholder="{{ __('website.common.company_email') }}" required>
         </div>
       </div>
 
       <div class="tcw-form-field">
         <div class="phone-field-wrap">
-          <input type="tel" id="quote_full_phone" name="phone_no" placeholder="Phone Number" autocomplete="tel" required>
+          <input type="tel" id="quote_full_phone" name="phone_no" placeholder="{{ __('website.common.phone_number') }}" autocomplete="tel" required>
           <input type="hidden" name="country" id="quote_country_name">
         </div>
       </div>
 
       <div class="tcw-form-field">
         <select name="service_type" required>
-          <option value="">Choose Service</option>
+          <option value="">{{ __('website.common.choose_service') }}</option>
           @foreach($services as $service)
             <option value="{{ $service->service_title }}">
-              {{ $service->service_title }}
+              {{ $service->localized('service_title') }}
             </option>
           @endforeach
         </select>
       </div>
 
-      <button type="submit" class="tcw-popup-submit">Submit Request</button>
+      <button type="submit" class="tcw-popup-submit">{{ __('website.common.submit_request') }}</button>
     </form>
 
   </div>
@@ -586,6 +574,13 @@ document.addEventListener("DOMContentLoaded", function () {
   let callAttempt = 0;
   let isStarting = false;
   let isConnected = false;
+  const callTranslations = {
+    connecting: @json(__('website.floating.connecting')),
+    connected: @json(__('website.floating.connected')),
+    ended: @json(__('website.floating.ended')),
+    authorizing: @json(__('website.floating.authorizing')),
+    startingAudio: @json(__('website.floating.starting_audio')),
+  };
 
   if (callButton && callPopup && callPanel && statusText && startButton && endButton) {
     const setStatus = (label, state = '') => {
@@ -622,13 +617,13 @@ document.addEventListener("DOMContentLoaded", function () {
             vapi.on('call-start', () => {
               isStarting = false;
               isConnected = true;
-              setStatus('Connected', 'is-live');
+              setStatus(callTranslations.connected, 'is-live');
             });
 
             vapi.on('call-end', () => {
               isStarting = false;
               isConnected = false;
-              setStatus('Ended');
+              setStatus(callTranslations.ended);
             });
 
             vapi.on('call-start-progress', (progress) => {
@@ -637,11 +632,11 @@ document.addEventListener("DOMContentLoaded", function () {
               }
 
               if (progress.stage === 'web-call-creation') {
-                setStatus('Authorizing call...', 'is-connecting');
+                setStatus(callTranslations.authorizing, 'is-connecting');
               }
 
               if (progress.stage === 'daily-call-object-creation') {
-                setStatus('Starting audio session...', 'is-connecting');
+                setStatus(callTranslations.startingAudio, 'is-connecting');
               }
             });
 
@@ -721,7 +716,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const activeAttempt = ++callAttempt;
       isStarting = true;
-      setStatus('Connecting...', 'is-connecting');
+      setStatus(callTranslations.connecting, 'is-connecting');
 
       try {
         if (!window.isSecureContext && !['localhost', '127.0.0.1', '[::1]'].includes(window.location.hostname)) {
@@ -755,7 +750,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       isStarting = false;
       isConnected = false;
-      setStatus('Ended');
+      setStatus(callTranslations.ended);
     };
 
     callButton.addEventListener('click', (event) => {

@@ -107,6 +107,34 @@
   <small class="admin-u-048">One reason per line.</small>
 </div>
 
+<h3>Arabic Content</h3>
+@foreach(['title_ar' => 'Title (Arabic)', 'category_ar' => 'Category (Arabic)', 'hero_visual_title_ar' => 'Hero Visual Title (Arabic)'] as $field => $label)
+  <div class="form-group">
+    <label for="{{ $field }}">{{ $label }}</label>
+    <input type="text" name="{{ $field }}" id="{{ $field }}" class="form-control" dir="rtl" lang="ar" value="{{ old($field, $offer?->{$field}) }}">
+  </div>
+@endforeach
+@foreach(['description_ar' => 'Description (Arabic)', 'detail_overview_ar' => 'Detail Page Overview (Arabic)'] as $field => $label)
+  <div class="form-group">
+    <label for="{{ $field }}">{{ $label }}</label>
+    <textarea name="{{ $field }}" id="{{ $field }}" class="form-control" dir="rtl" lang="ar" rows="4">{{ old($field, $offer?->{$field}) }}</textarea>
+  </div>
+@endforeach
+@foreach([
+  'features_text_ar' => ['Features (Arabic)', collect($offer?->features_ar ?? [])->implode("\n"), 'One feature per line.'],
+  'overview_items_text_ar' => ['Overview Cards (Arabic)', collect($offer?->overview_items_ar ?? [])->implode("\n"), 'One card per line.'],
+  'detail_features_text_ar' => ['Detail Features (Arabic)', collect($offer?->detail_features_ar ?? [])->map(fn ($item) => ($item['title'] ?? '').' | '.($item['description'] ?? ''))->implode("\n"), 'Feature title | Short description'],
+  'delivery_timeline_text_ar' => ['Delivery Timeline (Arabic)', collect($offer?->delivery_timeline_ar ?? [])->map(fn ($item) => ($item['title'] ?? '').' | '.($item['description'] ?? ''))->implode("\n"), 'Step title | Short description'],
+  'faqs_text_ar' => ['FAQs (Arabic)', collect($offer?->faqs_ar ?? [])->map(fn ($item) => ($item['question'] ?? '').' | '.($item['answer'] ?? ''))->implode("\n"), 'Question | Answer'],
+  'why_choose_text_ar' => ['Why Choose Us (Arabic)', collect($offer?->why_choose_ar ?? [])->implode("\n"), 'One reason per line.'],
+] as $field => [$label, $value, $help])
+  <div class="form-group">
+    <label for="{{ $field }}">{{ $label }}</label>
+    <textarea name="{{ $field }}" id="{{ $field }}" class="form-control" dir="rtl" lang="ar" rows="5">{{ old($field, $value) }}</textarea>
+    <small class="admin-u-048">{{ $help }}</small>
+  </div>
+@endforeach
+
 <div class="form-group">
   <label for="sort_order">Sort Order</label>
   <input type="number" name="sort_order" id="sort_order" class="form-control" min="0" value="{{ old('sort_order', $offer?->sort_order ?? 0) }}">

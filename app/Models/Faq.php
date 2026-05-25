@@ -2,14 +2,19 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasLocalizedContent;
 use Illuminate\Database\Eloquent\Model;
 
 class Faq extends Model
 {
+    use HasLocalizedContent;
+
     protected $fillable = [
         'page_key',
         'question',
+        'question_ar',
         'answer',
+        'answer_ar',
         'sort_order',
         'is_active',
     ];
@@ -45,7 +50,7 @@ class Faq extends Model
 
     public function getFormattedAnswerAttribute(): string
     {
-        $answer = self::sanitizeAnswer($this->answer);
+        $answer = self::sanitizeAnswer($this->localized('answer'));
 
         if (preg_match('/<(ul|ol|li|p)\b/i', $answer)) {
             return $answer;

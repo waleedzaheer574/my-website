@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
 
 <head>
   @php
@@ -8,11 +8,11 @@
 
     if ($websiteTitle === '') {
         if (!empty($blog?->title)) {
-            $websiteTitle = $blog->title;
+            $websiteTitle = $blog->localized('title');
         } elseif (!empty($portfolio?->title)) {
-            $websiteTitle = $portfolio->title;
+            $websiteTitle = $portfolio->localized('title');
         } elseif (!empty($serviceDetail)) {
-            $websiteTitle = trim(($serviceDetail->title_prefix ?? '') . ' ' . ($serviceDetail->title_highlight ?? ''));
+            $websiteTitle = trim(($serviceDetail->localized('title_prefix') ?? '') . ' ' . ($serviceDetail->localized('title_highlight') ?? ''));
         } else {
             $path = request()->path();
 
@@ -95,23 +95,23 @@
 
     if ($seoDescription === '') {
         if (!empty($blog)) {
-            $seoDescription = $blog->excerpt ?: \Illuminate\Support\Str::limit(strip_tags((string) $blog->content), 160);
+            $seoDescription = $blog->localized('excerpt') ?: \Illuminate\Support\Str::limit(strip_tags((string) $blog->localized('content')), 160);
             $seoImage = $blog->featured_image ? asset($blog->featured_image) : $seoDefaultImage;
             $seoType = 'article';
-            $seoKeywords = $seoKeywords ?: trim(implode(', ', array_filter([$blog->category, 'Multitechwave blog', 'digital marketing', 'web design', 'SEO'])));
+            $seoKeywords = $seoKeywords ?: trim(implode(', ', array_filter([$blog->localized('category'), 'Multitechwave blog', 'digital marketing', 'web design', 'SEO'])));
         } elseif (!empty($serviceDetail)) {
-            $serviceTitle = trim(($serviceDetail->title_prefix ?? '') . ' ' . ($serviceDetail->title_highlight ?? ''));
-            $seoDescription = $serviceDetail->description ?: 'Learn more about '.$serviceTitle.' services from Multitechwave.';
+            $serviceTitle = trim(($serviceDetail->localized('title_prefix') ?? '') . ' ' . ($serviceDetail->localized('title_highlight') ?? ''));
+            $seoDescription = $serviceDetail->localized('description') ?: 'Learn more about '.$serviceTitle.' services from Multitechwave.';
             $seoImage = $serviceDetail->primary_image ? asset($serviceDetail->primary_image) : $seoDefaultImage;
             $seoKeywords = $seoKeywords ?: trim($serviceTitle.', web design, SEO, digital marketing, Multitechwave');
         } elseif (!empty($portfolio)) {
-            $seoDescription = $portfolio->short_description ?: \Illuminate\Support\Str::limit(strip_tags((string) $portfolio->description), 160);
+            $seoDescription = $portfolio->localized('short_description') ?: \Illuminate\Support\Str::limit(strip_tags((string) $portfolio->localized('description')), 160);
             $seoImage = $portfolio->image ? asset($portfolio->image) : $seoDefaultImage;
             $seoType = 'article';
-            $seoKeywords = $seoKeywords ?: trim(implode(', ', array_filter([$portfolio->category, $portfolio->tags, 'portfolio', 'Multitechwave'])));
+            $seoKeywords = $seoKeywords ?: trim(implode(', ', array_filter([$portfolio->localized('category'), $portfolio->localized('tags'), 'portfolio', 'Multitechwave'])));
         } elseif (!empty($offer)) {
-            $seoDescription = $offer->description ?: 'Explore '.$offer->title.' services and pricing from Multitechwave.';
-            $seoKeywords = $seoKeywords ?: trim(implode(', ', array_filter([$offer->category, $offer->title, 'digital services', 'Multitechwave'])));
+            $seoDescription = $offer->localized('description') ?: 'Explore '.$offer->localized('title').' services and pricing from Multitechwave.';
+            $seoKeywords = $seoKeywords ?: trim(implode(', ', array_filter([$offer->localized('category'), $offer->localized('title'), 'digital services', 'Multitechwave'])));
         } else {
             $seoDescription = $descriptionMap[$pageKey] ?? 'Multitechwave provides web design, development, SEO, branding, and digital marketing services for growing businesses.';
             $seoKeywords = $seoKeywords ?: ($keywordsMap[$pageKey] ?? 'Multitechwave, web design, SEO, digital marketing, branding');
@@ -193,7 +193,7 @@
     if (!empty($blog)) {
         $schemaGraph[] = [
             '@type' => 'BlogPosting',
-            'headline' => $blog->title,
+            'headline' => $blog->localized('title'),
             'description' => $seoDescription,
             'image' => $seoImage,
             'datePublished' => optional($blog->published_at)->toIso8601String(),
@@ -205,7 +205,7 @@
     } elseif (!empty($serviceDetail)) {
         $schemaGraph[] = [
             '@type' => 'Service',
-            'name' => trim(($serviceDetail->title_prefix ?? '') . ' ' . ($serviceDetail->title_highlight ?? '')),
+            'name' => trim(($serviceDetail->localized('title_prefix') ?? '') . ' ' . ($serviceDetail->localized('title_highlight') ?? '')),
             'description' => $seoDescription,
             'provider' => ['@id' => $seoSiteUrl.'/#organization'],
             'url' => $seoCanonical,
@@ -213,7 +213,7 @@
     } elseif (!empty($portfolio)) {
         $schemaGraph[] = [
             '@type' => 'CreativeWork',
-            'name' => $portfolio->title,
+            'name' => $portfolio->localized('title'),
             'description' => $seoDescription,
             'image' => $seoImage,
             'creator' => ['@id' => $seoSiteUrl.'/#organization'],
@@ -222,9 +222,9 @@
     } elseif (!empty($offer)) {
         $schemaGraph[] = [
             '@type' => 'Service',
-            'name' => $offer->title,
+            'name' => $offer->localized('title'),
             'description' => $seoDescription,
-            'category' => $offer->category ?: 'Digital services',
+            'category' => $offer->localized('category') ?: 'Digital services',
             'provider' => ['@id' => $seoSiteUrl.'/#organization'],
             'offers' => [
                 '@type' => 'Offer',
@@ -606,7 +606,7 @@
 
 </head>
 
-<body>
+<body class="{{ app()->getLocale() === 'ar' ? 'tcw-rtl' : 'tcw-ltr' }}">
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-WBPLDHC2"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>

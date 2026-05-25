@@ -23,6 +23,18 @@
 </div>
 
 <div class="form-group">
+    <label for="service_title_ar">Service Title (Arabic)</label>
+    <input type="text" name="service_title_ar" id="service_title_ar" class="form-control" dir="rtl" lang="ar" value="{{ old('service_title_ar', $service->service_title_ar ?? '') }}">
+    @error('service_title_ar') <small class="admin-u-021">{{ $message }}</small> @enderror
+</div>
+
+<div class="form-group">
+    <label for="service_description_ar">Service Description (Arabic)</label>
+    <textarea name="service_description_ar" id="service_description_ar" class="form-control" dir="rtl" lang="ar" rows="5">{{ old('service_description_ar', $service->service_description_ar ?? '') }}</textarea>
+    @error('service_description_ar') <small class="admin-u-021">{{ $message }}</small> @enderror
+</div>
+
+<div class="form-group">
     <label for="order">Display Order</label>
     <input type="number" name="order" id="order" class="form-control" value="{{ old('order', $service->order ?? 0) }}" min="0">
     @error('order') <small class="admin-u-021">{{ $message }}</small> @enderror

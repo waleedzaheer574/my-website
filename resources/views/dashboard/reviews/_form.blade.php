@@ -50,6 +50,25 @@
     @error('review_text') <small class="admin-u-021">{{ $message }}</small> @enderror
 </div>
 
+<h3>Arabic Content</h3>
+<div class="admin-u-035">
+    <div class="form-group">
+        <label for="designation_ar">Designation (Arabic)</label>
+        <input type="text" name="designation_ar" id="designation_ar" class="form-control" dir="rtl" lang="ar" value="{{ old('designation_ar', $review?->designation_ar) }}">
+        @error('designation_ar') <small class="admin-u-021">{{ $message }}</small> @enderror
+    </div>
+    <div class="form-group">
+        <label for="badge_ar">Badge (Arabic)</label>
+        <input type="text" name="badge_ar" id="badge_ar" class="form-control" dir="rtl" lang="ar" value="{{ old('badge_ar', $review?->badge_ar) }}">
+        @error('badge_ar') <small class="admin-u-021">{{ $message }}</small> @enderror
+    </div>
+</div>
+<div class="form-group">
+    <label for="review_text_ar">Client Review (Arabic)</label>
+    <textarea name="review_text_ar" id="review_text_ar" class="form-control" dir="rtl" lang="ar" rows="6">{{ old('review_text_ar', $review?->review_text_ar) }}</textarea>
+    @error('review_text_ar') <small class="admin-u-021">{{ $message }}</small> @enderror
+</div>
+
 <div class="admin-u-058">
     <label class="admin-u-038">
         <input type="checkbox" name="is_featured" value="1" {{ old('is_featured', $review?->is_featured) ? 'checked' : '' }}>

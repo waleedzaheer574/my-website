@@ -13,30 +13,30 @@
   <div class="tcw-client-brand-row">
     <a href="{{ route('website.home') }}" class="tcw-client-brand">
       <img src="{{ asset('favicon.png') }}" alt="Multitechwave logo">
-      <strong>Multitechwave<small>Technology. Innovation. Solutions.</small></strong>
+      <strong>Multitechwave<small>{{ __('website.client.brand_line') }}</small></strong>
     </a>
-    <button class="tcw-client-sidebar-close" type="button" aria-label="Close menu">&times;</button>
+    <button class="tcw-client-sidebar-close" type="button" aria-label="{{ __('website.client.close_menu') }}">&times;</button>
   </div>
 
-  <nav aria-label="Client dashboard">
-    <a href="{{ route('user.dashboard') }}" class="{{ $activeClientNav === 'dashboard' ? 'is-active' : '' }}"><i class="fas fa-th-large"></i> Dashboard</a>
-    <span>Requests</span>
-    <a href="{{ route('user.service-requests') }}" class="{{ $activeClientNav === 'service-requests' ? 'is-active' : '' }}"><i class="far fa-file-alt"></i> Service Requests <b>{{ $serviceRequestsCount }}</b></a>
-    <a href="{{ route('user.quote-requests') }}" class="{{ $activeClientNav === 'quote-requests' ? 'is-active' : '' }}"><i class="far fa-file-pdf"></i> Quote Requests <b>{{ $quoteRequestsCount }}</b></a>
-    <a href="{{ route('user.projects') }}" class="{{ $activeClientNav === 'projects' ? 'is-active' : '' }}"><i class="fas fa-layer-group"></i> Projects <b>{{ $projectsCount }}</b></a>
-    <a href="{{ route('user.orders') }}" class="{{ $activeClientNav === 'orders' ? 'is-active' : '' }}"><i class="fas fa-shopping-bag"></i> Orders <b>{{ $ordersCount }}</b></a>
-    <a href="{{ route('user.subscriptions') }}" class="{{ $activeClientNav === 'subscriptions' ? 'is-active' : '' }}"><i class="fas fa-sync-alt"></i> Subscriptions <b>{{ $subscriptionsCount }}</b></a>
-    <a href="#"><i class="far fa-file-alt"></i> Invoices</a>
-    <a href="#"><i class="far fa-credit-card"></i> Payments</a>
-    <a href="{{ route('user.support-chat') }}" class="{{ $activeClientNav === 'support' ? 'is-active' : '' }}"><i class="far fa-comments"></i> Pappert Chat <b>2</b></a>
-    <a href="{{ route('user.notifications') }}" class="{{ $activeClientNav === 'notifications' ? 'is-active' : '' }}"><i class="far fa-bell"></i> Notifications <b>{{ $unreadNotificationsCount }}</b></a>
-    <a href="{{ route('user.profile.edit') }}" class="{{ $activeClientNav === 'settings' ? 'is-active' : '' }}"><i class="fas fa-cog"></i> Settings</a>
+  <nav aria-label="{{ __('website.client.dashboard_nav') }}">
+    <a href="{{ route('user.dashboard') }}" class="{{ $activeClientNav === 'dashboard' ? 'is-active' : '' }}"><i class="fas fa-th-large"></i> {{ __('website.client.dashboard') }}</a>
+    <span>{{ __('website.client.requests') }}</span>
+    <a href="{{ route('user.service-requests') }}" class="{{ $activeClientNav === 'service-requests' ? 'is-active' : '' }}"><i class="far fa-file-alt"></i> {{ __('website.client.service_requests') }} <b>{{ $serviceRequestsCount }}</b></a>
+    <a href="{{ route('user.quote-requests') }}" class="{{ $activeClientNav === 'quote-requests' ? 'is-active' : '' }}"><i class="far fa-file-pdf"></i> {{ __('website.client.quote_requests') }} <b>{{ $quoteRequestsCount }}</b></a>
+    <a href="{{ route('user.projects') }}" class="{{ $activeClientNav === 'projects' ? 'is-active' : '' }}"><i class="fas fa-layer-group"></i> {{ __('website.client.projects') }} <b>{{ $projectsCount }}</b></a>
+    <a href="{{ route('user.orders') }}" class="{{ $activeClientNav === 'orders' ? 'is-active' : '' }}"><i class="fas fa-shopping-bag"></i> {{ __('website.client.orders') }} <b>{{ $ordersCount }}</b></a>
+    <a href="{{ route('user.subscriptions') }}" class="{{ $activeClientNav === 'subscriptions' ? 'is-active' : '' }}"><i class="fas fa-sync-alt"></i> {{ __('website.client.subscriptions') }} <b>{{ $subscriptionsCount }}</b></a>
+    <a href="#"><i class="far fa-file-alt"></i> {{ __('website.client.invoices') }}</a>
+    <a href="#"><i class="far fa-credit-card"></i> {{ __('website.client.payments') }}</a>
+    <a href="{{ route('user.support-chat') }}" class="{{ $activeClientNav === 'support' ? 'is-active' : '' }}"><i class="far fa-comments"></i> {{ __('website.client.chat') }} <b>2</b></a>
+    <a href="{{ route('user.notifications') }}" class="{{ $activeClientNav === 'notifications' ? 'is-active' : '' }}"><i class="far fa-bell"></i> {{ __('website.client.notifications') }} <b>{{ $unreadNotificationsCount }}</b></a>
+    <a href="{{ route('user.profile.edit') }}" class="{{ $activeClientNav === 'settings' ? 'is-active' : '' }}"><i class="fas fa-cog"></i> {{ __('website.client.settings') }}</a>
   </nav>
 
   <div class="tcw-client-help-card">
-    <h3>Need Help?</h3>
-    <p>Our support team is ready to assist you 24/7</p>
-    <a href="{{ route('user.support-chat') }}">Contact Support</a>
+    <h3>{{ __('website.client.need_help') }}</h3>
+    <p>{{ __('website.client.help_text') }}</p>
+    <a href="{{ route('user.support-chat') }}">{{ __('website.client.contact_support') }}</a>
   </div>
 
   <div class="tcw-client-profile-mini">
@@ -48,9 +48,9 @@
   </div>
 </aside>
 
-<a href="{{ route('website.home') }}" class="tcw-back-website-float" aria-label="Back to website">
+<a href="{{ route('website.home') }}" class="tcw-back-website-float" aria-label="{{ __('website.client.back_website') }}">
   <i class="fas fa-globe"></i>
-  <span>Website</span>
+  <span>{{ __('website.client.website') }}</span>
 </a>
 
 @include('user.partials.client-success-popup')

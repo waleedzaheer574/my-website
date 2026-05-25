@@ -1,6 +1,6 @@
 @extends('layouts.website')
 
-@section('title', 'Support Chat')
+@section('title', __('website.client.chat'))
 @section('hide_global_faqs', '1')
 
 @push('css')
@@ -11,8 +11,8 @@
 
 @section('content')
   @php($activeClientNav = 'support')
-  @php($clientHeaderTitle = 'Support Chat')
-  @php($clientHeaderSubtitle = 'Talk with our support team and track replies in real time.')
+  @php($clientHeaderTitle = __('website.client.chat'))
+  @php($clientHeaderSubtitle = __('website.client.support_subtitle'))
   <main class="tcw-client-dashboard tcw-premium-client-dashboard tcw-live-chat-dashboard">
     @include('user.partials.client-sidebar')
 
@@ -24,16 +24,16 @@
           <div class="tcw-live-chat-welcome" id="support-welcome" @if($conversation->messages->isNotEmpty()) hidden @endif>
             <i class="fas fa-hand-paper"></i>
             <div>
-              <strong>Hi {{ auth()->user()->name }}!</strong>
-              <span>How can we help you today?</span>
-              <p>Start a conversation with our support team.</p>
+              <strong>{{ __('website.client.hello', ['name' => auth()->user()->name]) }}</strong>
+              <span>{{ __('website.client.help_today') }}</span>
+              <p>{{ __('website.client.start_conversation') }}</p>
               <time>{{ now()->format('h:i A') }}</time>
             </div>
           </div>
 
           <div class="tcw-support-messages tcw-live-chat-messages" id="support-messages" data-last-id="{{ $conversation->messages->last()?->id ?? 0 }}">
             @if($conversation->messages->isNotEmpty())
-              <div class="tcw-chat-date-separator">{{ $conversation->messages->first()->created_at->format('M d, Y') }}</div>
+              <div class="tcw-chat-date-separator">{{ $conversation->messages->first()->created_at->locale(app()->getLocale())->translatedFormat('M d, Y') }}</div>
             @endif
             @foreach($conversation->messages as $message)
               <article class="{{ $message->user_id === auth()->id() ? 'is-me' : 'is-other' }}" data-id="{{ $message->id }}">
@@ -48,24 +48,24 @@
 
           <form class="tcw-live-chat-form" id="support-form" action="{{ route('user.support-chat.store') }}" method="POST">
             @csrf
-            <textarea name="body" placeholder="Type your message..." required></textarea>
-            <button type="submit" aria-label="Send message"><i class="fas fa-paper-plane"></i></button>
+            <textarea name="body" placeholder="{{ __('website.support.placeholder') }}" required></textarea>
+            <button type="submit" aria-label="{{ __('website.support.send') }}"><i class="fas fa-paper-plane"></i></button>
           </form>
         </section>
 
         <aside class="tcw-live-chat-aside">
           <section>
             <i class="fas fa-headset"></i>
-            <div><strong>We're Here to Help</strong><span>Our support team typically replies within a few minutes.</span></div>
-            <b>Online</b>
+            <div><strong>{{ __('website.client.here_to_help') }}</strong><span>{{ __('website.client.reply_time') }}</span></div>
+            <b>{{ __('website.client.online') }}</b>
             <small>9:00 AM - 6:00 PM (Mon - Fri)</small>
           </section>
           <section>
-            <h2>Quick Help</h2>
-            <a href="{{ route('website.contact') }}">How to create a request <i class="fas fa-arrow-right"></i></a>
-            <a href="{{ route('user.service-requests') }}">How to check status <i class="fas fa-arrow-right"></i></a>
-            <a href="{{ route('website.quote-generator') }}">How to upload files <i class="fas fa-arrow-right"></i></a>
-            <a href="{{ route('website.quote-generator') }}">Payment &amp; billing <i class="fas fa-arrow-right"></i></a>
+            <h2>{{ __('website.client.quick_help') }}</h2>
+            <a href="{{ route('website.contact') }}">{{ __('website.client.how_request') }} <i class="fas fa-arrow-right"></i></a>
+            <a href="{{ route('user.service-requests') }}">{{ __('website.client.how_status') }} <i class="fas fa-arrow-right"></i></a>
+            <a href="{{ route('website.quote-generator') }}">{{ __('website.client.how_upload') }} <i class="fas fa-arrow-right"></i></a>
+            <a href="{{ route('website.quote-generator') }}">{{ __('website.client.billing_help') }} <i class="fas fa-arrow-right"></i></a>
           </section>
         </aside>
       </div>

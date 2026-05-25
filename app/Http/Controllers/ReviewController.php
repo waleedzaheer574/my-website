@@ -71,9 +71,12 @@ class ReviewController extends Controller
         return $request->validate([
             'client_name' => ['required', 'string', 'max:255'],
             'designation' => ['nullable', 'string', 'max:255'],
+            'designation_ar' => ['nullable', 'string', 'max:255'],
             'badge' => ['nullable', 'string', 'max:80'],
+            'badge_ar' => ['nullable', 'string', 'max:80'],
             'rating' => ['nullable', 'integer', 'min:1', 'max:5'],
             'review_text' => ['required', 'string', 'max:1200'],
+            'review_text_ar' => ['nullable', 'string', 'max:1200'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
         ]);
     }

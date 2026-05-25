@@ -1,25 +1,25 @@
 @if(session('subscription_success'))
   <div class="tcw-subscription-success-pop" data-subscription-success>
-    <div class="tcw-subscription-success-card" role="dialog" aria-modal="true" aria-label="Subscription activated">
-      <button type="button" class="tcw-subscription-success-close" data-subscription-success-close aria-label="Close success popup">&times;</button>
+    <div class="tcw-subscription-success-card" role="dialog" aria-modal="true" aria-label="{{ __('website.client.subscription_activated') }}">
+      <button type="button" class="tcw-subscription-success-close" data-subscription-success-close aria-label="{{ __('website.client.close_popup') }}">&times;</button>
       <div class="tcw-success-orbit">
         <span></span>
         <i class="fas fa-check"></i>
       </div>
-      <small>Payment Successful</small>
-      <h2>{{ session('subscription_title', 'Subscription Activated') }}</h2>
-      <p>Your subscription is active now. Your project workspace has been created and our team can start tracking it from the dashboard.</p>
+      <small>{{ __('website.client.payment_successful') }}</small>
+      <h2>{{ session('subscription_title', __('website.client.subscription_active')) }}</h2>
+      <p>{{ __('website.client.subscription_message') }}</p>
       <div class="tcw-success-meta">
         <span>
-          <strong>{{ session('subscription_amount', 'Paid') }}</strong>
-          <em>Amount received</em>
+          <strong>{{ session('subscription_amount', __('website.client.paid')) }}</strong>
+          <em>{{ __('website.client.amount_received') }}</em>
         </span>
         <span>
-          <strong>Active</strong>
-          <em>Subscription status</em>
+          <strong>{{ __('website.client.active') }}</strong>
+          <em>{{ __('website.client.subscription_status') }}</em>
         </span>
       </div>
-      <a href="{{ route('user.subscriptions') }}">View Subscription <i class="fas fa-arrow-right"></i></a>
+      <a href="{{ route('user.subscriptions') }}">{{ __('website.client.view_subscription') }} <i class="fas fa-arrow-right"></i></a>
     </div>
   </div>
 

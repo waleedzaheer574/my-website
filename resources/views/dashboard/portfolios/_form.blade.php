@@ -56,6 +56,24 @@
     @error('description') <small class="admin-u-021">{{ $message }}</small> @enderror
 </div>
 
+<h3>Arabic Content</h3>
+<div class="admin-u-035">
+    @foreach(['title_ar' => 'Title (Arabic)', 'category_ar' => 'Category (Arabic)', 'tags_ar' => 'Tags (Arabic)', 'duration_ar' => 'Duration (Arabic)'] as $field => $label)
+        <div class="form-group">
+            <label for="{{ $field }}">{{ $label }}</label>
+            <input type="text" name="{{ $field }}" id="{{ $field }}" class="form-control" dir="rtl" lang="ar" value="{{ old($field, $portfolio?->{$field}) }}">
+            @error($field) <small class="admin-u-021">{{ $message }}</small> @enderror
+        </div>
+    @endforeach
+</div>
+@foreach(['short_description_ar' => 'Short Description (Arabic)', 'description_ar' => 'Project Description (Arabic)'] as $field => $label)
+    <div class="form-group">
+        <label for="{{ $field }}">{{ $label }}</label>
+        <textarea name="{{ $field }}" id="{{ $field }}" class="form-control" dir="rtl" lang="ar" rows="{{ $field === 'description_ar' ? 6 : 3 }}">{{ old($field, $portfolio?->{$field}) }}</textarea>
+        @error($field) <small class="admin-u-021">{{ $message }}</small> @enderror
+    </div>
+@endforeach
+
 <div class="admin-u-051">
     <div class="form-group">
         <label for="image">Main Image</label>

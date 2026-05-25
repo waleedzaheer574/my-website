@@ -179,11 +179,11 @@ class UserDashboardController extends Controller
 
                 return [
                     'key' => $month->format('Y-m'),
-                    'label' => $month->format('F Y'),
-                    'shortLabel' => $month->format('M Y'),
+                    'label' => $month->copy()->locale(app()->getLocale())->translatedFormat('F Y'),
+                    'shortLabel' => $month->copy()->locale(app()->getLocale())->translatedFormat('M Y'),
                     'total' => array_sum($counts),
                     'peakDay' => $peakDay,
-                    'peakLabel' => $month->copy()->day($peakDay)->format('M j'),
+                    'peakLabel' => $month->copy()->day($peakDay)->locale(app()->getLocale())->translatedFormat('M j'),
                     'peakCount' => $peakCount,
                     'points' => array_values($counts),
                 ];
@@ -206,7 +206,7 @@ class UserDashboardController extends Controller
 
                 return [
                     'status' => $status,
-                    'label' => $label,
+                    'label' => __("website.client.status_labels.{$status}"),
                     'count' => $count,
                     'percent' => $percent,
                     'start' => $start,
@@ -283,7 +283,9 @@ class UserDashboardController extends Controller
                     'total' => $monthly->sum(),
                     'currency' => 'AED',
                     'months' => $monthly->all(),
-                    'monthLabels' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                    'monthLabels' => collect(range(1, 12))
+                        ->map(fn (int $month) => now()->month($month)->locale(app()->getLocale())->translatedFormat('M'))
+                        ->all(),
                 ];
             })
             ->values()

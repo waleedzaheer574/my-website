@@ -79,7 +79,9 @@ class WhyNexaController extends Controller
     {
         return $request->validate([
             'title' => ['required', 'string', 'max:255'],
+            'title_ar' => ['nullable', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
+            'description_ar' => ['nullable', 'string'],
             'icon' => [($iconRequired ? 'required' : 'nullable'), 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
         ]);

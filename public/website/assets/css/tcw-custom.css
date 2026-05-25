@@ -23857,3 +23857,297 @@ body .cs-cta_title .cs-with_bar svg.cs-accent_color_2 path {
 .tcw-footer .cs-social_btns a:focus-visible {
   transform: translateY(-2px);
 }
+
+.tcw-about-page .cs-cta_title .cs-accent_color {
+  background: linear-gradient(135deg, #3d86ff, #8355ff) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+.tcw-footer.cs-style3 .widget_nav_menu .menu a:hover::before,
+.tcw-footer.cs-style3 .widget_nav_menu .menu a:focus-visible::before {
+  background: linear-gradient(135deg, #3d86ff, #8355ff) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+/* Language selection and Arabic RTL support. */
+.tcw-language-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px;
+  border: 1px solid rgba(123, 148, 255, 0.28);
+  border-radius: 999px;
+  background: rgba(9, 16, 38, 0.78);
+}
+
+.tcw-language-switch a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  min-height: 34px;
+  padding: 0 9px;
+  border-radius: 999px;
+  color: #c7d5ee !important;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1;
+  text-decoration: none;
+  transition: color 0.2s ease, background 0.2s ease;
+}
+
+.tcw-language-switch a:hover,
+.tcw-language-switch a:focus-visible,
+.tcw-language-switch a.is-active {
+  background: linear-gradient(135deg, #1768ff, #5c2dff);
+  color: #ffffff !important;
+}
+
+.tcw-language-switch-mobile {
+  width: fit-content;
+  margin: 12px 0 18px;
+}
+
+.tcw-language-switch-mobile a {
+  min-width: 70px;
+}
+
+html[dir="rtl"] body {
+  font-family: Tahoma, Arial, sans-serif;
+}
+
+html[dir="rtl"] .tcw-site-header .tcw-nav_list,
+html[dir="rtl"] .tcw-site-header .tcw-header_actions,
+html[dir="rtl"] .tcw-it-actions,
+html[dir="rtl"] .tcw-ai-call-actions {
+  direction: rtl;
+}
+
+html[dir="rtl"] .tcw-dimensional-hero-copy,
+html[dir="rtl"] .tcw-it-hero-copy,
+html[dir="rtl"] .tcw-it-proof-copy,
+html[dir="rtl"] .tcw-contact-form-shell,
+html[dir="rtl"] .tcw-footer,
+html[dir="rtl"] .tcw-it-service-card,
+html[dir="rtl"] .tcw-premium-offer-card,
+html[dir="rtl"] .tcw-it-portfolio-card,
+html[dir="rtl"] .tcw-testimonial-4d-card,
+html[dir="rtl"] .tcw-blog-card,
+html[dir="rtl"] .tcw-dimensional-card,
+html[dir="rtl"] .tcw-service-index-card,
+html[dir="rtl"] .tcw-detail-modern,
+html[dir="rtl"] .tcw-offer-detail-page,
+html[dir="rtl"] .tcw-checkout-page,
+html[dir="rtl"] .tcw-quote-page,
+html[dir="rtl"] .tcw-article-page {
+  text-align: right;
+}
+
+html[dir="rtl"] input,
+html[dir="rtl"] textarea,
+html[dir="rtl"] select {
+  direction: rtl;
+  text-align: right;
+}
+
+html[dir="rtl"] input[type="email"],
+html[dir="rtl"] input[type="tel"],
+html[dir="rtl"] input[type="url"] {
+  direction: ltr;
+  text-align: right;
+}
+
+html[dir="rtl"] .tcw-it-hero-grid,
+html[dir="rtl"] .tcw-detail-hero-grid,
+html[dir="rtl"] .tcw-premium-checkout-grid,
+html[dir="rtl"] .tcw-detail-layout,
+html[dir="rtl"] .tcw-about-detail-grid,
+html[dir="rtl"] .tcw-benefits-tech-grid {
+  direction: rtl;
+}
+
+html[dir="rtl"] .tcw-it-service-card ul,
+html[dir="rtl"] .tcw-premium-offer-card ul,
+html[dir="rtl"] .tcw-benefit-list,
+html[dir="rtl"] .tcw-detail-mini-stats,
+html[dir="rtl"] .tcw-detail-price-card ul,
+html[dir="rtl"] .tcw-checkout-summary-card ul {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+html[dir="rtl"] .tcw-detail-actions,
+html[dir="rtl"] .tcw-offers-custom-cta,
+html[dir="rtl"] .tcw-checkout-secure-head,
+html[dir="rtl"] .tcw-article-metadata {
+  direction: rtl;
+}
+
+html[dir="rtl"] .tcw-floating-contact {
+  left: 0 !important;
+  right: auto !important;
+  align-items: flex-start;
+}
+
+html[dir="rtl"] .tcw-floating-contact__icons {
+  padding-right: 0;
+  padding-left: 8px;
+}
+
+html[dir="rtl"] .tcw-floating-contact__quote {
+  border-radius: 0 14px 14px 0;
+}
+
+html[dir="rtl"] .tcw-review-prev {
+  left: auto;
+  right: 8px;
+}
+
+html[dir="rtl"] .tcw-review-next {
+  right: auto;
+  left: 8px;
+}
+
+html[dir="rtl"] .tcw-blog-rail_prev {
+  left: auto;
+  right: 8px;
+}
+
+html[dir="rtl"] .tcw-blog-rail_next {
+  right: auto;
+  left: 8px;
+}
+
+html[dir="rtl"] .tcw-review-slider,
+html[dir="rtl"] .tcw-blog-rail_track {
+  direction: rtl;
+}
+
+html[dir="rtl"] .tcw-it-service-slider .slick-list,
+html[dir="rtl"] .tcw-it-logo-slider .slick-list {
+  direction: rtl;
+}
+
+html[dir="rtl"] .tcw-it-service-card .tcw-it-card-arrow i,
+html[dir="rtl"] .tcw-blog-card i.fa-arrow-right,
+html[dir="rtl"] .tcw-offer-card-btn i,
+html[dir="rtl"] .tcw-dimensional-link i {
+  transform: scaleX(-1);
+}
+
+html[dir="rtl"] .tcw-it-service-card,
+html[dir="rtl"] .tcw-blog-card_content,
+html[dir="rtl"] .tcw-testimonial-card-head,
+html[dir="rtl"] .tcw-testimonial-4d-card blockquote {
+  direction: rtl;
+}
+
+html[dir="rtl"] .tcw-it-service-card h3,
+html[dir="rtl"] .tcw-blog-card h3 {
+  line-height: 1.55;
+}
+
+html[dir="rtl"] .tcw-it-service-card p,
+html[dir="rtl"] .tcw-blog-card p,
+html[dir="rtl"] .tcw-testimonial-4d-card p {
+  line-height: 1.85;
+}
+
+html[dir="rtl"] .tcw-company-page__hero,
+html[dir="rtl"] .tcw-company-page__content,
+html[dir="rtl"] .tcw-support-chat__panel,
+html[dir="rtl"] .tcw-checkout-form-card,
+html[dir="rtl"] .tcw-checkout-summary-card,
+html[dir="rtl"] .tcw-checkout-safe-card,
+html[dir="rtl"] .tcw-quote-result-left,
+html[dir="rtl"] .tcw-quote-result-panel {
+  direction: rtl;
+  text-align: right;
+}
+
+html[dir="rtl"] .tcw-company-page__content p,
+html[dir="rtl"] .tcw-company-page__hero p,
+html[dir="rtl"] .tcw-checkout-page p,
+html[dir="rtl"] .tcw-quote-page p {
+  line-height: 1.9;
+}
+
+html[dir="rtl"] .tcw-company-page__content ul,
+html[dir="rtl"] .tcw-checkout-safe-card ul {
+  padding-right: 0;
+  padding-left: 0;
+}
+
+html[dir="rtl"] .tcw-checkout-submit i,
+html[dir="rtl"] .tcw-quote-actions i {
+  transform: scaleX(-1);
+}
+
+html[dir="rtl"] .tcw-premium-client-dashboard,
+html[dir="rtl"] .tcw-premium-client-sidebar,
+html[dir="rtl"] .tcw-premium-client-dashboard .tcw-client-main,
+html[dir="rtl"] .tcw-client-panel,
+html[dir="rtl"] .tcw-client-topbar,
+html[dir="rtl"] .tcw-account-card,
+html[dir="rtl"] .tcw-live-chat-panel,
+html[dir="rtl"] .tcw-live-chat-aside {
+  direction: rtl;
+  text-align: right;
+}
+
+html[dir="rtl"] .tcw-premium-client-sidebar nav b {
+  margin-right: auto;
+  margin-left: 0;
+}
+
+html[dir="rtl"] .tcw-client-panel-head > a i,
+html[dir="rtl"] .tcw-live-chat-aside a i,
+html[dir="rtl"] .tcw-subscription-success-card a i {
+  transform: scaleX(-1);
+}
+
+html[dir="rtl"] .tcw-back-website-float {
+  right: auto;
+  left: 43px;
+}
+
+html[dir="rtl"] .tcw-back-website-float span {
+  right: auto;
+  left: calc(100% + 10px);
+}
+
+html[dir="rtl"] .tcw-client-sidebar nav a,
+html[dir="rtl"] .tcw-client-heading p,
+html[dir="rtl"] .tcw-client-panel p,
+html[dir="rtl"] .tcw-live-chat-panel p,
+html[dir="rtl"] .tcw-live-chat-aside span {
+  text-align: right;
+}
+
+@media (max-width: 1240px) and (min-width: 992px) {
+  .tcw-language-switch a {
+    min-width: 29px;
+    min-height: 30px;
+    padding: 0 6px;
+  }
+}
+
+@media (max-width: 991px) {
+  html[dir="rtl"] .tcw-mobile_panel_inner,
+  html[dir="rtl"] .tcw-mobile_nav,
+  html[dir="rtl"] .tcw-site-header .tcw-mobile_services_list {
+    text-align: right;
+  }
+
+  html[dir="rtl"] .tcw-it-hero-copy h1,
+  html[dir="rtl"] .tcw-dimensional-hero h1,
+  html[dir="rtl"] .tcw-detail-hero-copy h1 {
+    line-height: 1.35;
+  }
+}

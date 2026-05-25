@@ -145,13 +145,18 @@ class BlogController extends Controller
     {
         return $request->validate([
             'title' => 'required|string|max:255',
+            'title_ar' => 'nullable|string|max:255',
             'author_name' => 'required|string|max:255',
             'category' => 'nullable|string|max:255',
+            'category_ar' => 'nullable|string|max:255',
             'author_image' => 'nullable|image|mimes:jpg,jpeg,png,webp,svg|max:1024',
             'featured_image' => ($id ? 'nullable' : 'required').'|image|mimes:jpg,jpeg,png,webp,svg|max:2048',
             'excerpt' => 'nullable|string',
+            'excerpt_ar' => 'nullable|string',
             'content' => 'required|string',
+            'content_ar' => 'nullable|string',
             'author_bio' => 'nullable|string',
+            'author_bio_ar' => 'nullable|string',
             'views' => $isPublic ? 'nullable' : 'nullable|integer|min:0',
             'is_active' => $isPublic ? 'nullable' : 'nullable|boolean',
             'published_at' => 'nullable|date',

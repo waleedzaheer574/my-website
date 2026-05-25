@@ -1,6 +1,6 @@
 @extends('layouts.website')
 
-@section('title', 'Client Dashboard')
+@section('title', __('website.client.dashboard'))
 @section('hide_global_faqs', '1')
 
 @push('css')
@@ -35,28 +35,28 @@
 
     <div class="tcw-dashboard-overview-row">
       <div class="tcw-premium-stat-grid">
-        <article class="is-purple"><i class="far fa-file-alt"></i><div><span>Total Requests</span><strong>{{ str_pad((string) $totalRequests, 2, '0', STR_PAD_LEFT) }}</strong><small>+20% from last month</small></div><svg class="tcw-client-stat-spark" viewBox="0 0 120 56" preserveAspectRatio="none" aria-hidden="true"><polyline points="4,50 18,43 30,47 43,34 57,38 72,24 88,28 104,14 116,18"></polyline></svg></article>
-        <article class="is-blue"><i class="fas fa-wave-square"></i><div><span>In Progress</span><strong>{{ str_pad((string) $inProgressProjects, 2, '0', STR_PAD_LEFT) }}</strong><small>Active projects</small></div><svg class="tcw-client-stat-spark" viewBox="0 0 120 56" preserveAspectRatio="none" aria-hidden="true"><polyline points="4,46 18,42 32,39 46,35 60,30 74,32 88,26 102,20 116,16"></polyline></svg></article>
-        <article class="is-green"><i class="far fa-check-circle"></i><div><span>Completed</span><strong>{{ str_pad((string) $completedProjects, 2, '0', STR_PAD_LEFT) }}</strong><small>+25% from last month</small></div><svg class="tcw-client-stat-spark" viewBox="0 0 120 56" preserveAspectRatio="none" aria-hidden="true"><polyline points="4,42 17,36 31,46 45,28 58,30 72,18 87,22 101,10 116,21"></polyline></svg></article>
-        <article class="is-orange"><i class="fas fa-dollar-sign"></i><div><span>Total Spent</span><strong>AED {{ number_format($totalSpent) }}</strong><small>+18% from last month</small></div><svg class="tcw-client-stat-spark" viewBox="0 0 120 56" preserveAspectRatio="none" aria-hidden="true"><polyline points="4,47 18,39 32,42 46,31 60,44 75,26 89,21 103,9 116,17"></polyline></svg></article>
-        <article class="is-red"><i class="far fa-credit-card"></i><div><span>Pending Payments</span><strong>{{ str_pad((string) $pendingPayments, 2, '0', STR_PAD_LEFT) }}</strong><small>Awaiting payment</small></div><svg class="tcw-client-stat-spark" viewBox="0 0 120 56" preserveAspectRatio="none" aria-hidden="true"><polyline points="4,45 18,38 31,40 45,29 59,42 74,25 88,18 103,13 116,18"></polyline></svg></article>
+        <article class="is-purple"><i class="far fa-file-alt"></i><div><span>{{ __('website.client.total_requests') }}</span><strong>{{ str_pad((string) $totalRequests, 2, '0', STR_PAD_LEFT) }}</strong><small>{{ __('website.client.from_last_month', ['percent' => '+20%']) }}</small></div><svg class="tcw-client-stat-spark" viewBox="0 0 120 56" preserveAspectRatio="none" aria-hidden="true"><polyline points="4,50 18,43 30,47 43,34 57,38 72,24 88,28 104,14 116,18"></polyline></svg></article>
+        <article class="is-blue"><i class="fas fa-wave-square"></i><div><span>{{ __('website.client.in_progress') }}</span><strong>{{ str_pad((string) $inProgressProjects, 2, '0', STR_PAD_LEFT) }}</strong><small>{{ __('website.client.active_projects') }}</small></div><svg class="tcw-client-stat-spark" viewBox="0 0 120 56" preserveAspectRatio="none" aria-hidden="true"><polyline points="4,46 18,42 32,39 46,35 60,30 74,32 88,26 102,20 116,16"></polyline></svg></article>
+        <article class="is-green"><i class="far fa-check-circle"></i><div><span>{{ __('website.client.completed') }}</span><strong>{{ str_pad((string) $completedProjects, 2, '0', STR_PAD_LEFT) }}</strong><small>{{ __('website.client.from_last_month', ['percent' => '+25%']) }}</small></div><svg class="tcw-client-stat-spark" viewBox="0 0 120 56" preserveAspectRatio="none" aria-hidden="true"><polyline points="4,42 17,36 31,46 45,28 58,30 72,18 87,22 101,10 116,21"></polyline></svg></article>
+        <article class="is-orange"><i class="fas fa-dollar-sign"></i><div><span>{{ __('website.client.total_spent') }}</span><strong>AED {{ number_format($totalSpent) }}</strong><small>{{ __('website.client.from_last_month', ['percent' => '+18%']) }}</small></div><svg class="tcw-client-stat-spark" viewBox="0 0 120 56" preserveAspectRatio="none" aria-hidden="true"><polyline points="4,47 18,39 32,42 46,31 60,44 75,26 89,21 103,9 116,17"></polyline></svg></article>
+        <article class="is-red"><i class="far fa-credit-card"></i><div><span>{{ __('website.client.pending_payments') }}</span><strong>{{ str_pad((string) $pendingPayments, 2, '0', STR_PAD_LEFT) }}</strong><small>{{ __('website.client.awaiting_payment') }}</small></div><svg class="tcw-client-stat-spark" viewBox="0 0 120 56" preserveAspectRatio="none" aria-hidden="true"><polyline points="4,45 18,38 31,40 45,29 59,42 74,25 88,18 103,13 116,18"></polyline></svg></article>
       </div>
 
       <section class="tcw-client-panel tcw-updates-card">
-        <div class="tcw-client-panel-head"><h2>Recent Updates</h2><a href="{{ route('user.notifications') }}">View All</a></div>
+        <div class="tcw-client-panel-head"><h2>{{ __('website.client.recent_updates') }}</h2><a href="{{ route('user.notifications') }}">{{ __('website.client.view_all') }}</a></div>
         @forelse(($recentRequests ?? collect())->take(4) as $recentRequest)
-          <article><i class="{{ $recentRequest['type'] === 'quote' ? 'far fa-envelope' : 'far fa-comment-dots' }}"></i><p>{{ $recentRequest['title'] }} status changed to <b>{{ $recentRequest['subtitle'] }}</b></p><time>{{ $recentRequest['date']->diffForHumans() }}</time></article>
+          <article><i class="{{ $recentRequest['type'] === 'quote' ? 'far fa-envelope' : 'far fa-comment-dots' }}"></i><p>{{ __('website.client.status_changed', ['title' => $recentRequest['title'], 'status' => $recentRequest['subtitle']]) }}</p><time>{{ $recentRequest['date']->locale(app()->getLocale())->diffForHumans() }}</time></article>
         @empty
-          <article><i class="far fa-comment-dots"></i><p>No recent updates yet.</p><time>Now</time></article>
+          <article><i class="far fa-comment-dots"></i><p>{{ __('website.client.no_updates') }}</p><time>{{ __('website.client.now') }}</time></article>
         @endforelse
       </section>
     </div>
 
     <div class="tcw-dashboard-grid">
       <section class="tcw-client-panel tcw-chart-card tcw-donut-card">
-        <div class="tcw-client-panel-head"><h2>Requests Overview</h2></div>
+        <div class="tcw-client-panel-head"><h2>{{ __('website.client.requests_overview') }}</h2></div>
         <div class="tcw-donut-wrap">
-          <div class="tcw-css-donut" style="--tcw-donut-gradient: {{ $requestOverview['gradient'] }}"><strong>{{ $totalRequests ?: 0 }}</strong><span>Total</span></div>
+          <div class="tcw-css-donut" style="--tcw-donut-gradient: {{ $requestOverview['gradient'] }}"><strong>{{ $totalRequests ?: 0 }}</strong><span>{{ __('website.client.total') }}</span></div>
           <div class="tcw-donut-legend">
             @foreach($requestOverviewSegments as $segment)
               <p>
@@ -66,25 +66,25 @@
                 <em>{{ number_format($segment['percent'], $segment['percent'] == (int) $segment['percent'] ? 0 : 1) }}%</em>
               </p>
             @endforeach
-            <a href="{{ route('user.service-requests') }}">View Full Reports <i class="fas fa-arrow-right"></i></a>
+            <a href="{{ route('user.service-requests') }}">{{ __('website.client.full_reports') }} <i class="fas fa-arrow-right"></i></a>
           </div>
         </div>
       </section>
 
       <section class="tcw-client-panel tcw-chart-card">
         <div class="tcw-client-panel-head">
-          <h2>Activity Overview</h2>
+          <h2>{{ __('website.client.activity_overview') }}</h2>
           <label class="tcw-activity-month-select">
-            <select id="activityMonthSelect" aria-label="Select activity month">
+            <select id="activityMonthSelect" aria-label="{{ __('website.client.select_month') }}">
               @foreach($activityMonths as $month)
-                <option value="{{ $month['key'] }}">{{ $loop->first ? 'This Month' : $month['shortLabel'] }}</option>
+                <option value="{{ $month['key'] }}">{{ $loop->first ? __('website.client.this_month') : $month['shortLabel'] }}</option>
               @endforeach
             </select>
             <i class="fas fa-chevron-down"></i>
           </label>
         </div>
         <div class="tcw-line-chart" id="activityChart" data-activity='@json($activityMonths)'>
-          <svg viewBox="0 0 360 180" role="img" aria-label="Monthly activity chart" preserveAspectRatio="none">
+          <svg viewBox="0 0 360 180" role="img" aria-label="{{ __('website.client.monthly_activity') }}" preserveAspectRatio="none">
             <defs>
               <linearGradient id="tcwActivityFill" x1="0" x2="0" y1="0" y2="1">
                 <stop offset="0%" stop-color="#8b5cf6" stop-opacity="0.45" />
@@ -95,31 +95,31 @@
             <polyline class="tcw-activity-line" points=""></polyline>
             <g class="tcw-activity-dots"></g>
           </svg>
-          <b id="activityTooltip">0 Activities</b>
+          <b id="activityTooltip">0 {{ __('website.client.activities') }}</b>
           <div class="tcw-activity-axis">
-            <span>Day 1</span>
-            <span id="activityMonthLabel">This Month</span>
-            <span>End</span>
+            <span>{{ __('website.client.day_one') }}</span>
+            <span id="activityMonthLabel">{{ __('website.client.this_month') }}</span>
+            <span>{{ __('website.client.end') }}</span>
           </div>
         </div>
       </section>
 
       <section class="tcw-client-panel tcw-recent-requests-card">
-        <div class="tcw-client-panel-head"><h2>Recent Requests</h2><a href="{{ route('user.service-requests') }}">View All</a></div>
+        <div class="tcw-client-panel-head"><h2>{{ __('website.client.recent_requests') }}</h2><a href="{{ route('user.service-requests') }}">{{ __('website.client.view_all') }}</a></div>
         <div class="tcw-client-table-wrap">
           <table>
-            <thead><tr><th>Request ID</th><th>Service</th><th>Status</th><th>Date</th><th>Action</th></tr></thead>
+            <thead><tr><th>{{ __('website.client.request_id') }}</th><th>{{ __('website.client.service') }}</th><th>{{ __('website.client.status') }}</th><th>{{ __('website.client.date') }}</th><th>{{ __('website.client.action') }}</th></tr></thead>
             <tbody>
               @forelse($recentRows as $row)
                 <tr>
                   <td><strong>{{ $row['id'] }}</strong><small>{{ $row['title'] }}</small></td>
                   <td><i class="fas fa-globe"></i> {{ $row['service'] }}</td>
                   <td><span class="tcw-client-status is-{{ $row['status'] }}">{{ $row['status_label'] }}</span></td>
-                  <td>{{ $row['date']->format('M d, Y') }}<small>{{ $row['date']->format('h:i A') }}</small></td>
-                  <td><a href="{{ route('user.service-requests') }}">View</a></td>
+                  <td>{{ $row['date']->locale(app()->getLocale())->translatedFormat('M d, Y') }}<small>{{ $row['date']->format('h:i A') }}</small></td>
+                  <td><a href="{{ route('user.service-requests') }}">{{ __('website.client.view') }}</a></td>
                 </tr>
               @empty
-                <tr><td colspan="5" class="tcw-client-empty">No recent requests yet.</td></tr>
+                <tr><td colspan="5" class="tcw-client-empty">{{ __('website.client.no_recent_requests') }}</td></tr>
               @endforelse
             </tbody>
           </table>
@@ -128,60 +128,60 @@
           @forelse($recentRows as $row)
             <article><i class="far fa-file-alt"></i><div><strong>{{ $row['id'] }}</strong><span>{{ $row['service'] }}</span><b class="tcw-client-status is-{{ $row['status'] }}">{{ $row['status_label'] }}</b></div></article>
           @empty
-            <p>No recent requests yet.</p>
+            <p>{{ __('website.client.no_recent_requests') }}</p>
           @endforelse
         </div>
       </section>
 
       <section class="tcw-client-panel tcw-deadlines-card">
-        <div class="tcw-client-panel-head"><h2>Upcoming Deadlines</h2><a href="{{ route('user.projects') }}">View All</a></div>
+        <div class="tcw-client-panel-head"><h2>{{ __('website.client.upcoming_deadlines') }}</h2><a href="{{ route('user.projects') }}">{{ __('website.client.view_all') }}</a></div>
         @forelse($projects->take(3) as $project)
-          <article><i class="far fa-calendar-alt"></i><div><strong>{{ $project->title }}</strong><span>{{ optional($project->due_at)->format('M d, Y') ?: 'Due soon' }}</span></div><b>{{ max(1, now()->diffInDays($project->due_at ?? now()->addDays(7), false)) }} days left</b></article>
+          <article><i class="far fa-calendar-alt"></i><div><strong>{{ $project->title }}</strong><span>{{ $project->due_at?->locale(app()->getLocale())->translatedFormat('M d, Y') ?: __('website.client.due_soon') }}</span></div><b>{{ __('website.client.days_left', ['days' => max(1, now()->diffInDays($project->due_at ?? now()->addDays(7), false))]) }}</b></article>
         @empty
-          <article><i class="far fa-calendar-alt"></i><div><strong>No project deadlines</strong><span>Start a new project</span></div><b>New</b></article>
+          <article><i class="far fa-calendar-alt"></i><div><strong>{{ __('website.client.no_deadlines') }}</strong><span>{{ __('website.client.start_new_project') }}</span></div><b>{{ __('website.client.new') }}</b></article>
         @endforelse
       </section>
 
       <section class="tcw-client-panel tcw-bar-card">
         <div class="tcw-client-panel-head">
-          <h2>Monthly Spending</h2>
+          <h2>{{ __('website.client.monthly_spending') }}</h2>
           <label class="tcw-activity-month-select">
-            <select id="spendingYearSelect" aria-label="Select spending year">
+            <select id="spendingYearSelect" aria-label="{{ __('website.client.select_year') }}">
               @foreach($spendingYears as $year)
-                <option value="{{ $year['year'] }}">{{ $loop->first ? 'This Year' : $year['label'] }}</option>
+                <option value="{{ $year['year'] }}">{{ $loop->first ? __('website.client.this_year') : $year['label'] }}</option>
               @endforeach
             </select>
             <i class="fas fa-chevron-down"></i>
           </label>
         </div>
         <div class="tcw-bar-chart" id="spendingChart" data-spending='@json($spendingYears)'>
-          <div class="tcw-bar-total"><span>Total</span><strong id="spendingTotal">AED 0</strong></div>
+          <div class="tcw-bar-total"><span>{{ __('website.client.total') }}</span><strong id="spendingTotal">AED 0</strong></div>
           <div class="tcw-bar-bars" id="spendingBars"></div>
         </div>
       </section>
 
       <section class="tcw-client-panel tcw-service-spend-card">
-        <div class="tcw-client-panel-head"><h2>Service Wise Spending</h2></div>
+        <div class="tcw-client-panel-head"><h2>{{ __('website.client.service_spending') }}</h2></div>
         <div class="tcw-donut-wrap is-small">
           <div class="tcw-css-donut"></div>
           <div class="tcw-donut-legend">
-            <p><i class="is-blue"></i>Web Development <b>AED {{ number_format(max($totalSpent, 5450)) }}</b></p>
-            <p><i class="is-purple"></i>SEO Services <b>AED 2,850</b></p>
-            <p><i class="is-orange"></i>UI/UX Design <b>AED 2,100</b></p>
-            <p><i class="is-cyan"></i>Digital Marketing <b>AED 1,450</b></p>
+            <p><i class="is-blue"></i>{{ __('website.client.web_development') }} <b>AED {{ number_format(max($totalSpent, 5450)) }}</b></p>
+            <p><i class="is-purple"></i>{{ __('website.client.seo_services') }} <b>AED 2,850</b></p>
+            <p><i class="is-orange"></i>{{ __('website.client.ui_design') }} <b>AED 2,100</b></p>
+            <p><i class="is-cyan"></i>{{ __('website.client.digital_marketing') }} <b>AED 1,450</b></p>
           </div>
         </div>
       </section>
 
       <section class="tcw-client-panel tcw-quick-actions-card">
-        <div class="tcw-client-panel-head"><h2>Quick Actions</h2></div>
+        <div class="tcw-client-panel-head"><h2>{{ __('website.client.quick_actions') }}</h2></div>
         <div>
-          <a href="{{ route('website.contact') }}"><i class="fas fa-plus-circle"></i><span>New Request</span></a>
-          <a href="{{ route('website.quote-generator') }}"><i class="far fa-file-pdf"></i><span>Request Quote</span></a>
-          <a href="{{ route('website.offers') }}"><i class="fas fa-tags"></i><span>Browse Offers</span></a>
-          <a href="{{ route('user.projects') }}"><i class="fas fa-chart-line"></i><span>Track Projects</span></a>
-          <a href="{{ route('user.orders') }}"><i class="far fa-file-alt"></i><span>View Invoices</span></a>
-          <a href="{{ route('user.support-chat') }}"><i class="fas fa-headset"></i><span>Support Chat</span></a>
+          <a href="{{ route('website.contact') }}"><i class="fas fa-plus-circle"></i><span>{{ __('website.client.new_request') }}</span></a>
+          <a href="{{ route('website.quote-generator') }}"><i class="far fa-file-pdf"></i><span>{{ __('website.client.request_quote') }}</span></a>
+          <a href="{{ route('website.offers') }}"><i class="fas fa-tags"></i><span>{{ __('website.client.browse_offers') }}</span></a>
+          <a href="{{ route('user.projects') }}"><i class="fas fa-chart-line"></i><span>{{ __('website.client.track_projects') }}</span></a>
+          <a href="{{ route('user.orders') }}"><i class="far fa-file-alt"></i><span>{{ __('website.client.view_invoices') }}</span></a>
+          <a href="{{ route('user.support-chat') }}"><i class="fas fa-headset"></i><span>{{ __('website.client.chat') }}</span></a>
         </div>
       </section>
     </div>
@@ -232,9 +232,9 @@
           .map(([x, y, value, day]) => `<circle cx="${x.toFixed(2)}" cy="${y.toFixed(2)}" r="${value === month.peakCount ? 4.5 : 3}" data-day="${day}" data-count="${value}" />`)
           .join('');
 
-        tooltip.innerHTML = `${month.peakLabel}<br>${month.peakCount} Activities`;
+        tooltip.innerHTML = `${month.peakLabel}<br>${month.peakCount} {{ __('website.client.activities') }}`;
         tooltip.style.left = `${Math.min(72, Math.max(18, (month.peakDay / values.length) * 100))}%`;
-        label.textContent = `${month.label} · ${month.total} activities`;
+        label.textContent = `${month.label} · ${month.total} {{ __('website.client.activities') }}`;
       };
 
       select.addEventListener('change', () => render(select.value));

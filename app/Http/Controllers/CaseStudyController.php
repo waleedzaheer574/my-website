@@ -81,10 +81,14 @@ class CaseStudyController extends Controller
     {
         return $request->validate([
             'title' => ['required', 'string', 'max:255'],
+            'title_ar' => ['nullable', 'string', 'max:255'],
             'category' => ['nullable', 'string', 'max:255'],
+            'category_ar' => ['nullable', 'string', 'max:255'],
             'image' => [($imageRequired ? 'required' : 'nullable'), 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:1536'],
             'summary' => ['nullable', 'string'],
+            'summary_ar' => ['nullable', 'string'],
             'result' => ['nullable', 'string', 'max:255'],
+            'result_ar' => ['nullable', 'string', 'max:255'],
             'cta_url' => ['nullable', 'string', 'max:255'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
         ]);

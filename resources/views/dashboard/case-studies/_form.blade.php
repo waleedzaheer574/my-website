@@ -22,6 +22,20 @@
     @error('summary') <small class="admin-u-021">{{ $message }}</small> @enderror
 </div>
 
+<h3>Arabic Content</h3>
+@foreach(['title_ar' => 'Title (Arabic)', 'category_ar' => 'Category (Arabic)', 'result_ar' => 'Result / Metric (Arabic)'] as $field => $label)
+    <div class="form-group">
+        <label for="{{ $field }}">{{ $label }}</label>
+        <input type="text" name="{{ $field }}" id="{{ $field }}" class="form-control" dir="rtl" lang="ar" value="{{ old($field, $caseStudy?->{$field}) }}">
+        @error($field) <small class="admin-u-021">{{ $message }}</small> @enderror
+    </div>
+@endforeach
+<div class="form-group">
+    <label for="summary_ar">Summary (Arabic)</label>
+    <textarea name="summary_ar" id="summary_ar" class="form-control" dir="rtl" lang="ar" rows="5">{{ old('summary_ar', $caseStudy?->summary_ar) }}</textarea>
+    @error('summary_ar') <small class="admin-u-021">{{ $message }}</small> @enderror
+</div>
+
 <div class="admin-u-035">
     <div class="form-group">
         <label for="result">Result / Metric</label>

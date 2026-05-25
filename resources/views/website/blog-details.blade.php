@@ -4,15 +4,15 @@
   $publishedDate = optional($blog->published_at)->format('d M, Y') ?: $blog->created_at->format('d M, Y');
   $authorName = $blog->author_name ?: 'Multitechwave';
   $authorInitial = \Illuminate\Support\Str::of($authorName)->substr(0, 1)->upper();
-  $contentWithBreaks = preg_replace('/<\/(p|h[1-6]|li|blockquote)>/i', '$0'.PHP_EOL.PHP_EOL, (string) $blog->content);
+  $contentWithBreaks = preg_replace('/<\/(p|h[1-6]|li|blockquote)>/i', '$0'.PHP_EOL.PHP_EOL, (string) $blog->localized('content'));
   $contentText = trim(html_entity_decode(strip_tags($contentWithBreaks), ENT_QUOTES, 'UTF-8'));
   $contentParagraphs = collect(preg_split('/\R{2,}/', $contentText))
     ->map(fn ($paragraph) => trim(preg_replace('/\s+/', ' ', $paragraph)))
     ->filter();
-  $wordCount = str_word_count(strip_tags($blog->title.' '.$blog->excerpt.' '.$contentText));
+  $wordCount = str_word_count(strip_tags($blog->localized('title').' '.$blog->localized('excerpt').' '.$contentText));
   $readingTime = max(1, (int) ceil($wordCount / 200));
   $shareUrl = urlencode(request()->fullUrl());
-  $shareTitle = urlencode($blog->title);
+  $shareTitle = urlencode($blog->localized('title'));
 @endphp
 
 @section('content')
@@ -20,28 +20,28 @@
     <section class="tcw-article-header">
       <div class="container tcw-article-container">
         <nav class="tcw-article-breadcrumb" aria-label="Breadcrumb">
-          <a href="{{ url('/') }}">Home</a>
+          <a href="{{ url('/') }}">{{ __('website.nav.home') }}</a>
           <i class="fas fa-chevron-right"></i>
-          <a href="{{ route('website.blog') }}">Blog</a>
+          <a href="{{ route('website.blog') }}">{{ __('website.nav.blog') }}</a>
           <i class="fas fa-chevron-right"></i>
-          <span>{{ \Illuminate\Support\Str::limit($blog->title, 64) }}</span>
+          <span>{{ \Illuminate\Support\Str::limit($blog->localized('title'), 64) }}</span>
         </nav>
 
-        @if($blog->category)
-          <span class="tcw-article-category">{{ $blog->category }}</span>
+        @if($blog->localized('category'))
+          <span class="tcw-article-category">{{ $blog->localized('category') }}</span>
         @endif
 
-        <h1>{{ $blog->title }}</h1>
+        <h1>{{ $blog->localized('title') }}</h1>
 
         <div class="tcw-article-metadata" aria-label="Article details">
-          <span><i class="far fa-user"></i> By {{ $authorName }}</span>
+          <span><i class="far fa-user"></i> {{ __('website.article.by') }} {{ $authorName }}</span>
           <span><i class="far fa-calendar-alt"></i> {{ $publishedDate }}</span>
-          <span><i class="far fa-eye"></i> {{ number_format($blog->views) }} Views</span>
-          <span><i class="far fa-clock"></i> {{ $readingTime }} min read</span>
+          <span><i class="far fa-eye"></i> {{ number_format($blog->views) }} {{ __('website.article.views') }}</span>
+          <span><i class="far fa-clock"></i> {{ $readingTime }} {{ __('website.article.read_time') }}</span>
         </div>
 
         <figure class="tcw-article-cover">
-          <img src="{{ asset($blog->featured_image) }}" alt="{{ $blog->title }}" loading="eager" decoding="async" fetchpriority="high">
+          <img src="{{ asset($blog->featured_image) }}" alt="{{ $blog->localized('title') }}" loading="eager" decoding="async" fetchpriority="high">
         </figure>
       </div>
     </section>
@@ -50,7 +50,7 @@
       <div class="container tcw-article-container">
         <div class="tcw-article-layout">
           <aside class="tcw-article-share" aria-label="Share article">
-            <strong>Share</strong>
+            <strong>{{ __('website.article.share') }}</strong>
             <a href="https://www.facebook.com/sharer/sharer.php?u={{ $shareUrl }}" target="_blank" rel="noopener noreferrer" aria-label="Share on Facebook"><i class="fab fa-facebook-f"></i></a>
             <a href="https://twitter.com/intent/tweet?url={{ $shareUrl }}&text={{ $shareTitle }}" target="_blank" rel="noopener noreferrer" aria-label="Share on Twitter"><i class="fab fa-twitter"></i></a>
             <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ $shareUrl }}" target="_blank" rel="noopener noreferrer" aria-label="Share on LinkedIn"><i class="fab fa-linkedin-in"></i></a>
@@ -58,14 +58,14 @@
 
           <article class="tcw-article-main">
             <div class="tcw-article-body" id="article-overview">
-              @if($blog->excerpt)
-                <p class="tcw-article-lead">{{ $blog->excerpt }}</p>
+              @if($blog->localized('excerpt'))
+                <p class="tcw-article-lead">{{ $blog->localized('excerpt') }}</p>
               @endif
 
               @forelse($contentParagraphs as $paragraph)
                 <p>{{ $paragraph }}</p>
               @empty
-                <p>More article details will be available soon.</p>
+                <p>{{ __('website.article.empty_body') }}</p>
               @endforelse
             </div>
 
@@ -76,9 +76,9 @@
                 <span class="tcw-article-author-avatar">{{ $authorInitial }}</span>
               @endif
               <div>
-                <small>About the author</small>
+                <small>{{ __('website.article.author') }}</small>
                 <h2>{{ $authorName }}</h2>
-                <p>{{ $blog->author_bio ?: 'The Multitechwave team writes about growth, design, SEO, and performance-driven digital experiences.' }}</p>
+                <p>{{ $blog->localized('author_bio') ?: 'The Multitechwave team writes about growth, design, SEO, and performance-driven digital experiences.' }}</p>
               </div>
               <div class="tcw-article-author-links">
                 <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ $shareUrl }}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
@@ -89,20 +89,20 @@
 
           <aside class="tcw-article-sidebar">
             <nav class="tcw-article-toc" aria-label="Table of contents">
-              <h2>Table Of Contents</h2>
-              <a class="is-active" href="#article-overview">Article Overview</a>
-              @if($blog->category)
-                <span>{{ $blog->category }}</span>
+              <h2>{{ __('website.article.toc') }}</h2>
+              <a class="is-active" href="#article-overview">{{ __('website.article.overview') }}</a>
+              @if($blog->localized('category'))
+                <span>{{ $blog->localized('category') }}</span>
               @endif
-              <a href="#article-author">About The Author</a>
-              <a href="#related-articles">Related Articles</a>
+              <a href="#article-author">{{ __('website.article.author') }}</a>
+              <a href="#related-articles">{{ __('website.article.related') }}</a>
             </nav>
 
             <div class="tcw-article-cta">
               <i class="fas fa-lightbulb"></i>
-              <h2>Start Your Digital Journey Today</h2>
-              <p>Build and scale your online presence with practical digital solutions.</p>
-              <a href="{{ url('/contact') }}">Contact Our Experts</a>
+              <h2>{{ __('website.article.cta_title') }}</h2>
+              <p>{{ __('website.article.cta_text') }}</p>
+              <a href="{{ url('/contact') }}">{{ __('website.article.cta_button') }}</a>
             </div>
           </aside>
         </div>
@@ -112,27 +112,27 @@
     <section class="tcw-article-related" id="related-articles">
       <div class="container tcw-article-container">
         <header class="tcw-article-related-head">
-          <span>More Insights</span>
-          <h2>Related Articles</h2>
+          <span>{{ __('website.article.insights') }}</span>
+          <h2>{{ __('website.article.related') }}</h2>
         </header>
 
         <div class="tcw-article-related-grid" data-load-more-grid data-load-more-step="4">
           @forelse($relatedBlogs as $relatedBlog)
             <a href="{{ route('website.blog-details.show', $relatedBlog->slug) }}" class="tcw-article-card tcw-load-more-item {{ $loop->index >= 4 ? 'is-hidden' : '' }}" data-load-more-item>
-              <img src="{{ asset($relatedBlog->featured_image) }}" alt="{{ $relatedBlog->title }}" loading="lazy" decoding="async">
+              <img src="{{ asset($relatedBlog->featured_image) }}" alt="{{ $relatedBlog->localized('title') }}" loading="lazy" decoding="async">
               <time>{{ optional($relatedBlog->published_at)->format('d M, Y') ?: $relatedBlog->created_at->format('d M, Y') }}</time>
-              <h3>{{ $relatedBlog->title }}</h3>
-              <span>Read More <i class="fas fa-arrow-right"></i></span>
+              <h3>{{ $relatedBlog->localized('title') }}</h3>
+              <span>{{ __('website.article.read_more') }} <i class="fas fa-arrow-right"></i></span>
             </a>
           @empty
-            <div class="tcw-article-empty">No related articles found.</div>
+            <div class="tcw-article-empty">{{ __('website.article.no_related') }}</div>
           @endforelse
         </div>
 
         @if($relatedBlogs->count() > 4)
           <div class="tcw-load-more-wrap">
             <button type="button" class="tcw-load-more-btn" data-load-more-btn>
-              <i class="fas fa-sync-alt"></i> Load More
+              <i class="fas fa-sync-alt"></i> {{ __('website.common.load_more') }}
             </button>
           </div>
         @endif

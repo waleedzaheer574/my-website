@@ -97,11 +97,16 @@ class OfferController extends Controller
         return $request->validate([
             'service_id' => ['nullable', 'exists:services,id'],
             'title' => ['required', 'string', 'max:255'],
+            'title_ar' => ['nullable', 'string', 'max:255'],
             'slug' => ['nullable', 'string', 'max:255'],
             'category' => ['nullable', 'string', 'max:255'],
+            'category_ar' => ['nullable', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
+            'description_ar' => ['nullable', 'string'],
             'detail_overview' => ['nullable', 'string'],
+            'detail_overview_ar' => ['nullable', 'string'],
             'hero_visual_title' => ['nullable', 'string', 'max:255'],
+            'hero_visual_title_ar' => ['nullable', 'string', 'max:255'],
             'currency' => ['required', 'string', 'max:8'],
             'price' => ['required', 'integer', 'min:0'],
             'billing_cycle' => ['required', 'in:one_time,monthly,yearly'],
@@ -113,13 +118,19 @@ class OfferController extends Controller
     protected function attachDynamicContent(Request $request, array $data): array
     {
         $data['features'] = $this->linesToArray($request->input('features_text'));
+        $data['features_ar'] = $this->linesToArray($request->input('features_text_ar'));
         $data['addons'] = $this->linesToArray($request->input('addons_text'));
         $data['overview_items'] = $this->linesToArray($request->input('overview_items_text'));
+        $data['overview_items_ar'] = $this->linesToArray($request->input('overview_items_text_ar'));
         $data['detail_features'] = $this->pairedLinesToArray($request->input('detail_features_text'), 'title', 'description');
+        $data['detail_features_ar'] = $this->pairedLinesToArray($request->input('detail_features_text_ar'), 'title', 'description');
         $data['tech_stack'] = $this->linesToArray($request->input('tech_stack_text'));
         $data['delivery_timeline'] = $this->pairedLinesToArray($request->input('delivery_timeline_text'), 'title', 'description');
+        $data['delivery_timeline_ar'] = $this->pairedLinesToArray($request->input('delivery_timeline_text_ar'), 'title', 'description');
         $data['faqs'] = $this->pairedLinesToArray($request->input('faqs_text'), 'question', 'answer');
+        $data['faqs_ar'] = $this->pairedLinesToArray($request->input('faqs_text_ar'), 'question', 'answer');
         $data['why_choose'] = $this->linesToArray($request->input('why_choose_text'));
+        $data['why_choose_ar'] = $this->linesToArray($request->input('why_choose_text_ar'));
         $data['is_popular'] = $request->boolean('is_popular');
         $data['is_active'] = $request->boolean('is_active', true);
 
@@ -171,63 +182,83 @@ class OfferController extends Controller
         return collect([
             new Offer([
                 'title' => '5 Page Dynamic Website',
+                'title_ar' => 'موقع ديناميكي من 5 صفحات',
                 'slug' => '5-page-dynamic-website',
                 'category' => 'Website Development',
+                'category_ar' => 'تطوير المواقع',
                 'description' => 'Fast, premium business website with service pages and contact flow.',
+                'description_ar' => 'موقع أعمال سريع واحترافي مع صفحات خدمات ومسار تواصل واضح.',
                 'currency' => 'AED',
                 'price' => 200,
                 'billing_cycle' => 'one_time',
                 'delivery_time' => '5 - 7 days',
                 'features' => ['Responsive pages', 'Admin editable content', 'Contact form', 'Basic SEO setup'],
+                'features_ar' => ['صفحات متجاوبة', 'محتوى قابل للتعديل', 'نموذج تواصل', 'تهيئة SEO أساسية'],
                 'is_popular' => true,
                 'is_active' => true,
             ]),
             new Offer([
                 'title' => 'Ecommerce Website',
+                'title_ar' => 'موقع تجارة إلكترونية',
                 'slug' => 'ecommerce-website',
                 'category' => 'Online Store',
+                'category_ar' => 'متجر إلكتروني',
                 'description' => 'Conversion-focused ecommerce storefront with product and checkout flow.',
+                'description_ar' => 'متجر إلكتروني يركز على المبيعات مع المنتجات ومسار الدفع.',
                 'currency' => 'AED',
                 'price' => 1200,
                 'billing_cycle' => 'one_time',
                 'delivery_time' => '2 - 3 weeks',
                 'features' => ['Product catalog', 'Cart and checkout', 'Payment-ready UI', 'Order dashboard'],
+                'features_ar' => ['كتالوج المنتجات', 'السلة والدفع', 'واجهة دفع جاهزة', 'لوحة الطلبات'],
                 'is_active' => true,
             ]),
             new Offer([
                 'title' => 'SEO Starter Package',
+                'title_ar' => 'باقة تحسين محركات البحث',
                 'slug' => 'seo-starter-package',
                 'category' => 'SEO Services',
+                'category_ar' => 'خدمات SEO',
                 'description' => 'Starter SEO package for improving visibility and technical basics.',
+                'description_ar' => 'باقة SEO بداية لتحسين الظهور والأساسيات التقنية.',
                 'currency' => 'AED',
                 'price' => 150,
                 'billing_cycle' => 'monthly',
                 'delivery_time' => 'Monthly',
                 'features' => ['Keyword plan', 'On-page SEO', 'Technical checks', 'Monthly report'],
+                'features_ar' => ['خطة كلمات مفتاحية', 'تحسين الصفحات', 'فحوص تقنية', 'تقرير شهري'],
                 'is_active' => true,
             ]),
             new Offer([
                 'title' => 'Laravel SaaS System',
+                'title_ar' => 'نظام Laravel SaaS',
                 'slug' => 'laravel-saas-system',
                 'category' => 'SaaS Development',
+                'category_ar' => 'تطوير SaaS',
                 'description' => 'Custom Laravel SaaS platform with auth, dashboard, roles and workflows.',
+                'description_ar' => 'منصة Laravel SaaS مخصصة مع تسجيل دخول ولوحة تحكم وأدوار وسير عمل.',
                 'currency' => 'AED',
                 'price' => 3000,
                 'billing_cycle' => 'one_time',
                 'delivery_time' => '4 - 8 weeks',
                 'features' => ['Laravel backend', 'User dashboard', 'Admin panel', 'Project workflow'],
+                'features_ar' => ['خلفية Laravel', 'لوحة المستخدم', 'لوحة الإدارة', 'سير عمل المشروع'],
                 'is_active' => true,
             ]),
             new Offer([
                 'title' => 'Mobile App Development',
+                'title_ar' => 'تطوير تطبيقات الجوال',
                 'slug' => 'mobile-app-development',
                 'category' => 'Mobile Apps',
+                'category_ar' => 'تطبيقات الجوال',
                 'description' => 'Android and iOS mobile app development with API integrations and admin control.',
+                'description_ar' => 'تطوير تطبيقات Android وiOS مع تكامل API وتحكم إداري.',
                 'currency' => 'AED',
                 'price' => 800,
                 'billing_cycle' => 'one_time',
                 'delivery_time' => '20 days',
                 'features' => ['Cross platform', 'Modern UI/UX', 'API integrations', 'Admin panel', '2 revisions'],
+                'features_ar' => ['متعدد المنصات', 'واجهة حديثة', 'تكامل API', 'لوحة إدارة', 'تعديلان'],
                 'is_active' => true,
             ]),
         ]);

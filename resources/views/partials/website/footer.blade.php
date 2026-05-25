@@ -24,7 +24,7 @@
       <div class="col-lg-3 col-md-6">
         <div class="cs-footer_item cs-text_widgert">
           <div class="cs-text_widgert_content tcw-footer-logo">
-            <img src="{{ $websiteLogo }}" alt="Multitechwave logo" width="240" height="100" loading="lazy" decoding="async">
+            <img src="{{ $websiteLogo }}" alt="Multitechwave" width="240" height="100" loading="lazy" decoding="async">
           </div>
         </div>
         <div class="cs-footer_item cs-address_widgert">
@@ -36,39 +36,39 @@
       </div><!-- .col -->
       <div class="col-lg-3 col-md-6">
         <div class="cs-footer_item widget_nav_menu">
-          <h2 class="cs-widget_title">Services</h2>
+          <h2 class="cs-widget_title">{{ __('website.footer.services') }}</h2>
           <ul class="menu">
             @forelse($footerServices as $service)
               <li>
                 <a href="{{ $service->detail ? route('website.service-details.show', $service->detail->slug) : route('website.services') }}">
-                  {{ $service->service_title }}
+                  {{ $service->localized('service_title') }}
                 </a>
               </li>
             @empty
-              <li><a href="{{ route('website.services') }}">Services</a></li>
+              <li><a href="{{ route('website.services') }}">{{ __('website.footer.services') }}</a></li>
             @endforelse
           </ul>
         </div>
       </div><!-- .col -->
       <div class="col-lg-3 col-md-6">
         <div class="cs-footer_item widget_nav_menu">
-          <h2 class="cs-widget_title">Company</h2>
+          <h2 class="cs-widget_title">{{ __('website.footer.company') }}</h2>
           <ul class="menu">
-            <li><a href="{{ url('/privacy-policy') }}">Privacy policy</a></li>
-            <li><a href="{{ url('/sitemap') }}">Sitemap</a></li>
-            <li><a href="{{ url('/careers') }}">Careers</a></li>
-            <li><a href="{{ url('/terms') }}">Terms</a></li>
+            <li><a href="{{ url('/privacy-policy') }}">{{ __('website.footer.privacy') }}</a></li>
+            <li><a href="{{ url('/sitemap') }}">{{ __('website.footer.sitemap') }}</a></li>
+            <li><a href="{{ url('/careers') }}">{{ __('website.footer.careers') }}</a></li>
+            <li><a href="{{ url('/terms') }}">{{ __('website.footer.terms') }}</a></li>
           </ul>
         </div>
       </div><!-- .col -->
       <div class="col-lg-3 col-md-6">
         <div class="cs-footer_item cs-address_widgert">
-          <h2 class="cs-widget_title">Subscribe Us</h2>
+          <h2 class="cs-widget_title">{{ __('website.footer.subscribe') }}</h2>
           <div class="cs-footer_newsletter cs-style1">
             <form action="{{ route('newsletter-subscriptions.store') }}" method="POST" class="cs-footer_newsletter_form">
               @csrf
-              <input type="email" name="email" class="cs-footer_newsletter_input" placeholder="Enter your email" required>
-              <button type="submit" class="cs-footer_newsletter_btn cs-accent_bg cs-white cs-accent_bg_2_hover" aria-label="Subscribe"><i class="fas fa-paper-plane"></i></button>
+              <input type="email" name="email" class="cs-footer_newsletter_input" placeholder="{{ __('website.footer.email_placeholder') }}" required>
+              <button type="submit" class="cs-footer_newsletter_btn cs-accent_bg cs-white cs-accent_bg_2_hover" aria-label="{{ __('website.footer.subscribe') }}"><i class="fas fa-paper-plane"></i></button>
             </form>
             @if(session('newsletter_success'))
               <div class="tcw-newsletter-message" role="status">

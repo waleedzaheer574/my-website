@@ -81,20 +81,20 @@ class CheckoutController extends Controller
             'due_at' => now()->addWeeks(2),
         ]);
 
-        foreach (['Requirements', 'Design & planning', 'Development', 'Review', 'Delivery'] as $milestone) {
+        foreach (['Requirements', 'Design & planning', 'Development', 'Review', 'Delivery'] as $index => $milestone) {
             ProjectMilestone::create([
                 'agency_project_id' => $project->id,
                 'title' => $milestone,
-                'status' => $milestone === 'Requirements' ? 'in_progress' : 'pending',
+                'status' => $index === 0 ? 'in_progress' : 'pending',
             ]);
         }
 
         $request->user()->notify(new SubscriptionPurchasedNotification($order, $subscription));
 
         return redirect()->route('user.orders')->with([
-            'success' => 'Test payment successful. Your subscription and project workspace are active.',
+            'success' => __('website.checkout.success'),
             'subscription_success' => true,
-            'subscription_title' => $offer->title,
+            'subscription_title' => $offer->localized('title'),
             'subscription_amount' => $order->amount_label,
         ]);
     }

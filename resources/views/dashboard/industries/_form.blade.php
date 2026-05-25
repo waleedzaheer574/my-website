@@ -36,6 +36,20 @@
     @error('description') <small class="admin-u-021">{{ $message }}</small> @enderror
 </div>
 
+<h3>Arabic Content</h3>
+@foreach(['title_ar' => 'Title (Arabic)', 'category_ar' => 'Category (Arabic)', 'result_ar' => 'Result / Metric (Arabic)'] as $field => $label)
+    <div class="form-group">
+        <label for="{{ $field }}">{{ $label }}</label>
+        <input type="text" name="{{ $field }}" id="{{ $field }}" class="form-control" dir="rtl" lang="ar" value="{{ old($field, $industry?->{$field}) }}">
+        @error($field) <small class="admin-u-021">{{ $message }}</small> @enderror
+    </div>
+@endforeach
+<div class="form-group">
+    <label for="description_ar">Description (Arabic)</label>
+    <textarea name="description_ar" id="description_ar" class="form-control" dir="rtl" lang="ar" rows="5">{{ old('description_ar', $industry?->description_ar) }}</textarea>
+    @error('description_ar') <small class="admin-u-021">{{ $message }}</small> @enderror
+</div>
+
 <div class="form-group">
     <label for="cta_url">CTA URL</label>
     <input type="url" name="cta_url" id="cta_url" class="form-control" value="{{ old('cta_url', $industry?->cta_url) }}" placeholder="{{ url('/contact') }}">

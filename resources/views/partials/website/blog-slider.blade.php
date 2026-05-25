@@ -1,15 +1,15 @@
 @php
   $blogs = $blogs ?? collect();
-  $emptyText = $emptyText ?? 'No blogs found.';
+  $emptyText = $emptyText ?? __('website.common.no_blogs');
 @endphp
 
 
 <div class="tcw-blog-rail" data-blog-rail>
   <div class="tcw-blog-rail_wrap" data-blog-rail-wrap>
-    <button class="tcw-blog-rail_arrow tcw-blog-rail_prev" type="button" data-blog-rail-prev aria-label="Previous blog">
+    <button class="tcw-blog-rail_arrow tcw-blog-rail_prev" type="button" data-blog-rail-prev aria-label="{{ __('website.blog.previous') }}">
       <i class="fas fa-angle-left"></i>
     </button>
-    <button class="tcw-blog-rail_arrow tcw-blog-rail_next" type="button" data-blog-rail-next aria-label="Next blog">
+    <button class="tcw-blog-rail_arrow tcw-blog-rail_next" type="button" data-blog-rail-next aria-label="{{ __('website.blog.next') }}">
       <i class="fas fa-angle-right"></i>
     </button>
 
@@ -17,10 +17,10 @@
       @forelse($blogs as $blog)
         <div class="tcw-blog-rail_slide" data-blog-rail-slide>
           <a href="{{ route('website.blog-details.show', $blog->slug) }}" class="tcw-blog-card">
-            <img src="{{ asset($blog->featured_image) }}" alt="{{ $blog->title }}" loading="lazy" decoding="async">
+            <img src="{{ asset($blog->featured_image) }}" alt="{{ $blog->localized('title') }}" loading="lazy" decoding="async">
             <span class="tcw-blog-card_content">
-              <span class="tcw-blog-card_meta">{{ $blog->category ?: $blog->author_name }}</span>
-              <h3 class="tcw-blog-card_title">{{ $blog->title }}</h3>
+              <span class="tcw-blog-card_meta">{{ $blog->localized('category') ?: $blog->author_name }}</span>
+              <h3 class="tcw-blog-card_title">{{ $blog->localized('title') }}</h3>
             </span>
           </a>
         </div>

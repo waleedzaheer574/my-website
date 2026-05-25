@@ -40,6 +40,13 @@ use App\Http\Controllers\AdminCommerceController;
 Route::get('/test-ddd', function () {
     dd('working');
 });
+Route::get('/language/{locale}', function (Request $request, string $locale) {
+    abort_unless(in_array($locale, ['en', 'ar'], true), 404);
+
+    $request->session()->put('locale', $locale);
+
+    return redirect()->back();
+})->name('language.switch');
 Route::get('/sitemap.xml', [SeoController::class, 'sitemap'])->name('seo.sitemap');
 Route::get('/', [HomeController::class, 'home'])->name('website.home');
 Route::get('/about', [HomeController::class, 'about'])->name('website.about');

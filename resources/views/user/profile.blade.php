@@ -1,6 +1,6 @@
 @extends('layouts.website')
 
-@section('title', 'Account Settings')
+@section('title', __('website.client.account_settings'))
 @section('hide_global_faqs', '1')
 
 @push('css')
@@ -9,8 +9,8 @@
 
 @section('content')
   @php($activeClientNav = 'settings')
-  @php($clientHeaderTitle = 'Account Settings')
-  @php($clientHeaderSubtitle = 'Manage your profile information and password.')
+  @php($clientHeaderTitle = __('website.client.account_settings'))
+  @php($clientHeaderSubtitle = __('website.client.settings_subtitle'))
   <main class="tcw-client-dashboard tcw-premium-client-dashboard tcw-account-dashboard">
     @include('user.partials.client-sidebar')
 
@@ -19,25 +19,25 @@
 
       <div class="tcw-settings-hero">
         <div>
-          <span>Profile center</span>
-          <h1>Account Settings</h1>
-          <p>Keep your profile secure, update account details, and jump back to the website anytime.</p>
+          <span>{{ __('website.client.profile_center') }}</span>
+          <h1>{{ __('website.client.account_settings') }}</h1>
+          <p>{{ __('website.client.settings_intro') }}</p>
         </div>
-        <a href="{{ route('website.home') }}"><i class="fas fa-globe"></i> Back to Website</a>
+        <a href="{{ route('website.home') }}"><i class="fas fa-globe"></i> {{ __('website.client.back_website') }}</a>
       </div>
 
       <div class="tcw-settings-overview">
         <article>
           <i class="far fa-user"></i>
-          <div><span>Profile</span><strong>{{ $user->name }}</strong></div>
+          <div><span>{{ __('website.client.profile') }}</span><strong>{{ $user->name }}</strong></div>
         </article>
         <article>
           <i class="far fa-envelope"></i>
-          <div><span>Email</span><strong>{{ $user->email }}</strong></div>
+          <div><span>{{ __('website.client.email') }}</span><strong>{{ $user->email }}</strong></div>
         </article>
         <article>
           <i class="fas fa-shield-alt"></i>
-          <div><span>Security</span><strong>Password protected</strong></div>
+          <div><span>{{ __('website.client.security') }}</span><strong>{{ __('website.client.password_protected') }}</strong></div>
         </article>
       </div>
 
@@ -45,8 +45,8 @@
         <article class="tcw-account-card tcw-settings-card">
           <header>
             <div>
-              <h2>Profile Information</h2>
-              <p>Update your personal information</p>
+              <h2>{{ __('website.client.profile_information') }}</h2>
+              <p>{{ __('website.client.update_personal') }}</p>
             </div>
             <span>{{ strtoupper(substr($user->name, 0, 1)) }}</span>
           </header>
@@ -55,26 +55,26 @@
             @csrf
             @method('PUT')
             <label>
-              <span>Full Name</span>
+              <span>{{ __('website.client.full_name') }}</span>
               <div><i class="far fa-user"></i><input type="text" name="name" value="{{ old('name', $user->name) }}" required></div>
             </label>
             <label>
-              <span>Email Address</span>
+              <span>{{ __('website.client.email_address') }}</span>
               <div><i class="far fa-envelope"></i><input type="email" name="email" value="{{ old('email', $user->email) }}" required></div>
             </label>
             <aside>
-              <strong><i class="far fa-info-circle"></i> Keep your information up to date</strong>
-              <p>Ensure your email address is correct to receive important updates and notifications.</p>
+              <strong><i class="far fa-info-circle"></i> {{ __('website.client.keep_updated') }}</strong>
+              <p>{{ __('website.client.email_notice') }}</p>
             </aside>
-            <button type="submit"><i class="far fa-save"></i> Save Profile</button>
+            <button type="submit"><i class="far fa-save"></i> {{ __('website.client.save_profile') }}</button>
           </form>
         </article>
 
         <article class="tcw-account-card tcw-settings-card">
           <header>
             <div>
-              <h2>Change Password</h2>
-              <p>Update your password to keep your account secure</p>
+              <h2>{{ __('website.client.change_password') }}</h2>
+              <p>{{ __('website.client.password_intro') }}</p>
             </div>
             <span><i class="fas fa-lock"></i></span>
           </header>
@@ -83,24 +83,24 @@
             @csrf
             @method('PUT')
             <label>
-              <span>Current Password</span>
-              <div><i class="fas fa-lock"></i><input type="password" name="current_password" placeholder="Enter your current password" required></div>
+              <span>{{ __('website.client.current_password') }}</span>
+              <div><i class="fas fa-lock"></i><input type="password" name="current_password" placeholder="{{ __('website.client.enter_current') }}" required></div>
             </label>
             <label>
-              <span>New Password</span>
-              <div><i class="fas fa-lock"></i><input type="password" name="password" placeholder="Enter your new password" required></div>
+              <span>{{ __('website.client.new_password') }}</span>
+              <div><i class="fas fa-lock"></i><input type="password" name="password" placeholder="{{ __('website.client.enter_new') }}" required></div>
             </label>
             <label>
-              <span>Confirm Password</span>
-              <div><i class="fas fa-lock"></i><input type="password" name="password_confirmation" placeholder="Confirm your new password" required></div>
+              <span>{{ __('website.client.confirm_password') }}</span>
+              <div><i class="fas fa-lock"></i><input type="password" name="password_confirmation" placeholder="{{ __('website.client.confirm_new') }}" required></div>
             </label>
             <aside class="tcw-password-tips">
-              <strong><i class="fas fa-shield-alt"></i> Password Security Tips</strong>
-              <p>Use at least 8 characters</p>
-              <p>Include uppercase, lowercase, numbers & symbols</p>
-              <p>Avoid common passwords</p>
+              <strong><i class="fas fa-shield-alt"></i> {{ __('website.client.password_tips') }}</strong>
+              <p>{{ __('website.client.tip_length') }}</p>
+              <p>{{ __('website.client.tip_characters') }}</p>
+              <p>{{ __('website.client.tip_avoid') }}</p>
             </aside>
-            <button type="submit"><i class="fas fa-lock"></i> Update Password</button>
+            <button type="submit"><i class="fas fa-lock"></i> {{ __('website.client.update_password') }}</button>
           </form>
         </article>
       </div>

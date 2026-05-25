@@ -232,6 +232,9 @@
         var $ts = $(this).find(".cs-slider_container");
         var $slickActive = $(this).find(".cs-slider_wrapper");
         var $sliderNumber = $(this).siblings(".slider-number");
+        var rtlVar =
+          $ts.attr("data-rtl") === "1" ||
+          document.documentElement.getAttribute("dir") === "rtl";
 
         // Auto Play
         var autoPlayVar = parseInt($ts.attr("data-autoplay"), 10);
@@ -279,6 +282,7 @@
           autoplaySpeed: autoplaySpdVar,
           centerMode: centerVar,
           fade: fadeVar,
+          rtl: rtlVar,
           prevArrow: $(this).find(".cs-left_arrow"),
           nextArrow: $(this).find(".cs-right_arrow"),
           appendDots: $(this).find(".cs-pagination"),

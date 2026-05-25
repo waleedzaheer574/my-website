@@ -27,6 +27,7 @@ class FaqController extends Controller
     {
         $validated = $this->validateFaq($request);
         $validated['answer'] = Faq::sanitizeAnswer($validated['answer']);
+        $validated['answer_ar'] = Faq::sanitizeAnswer($validated['answer_ar'] ?? null);
         $validated['is_active'] = $request->boolean('is_active', true);
         $validated['sort_order'] = $validated['sort_order'] ?? 0;
 
@@ -44,6 +45,7 @@ class FaqController extends Controller
     {
         $validated = $this->validateFaq($request);
         $validated['answer'] = Faq::sanitizeAnswer($validated['answer']);
+        $validated['answer_ar'] = Faq::sanitizeAnswer($validated['answer_ar'] ?? null);
         $validated['is_active'] = $request->boolean('is_active');
         $validated['sort_order'] = $validated['sort_order'] ?? 0;
 
@@ -64,7 +66,9 @@ class FaqController extends Controller
         return $request->validate([
             'page_key' => ['required', 'string', Rule::in(array_keys(Faq::PAGE_OPTIONS))],
             'question' => ['required', 'string', 'max:255'],
+            'question_ar' => ['nullable', 'string', 'max:255'],
             'answer' => ['required', 'string'],
+            'answer_ar' => ['nullable', 'string'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
         ]);
     }

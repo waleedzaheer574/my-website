@@ -81,9 +81,13 @@ class IndustryController extends Controller
     {
         return $request->validate([
             'title' => ['required', 'string', 'max:255'],
+            'title_ar' => ['nullable', 'string', 'max:255'],
             'category' => ['nullable', 'string', 'max:255'],
+            'category_ar' => ['nullable', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
+            'description_ar' => ['nullable', 'string'],
             'result' => ['nullable', 'string', 'max:255'],
+            'result_ar' => ['nullable', 'string', 'max:255'],
             'cta_url' => ['nullable', 'string', 'max:255'],
             'icon' => [($iconRequired ? 'required' : 'nullable'), 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:512'],
             'sort_order' => ['nullable', 'integer', 'min:0'],

@@ -1,6 +1,6 @@
 @extends('layouts.website')
 
-@section('title', 'Services')
+@section('title', __('website.services.title'))
 
 @section('content')
 @php
@@ -32,20 +32,20 @@
 
   $fallbackIcons = ['fas fa-server', 'fas fa-shopping-cart', 'fas fa-users', 'fas fa-robot', 'fas fa-globe', 'fas fa-search-location'];
 
-  $whyItems = [
-    ['icon' => 'fas fa-user-shield', 'title' => 'Expert Team', 'text' => 'Skilled professionals with proven experience'],
-    ['icon' => 'fas fa-chart-line', 'title' => 'Results Driven', 'text' => 'We focus on measurable growth and ROI'],
-    ['icon' => 'fas fa-headset', 'title' => '24/7 Support', 'text' => 'Round-the-clock support and communication'],
-    ['icon' => 'fas fa-database', 'title' => 'Custom Solutions', 'text' => 'Tailored solutions for your unique business needs'],
-    ['icon' => 'fas fa-cogs', 'title' => 'Advanced Tools', 'text' => 'We use the latest tools and technologies'],
-  ];
+  $whyIcons = ['fas fa-user-shield', 'fas fa-chart-line', 'fas fa-headset', 'fas fa-database', 'fas fa-cogs'];
+  $whyItems = collect(__('website.services.why_items'))->map(fn ($item, $index) => [
+    'icon' => $whyIcons[$index],
+    'title' => $item['title'],
+    'text' => $item['text'],
+  ])->all();
 
-  $processItems = [
-    ['icon' => 'fas fa-clipboard-list', 'step' => '01', 'title' => 'Discover', 'text' => 'We understand your business goals, challenges, and requirements.'],
-    ['icon' => 'fas fa-tasks', 'step' => '02', 'title' => 'Plan & Strategy', 'text' => 'We create a powerful strategy and roadmap customized for your needs.'],
-    ['icon' => 'fas fa-briefcase', 'step' => '03', 'title' => 'Execute', 'text' => 'Our team executes the plan using best practices and modern technologies.'],
-    ['icon' => 'fas fa-flag', 'step' => '04', 'title' => 'Deliver Results', 'text' => 'We deliver measurable results and continuous improvement.'],
-  ];
+  $processIcons = ['fas fa-clipboard-list', 'fas fa-tasks', 'fas fa-briefcase', 'fas fa-flag'];
+  $processItems = collect(__('website.services.process_items'))->map(fn ($item, $index) => [
+    'icon' => $processIcons[$index],
+    'step' => str_pad((string) ($index + 1), 2, '0', STR_PAD_LEFT),
+    'title' => $item['title'],
+    'text' => $item['text'],
+  ])->all();
 
   $techItems = [
     ['icon' => 'fab fa-aws', 'label' => 'AWS'],
@@ -83,13 +83,13 @@
   <section class="tcw-service-index-hero">
     <div class="container">
       <nav class="tcw-service-index-breadcrumb" aria-label="Breadcrumb">
-        <a href="{{ route('website.home') }}">Home</a>
+        <a href="{{ route('website.home') }}">{{ __('website.nav.home') }}</a>
         <i class="fas fa-chevron-right"></i>
-        <span>Services</span>
+        <span>{{ __('website.services.title') }}</span>
       </nav>
       <div class="tcw-service-index-heading">
-        <h1>All <span>Services</span></h1>
-        <p>We provide end-to-end digital solutions to help your business grow, scale, and succeed in the modern world.</p>
+        <h1>{{ __('website.services.all') }} <span>{{ __('website.services.title') }}</span></h1>
+        <p>{{ __('website.services.intro') }}</p>
       </div>
     </div>
   </section>
@@ -98,8 +98,8 @@
     <div class="container">
       @if($services->isEmpty())
         <div class="text-center tcw-empty-state">
-          <h2 class="tcw-empty-title">No services available yet</h2>
-          <p class="tcw-empty-text">Admin panel se services add karne ke baad ye section automatically populate ho jayega.</p>
+          <h2 class="tcw-empty-title">{{ __('website.services.empty_title') }}</h2>
+          <p class="tcw-empty-text">{{ __('website.services.empty_text') }}</p>
         </div>
       @else
         <div class="tcw-service-index-grid" data-load-more-grid data-load-more-step="6">
@@ -114,19 +114,19 @@
               <a href="{{ $serviceUrl }}">
                 <span class="tcw-service-index-icon">
                   @if($service->icon)
-                    <img src="{{ asset($service->icon) }}" alt="{{ $service->service_title }}" width="52" height="52" loading="lazy" decoding="async">
+                    <img src="{{ asset($service->icon) }}" alt="{{ $service->localized('service_title') }}" width="52" height="52" loading="lazy" decoding="async">
                   @else
                     <i class="{{ $serviceIconFor($service, $loop->index) }}"></i>
                   @endif
                 </span>
-                <h2>{{ $service->service_title }}</h2>
-                <p>{{ \Illuminate\Support\Str::limit($service->service_description, 132) }}</p>
+                <h2>{{ $service->localized('service_title') }}</h2>
+                <p>{{ \Illuminate\Support\Str::limit($service->localized('service_description'), 132) }}</p>
                 <ul>
                   @foreach($features as $feature)
                     <li><i class="far fa-check-circle"></i>{{ $feature }}</li>
                   @endforeach
                 </ul>
-                <b>Explore Service <i class="fas fa-arrow-right"></i></b>
+                <b>{{ __('website.services.explore') }} <i class="fas fa-arrow-right"></i></b>
               </a>
             </article>
           @endforeach
@@ -135,14 +135,14 @@
         @if($services->count() > 6)
           <div class="tcw-load-more-wrap">
             <button type="button" class="tcw-load-more-btn" data-load-more-button>
-              <i class="fas fa-sync-alt"></i> Load More Services
+              <i class="fas fa-sync-alt"></i> {{ __('website.services.load_more') }}
             </button>
           </div>
         @endif
       @endif
 
       <section class="tcw-service-why-panel">
-        <h2>Why Choose Multitechwave?</h2>
+        <h2>{{ __('website.services.why') }}</h2>
         <div>
           @foreach($whyItems as $item)
             <article>
@@ -156,8 +156,8 @@
 
       <section class="tcw-service-process-panel">
         <div class="tcw-service-index-heading is-small">
-          <span>Our Work Process</span>
-          <h2>Our Simple 4-Step Process</h2>
+          <span>{{ __('website.services.process_label') }}</span>
+          <h2>{{ __('website.services.process_title') }}</h2>
         </div>
         <div class="tcw-service-process-grid">
           @foreach($processItems as $item)
@@ -172,7 +172,7 @@
       </section>
 
       <section class="tcw-service-tech-panel-index">
-        <span>Technologies We Use</span>
+        <span>{{ __('website.services.technologies') }}</span>
         <div>
           @foreach($techItems as $tech)
             <article><i class="{{ $tech['icon'] }}"></i><b>{{ $tech['label'] }}</b></article>
@@ -182,15 +182,15 @@
 
       <section class="tcw-service-index-cta">
         <div>
-          <h2>Ready to Start Your Next Project?</h2>
-          <p>Let's build something amazing together. Get in touch with us and take your business to the next level.</p>
+          <h2>{{ __('website.services.cta_title') }}</h2>
+          <p>{{ __('website.services.cta_text') }}</p>
         </div>
         <div class="tcw-service-index-stats">
-          <span><strong>120+</strong><small>Projects Completed</small></span>
-          <span><strong>50+</strong><small>Happy Clients</small></span>
-          <span><strong>5+</strong><small>Years of Experience</small></span>
+          <span><strong>120+</strong><small>{{ __('website.services.projects_completed') }}</small></span>
+          <span><strong>50+</strong><small>{{ __('website.services.happy_clients') }}</small></span>
+          <span><strong>5+</strong><small>{{ __('website.services.years_experience') }}</small></span>
         </div>
-        <a href="{{ route('website.contact') }}">Get Free Consultation <i class="fas fa-arrow-right"></i></a>
+        <a href="{{ route('website.contact') }}">{{ __('website.services.consultation') }} <i class="fas fa-arrow-right"></i></a>
       </section>
     </div>
   </section>

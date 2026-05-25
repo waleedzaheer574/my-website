@@ -90,6 +90,8 @@ class QuoteRequest extends Model
 
     public function getStatusLabelAttribute(): string
     {
-        return self::STATUSES[$this->status] ?? ucfirst(str_replace('_', ' ', $this->status));
+        $key = "website.client.status_labels.{$this->status}";
+
+        return __($key) !== $key ? __($key) : (self::STATUSES[$this->status] ?? ucfirst(str_replace('_', ' ', $this->status)));
     }
 }

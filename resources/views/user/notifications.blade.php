@@ -1,6 +1,6 @@
 @extends('layouts.website')
 
-@section('title', 'Notifications')
+@section('title', __('website.client.notifications'))
 @section('hide_global_faqs', '1')
 
 @push('css')
@@ -9,15 +9,15 @@
 
 @section('content')
   @php($activeClientNav = 'notifications')
-  @php($clientHeaderTitle = 'Notifications')
-  @php($clientHeaderSubtitle = 'All request and project updates in one place.')
+  @php($clientHeaderTitle = __('website.client.notifications'))
+  @php($clientHeaderSubtitle = __('website.client.notifications_subtitle'))
   <main class="tcw-client-dashboard tcw-premium-client-dashboard tcw-notification-page">
     @include('user.partials.client-sidebar')
     <section class="tcw-client-main">
       @include('user.partials.client-header')
       <header class="tcw-notification-header">
         <div class="tcw-page-heading">
-          <div><h1>Notifications</h1><p>All request and project updates in one place.</p></div>
+          <div><h1>{{ __('website.client.notifications') }}</h1><p>{{ __('website.client.notifications_subtitle') }}</p></div>
         </div>
       </header>
       <section class="tcw-notification-list">
@@ -25,13 +25,13 @@
           <a href="{{ route('user.notifications.open', $notification->id) }}" class="{{ $notification->read_at ? '' : 'is-unread' }}">
             <i class="{{ $notification->data['icon'] ?? 'far fa-bell' }}"></i>
             <div>
-              <strong>{{ $notification->data['title'] ?? 'Update' }}</strong>
-              <span>{{ $notification->data['message'] ?? 'Your request was updated.' }}</span>
-              <time>{{ $notification->created_at->diffForHumans() }}</time>
+              <strong>{{ $notification->data['title'] ?? __('website.client.update') }}</strong>
+              <span>{{ $notification->data['message'] ?? __('website.client.request_updated') }}</span>
+              <time>{{ $notification->created_at->locale(app()->getLocale())->diffForHumans() }}</time>
             </div>
           </a>
         @empty
-          <p>No notifications yet.</p>
+          <p>{{ __('website.client.no_notifications') }}</p>
         @endforelse
       </section>
       <div class="tcw-user-pagination">{{ $notifications->links() }}</div>

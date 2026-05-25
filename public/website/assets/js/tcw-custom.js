@@ -667,6 +667,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
           const sliderWrap = slider.closest('.tcw-review-slider-wrap');
           const slides = Array.from(slider.querySelectorAll('.tcw-review-slide'));
+          const isRtl = document.documentElement.dir === 'rtl';
           let current = 0;
 
           function getSlidesPerView() {
@@ -710,7 +711,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const offset = getOffset(current);
             const maxOffset = getMaxOffset();
             slider.style.transition = 'transform 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-            slider.style.transform = 'translateX(-' + offset + 'px)';
+            slider.style.transform = 'translateX(' + (isRtl ? offset : -offset) + 'px)';
             prevBtn.hidden = offset <= 1;
             nextBtn.hidden = maxOffset <= 1 || offset >= maxOffset - 1;
             slides.forEach(function (slide, i) {
@@ -728,7 +729,10 @@ document.addEventListener('DOMContentLoaded', function () {
           }, { passive: true });
           slider.addEventListener('touchend', function (event) {
             const diff = touchStartX - event.changedTouches[0].clientX;
-            if (Math.abs(diff) > 40) goTo(diff > 0 ? current + 1 : current - 1);
+            if (Math.abs(diff) > 40) {
+              const forwards = isRtl ? diff < 0 : diff > 0;
+              goTo(forwards ? current + 1 : current - 1);
+            }
           }, { passive: true });
 
           window.addEventListener('resize', function () {
@@ -752,6 +756,7 @@ document.addEventListener('DOMContentLoaded', function () {
           }
 
           const slides = Array.from(track.querySelectorAll('[data-blog-rail-slide]'));
+          const isRtl = document.documentElement.dir === 'rtl';
           let current = 0;
 
           const getGap = function () {
@@ -787,7 +792,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const offset = getOffset(current);
             const maxOffset = getMaxOffset();
 
-            track.style.transform = 'translateX(-' + offset + 'px)';
+            track.style.transform = 'translateX(' + (isRtl ? offset : -offset) + 'px)';
             prevBtn.hidden = offset <= 1;
             nextBtn.hidden = maxOffset <= 1 || offset >= maxOffset - 1;
           };
@@ -808,7 +813,8 @@ document.addEventListener('DOMContentLoaded', function () {
           track.addEventListener('touchend', function (event) {
             const diff = touchStartX - event.changedTouches[0].clientX;
             if (Math.abs(diff) > 40) {
-              goTo(diff > 0 ? current + 1 : current - 1);
+              const forwards = isRtl ? diff < 0 : diff > 0;
+              goTo(forwards ? current + 1 : current - 1);
             }
           }, { passive: true });
 

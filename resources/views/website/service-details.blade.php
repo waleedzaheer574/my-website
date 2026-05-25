@@ -1,29 +1,29 @@
 @extends('layouts.website')
 
-@section('title', trim(($serviceDetail->title_prefix ?? '') . ' ' . ($serviceDetail->title_highlight ?? 'Service Details')))
+@section('title', trim(($serviceDetail->localized('title_prefix') ?? '') . ' ' . ($serviceDetail->localized('title_highlight') ?? __('website.service_detail.fallback_title'))))
 @section('hide_global_faqs', '1')
 
 @php
-  $serviceTitle = trim(($serviceDetail->title_prefix ?? '') . ' ' . ($serviceDetail->title_highlight ?? 'Service Details'));
-  $serviceName = trim(($serviceDetail->title_highlight ?? '') ?: $serviceTitle);
-  $description = $serviceDetail->description ?: 'We build modern, responsive and high-performance digital solutions that help businesses grow online.';
+  $serviceTitle = trim(($serviceDetail->localized('title_prefix') ?? '') . ' ' . ($serviceDetail->localized('title_highlight') ?? __('website.service_detail.fallback_title')));
+  $serviceName = trim(($serviceDetail->localized('title_highlight') ?? '') ?: $serviceTitle);
+  $description = $serviceDetail->localized('description') ?: __('website.service_detail.fallback_description');
   $hasVideo = filled($serviceDetail->video_url);
   $videoPreviewImage = $serviceDetail->video_thumbnail ?: $serviceDetail->primary_image;
-  $highlightText = trim($serviceDetail->title_highlight ?: 'Services');
+  $highlightText = trim($serviceDetail->localized('title_highlight') ?: __('website.services.title'));
   $highlightParts = preg_split('/\s+/', $highlightText) ?: [];
   $highlightTail = count($highlightParts) > 1 ? array_pop($highlightParts) : '';
   $highlightLead = trim(implode(' ', $highlightParts)) ?: $highlightText;
   $processItems = collect([
-      ['title' => $serviceDetail->process_one_title ?: 'Planning & Strategy', 'text' => $serviceDetail->process_one_text ?: 'We analyze your goals, audience, and requirements to create a clear roadmap for success.', 'icon' => 'fa-clipboard-list'],
-      ['title' => $serviceDetail->process_two_title ?: 'Design & Development', 'text' => $serviceDetail->process_two_text ?: 'Our team creates polished user experiences and builds scalable, high-performance solutions.', 'icon' => 'fa-code'],
-      ['title' => $serviceDetail->process_three_title ?: 'Testing & Launch', 'text' => $serviceDetail->process_three_text ?: 'We test performance, responsiveness, and quality before launch so everything runs smoothly.', 'icon' => 'fa-rocket'],
+      ['title' => $serviceDetail->localized('process_one_title') ?: __('website.services.process_items.0.title'), 'text' => $serviceDetail->localized('process_one_text') ?: __('website.services.process_items.0.text'), 'icon' => 'fa-clipboard-list'],
+      ['title' => $serviceDetail->localized('process_two_title') ?: __('website.services.process_items.1.title'), 'text' => $serviceDetail->localized('process_two_text') ?: __('website.services.process_items.1.text'), 'icon' => 'fa-code'],
+      ['title' => $serviceDetail->localized('process_three_title') ?: __('website.services.process_items.2.title'), 'text' => $serviceDetail->localized('process_three_text') ?: __('website.services.process_items.2.text'), 'icon' => 'fa-rocket'],
   ])->filter(fn ($item) => $item['title'] || $item['text'])->values();
 
   $statItems = [
-      ['value' => '120+', 'label' => 'Projects Delivered', 'icon' => 'fa-rocket'],
-      ['value' => '50+', 'label' => 'Happy Clients', 'icon' => 'fa-users'],
-      ['value' => '5+', 'label' => 'Years Experience', 'icon' => 'fa-trophy'],
-      ['value' => '24/7', 'label' => 'Support', 'icon' => 'fa-headset'],
+      ['value' => '120+', 'label' => __('website.services.projects_completed'), 'icon' => 'fa-rocket'],
+      ['value' => '50+', 'label' => __('website.services.happy_clients'), 'icon' => 'fa-users'],
+      ['value' => '5+', 'label' => __('website.services.years_experience'), 'icon' => 'fa-trophy'],
+      ['value' => '24/7', 'label' => __('website.offer_detail.support'), 'icon' => 'fa-headset'],
   ];
   $techItems = [
       ['label' => 'AWS', 'icon' => 'fab fa-aws', 'tone' => 'orange'],
@@ -49,23 +49,23 @@
     <section class="tcw-detail-hero">
       <div class="container">
         <nav class="tcw-detail-breadcrumb" aria-label="Breadcrumb">
-          <a href="{{ url('/') }}">Home</a>
+          <a href="{{ url('/') }}">{{ __('website.nav.home') }}</a>
           <i class="fas fa-chevron-right"></i>
-          <a href="{{ route('website.services') }}">Services</a>
+          <a href="{{ route('website.services') }}">{{ __('website.nav.services') }}</a>
           <i class="fas fa-chevron-right"></i>
           <span>{{ $serviceName }}</span>
         </nav>
 
         <div class="tcw-detail-hero-grid">
           <div class="tcw-detail-hero-copy">
-            <span class="tcw-detail-eyebrow">Our Professional Service</span>
-            <h1>{{ $serviceDetail->title_prefix ?: 'Digital' }} <span>{{ $highlightLead }}</span>@if($highlightTail) <b>{{ $highlightTail }}</b>@endif</h1>
+            <span class="tcw-detail-eyebrow">{{ __('website.service_detail.professional') }}</span>
+            <h1>{{ $serviceDetail->localized('title_prefix') ?: __('website.service_detail.digital') }} <span>{{ $highlightLead }}</span>@if($highlightTail) <b>{{ $highlightTail }}</b>@endif</h1>
             <p>{!! nl2br(e($description)) !!}</p>
             <div class="tcw-detail-actions">
               <a href="{{ url('/contact') }}" class="tcw-detail-btn tcw-detail-btn-primary">
-                Get Free Consultation <i class="fas fa-arrow-right"></i>
+                {{ __('website.service_detail.consultation') }} <i class="fas fa-arrow-right"></i>
               </a>
-              <a href="{{ route('website.portfolio') }}" class="tcw-detail-btn tcw-detail-btn-outline">View Portfolio</a>
+              <a href="{{ route('website.portfolio') }}" class="tcw-detail-btn tcw-detail-btn-outline">{{ __('website.service_detail.portfolio') }}</a>
             </div>
           </div>
 
@@ -93,9 +93,9 @@
     <section class="tcw-detail-section">
       <div class="container">
         <div class="tcw-detail-heading text-center">
-          <span class="tcw-detail-eyebrow">Our Workflow</span>
-          <h2>Our <span>{{ $serviceDetail->process_heading ?: 'Development Process' }}</span></h2>
-          <p>We follow a proven process to deliver robust and scalable cloud solutions.</p>
+          <span class="tcw-detail-eyebrow">{{ __('website.service_detail.workflow') }}</span>
+          <h2>{{ __('website.service_detail.our') }} <span>{{ $serviceDetail->localized('process_heading') ?: __('website.service_detail.process') }}</span></h2>
+          <p>{{ __('website.service_detail.process_text') }}</p>
         </div>
         <div class="tcw-process-grid">
           @foreach($processItems as $index => $item)
@@ -115,10 +115,10 @@
         <div class="tcw-benefits-tech-grid">
           <div class="tcw-benefits-panel">
             <div class="tcw-detail-heading">
-              <span class="tcw-detail-eyebrow">What You Get</span>
-              <h2>Benefits of Our <span>{{ $serviceName }}</span></h2>
+              <span class="tcw-detail-eyebrow">{{ __('website.service_detail.what_get') }}</span>
+              <h2>{{ __('website.service_detail.benefits') }} <span>{{ $serviceName }}</span></h2>
             </div>
-            <p>We deliver modern cloud solutions that help your business scale, perform, and grow without limits.</p>
+            <p>{{ __('website.service_detail.benefit_text') }}</p>
             <ul class="tcw-benefit-list">
               @foreach($featureItems as $feature)
                 <li><i class="fas fa-check"></i><span>{{ $feature['title'] }}</span></li>
@@ -128,7 +128,7 @@
 
           <div class="tcw-service-tech-panel">
             <div class="tcw-detail-heading">
-              <span class="tcw-detail-eyebrow">Technologies We Use</span>
+              <span class="tcw-detail-eyebrow">{{ __('website.service_detail.technologies') }}</span>
             </div>
             <div class="tcw-tech-grid">
               @foreach($techItems as $tech)
@@ -147,10 +147,10 @@
       <div class="container">
         <div class="tcw-detail-cta">
           <div>
-            <h2>Ready To Build Your Next Digital Product?</h2>
-            <p>Let's create something amazing together.</p>
+            <h2>{{ __('website.service_detail.cta_title') }}</h2>
+            <p>{{ __('website.service_detail.cta_text') }}</p>
           </div>
-          <a href="{{ url('/contact') }}" class="tcw-detail-btn tcw-detail-btn-light">Get Free Consultation <i class="fas fa-arrow-right"></i></a>
+          <a href="{{ url('/contact') }}" class="tcw-detail-btn tcw-detail-btn-light">{{ __('website.service_detail.consultation') }} <i class="fas fa-arrow-right"></i></a>
         </div>
 
       </div>

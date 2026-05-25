@@ -42,6 +42,35 @@
     </div>
 @endforeach
 
+<h3>Arabic Content</h3>
+@foreach([
+    'title_prefix_ar' => 'Title Prefix (Arabic)',
+    'title_highlight_ar' => 'Title Highlight (Arabic)',
+    'process_heading_ar' => 'Process Heading (Arabic)',
+    'process_one_title_ar' => 'Process One Title (Arabic)',
+    'process_two_title_ar' => 'Process Two Title (Arabic)',
+    'process_three_title_ar' => 'Process Three Title (Arabic)',
+] as $field => $label)
+    <div class="form-group">
+        <label for="{{ $field }}">{{ $label }}</label>
+        <input type="text" name="{{ $field }}" id="{{ $field }}" class="form-control" dir="rtl" lang="ar" value="{{ old($field, $serviceDetail->{$field} ?? '') }}">
+        @error($field) <small class="admin-u-021">{{ $message }}</small> @enderror
+    </div>
+@endforeach
+
+@foreach([
+    'description_ar' => 'Description (Arabic)',
+    'process_one_text_ar' => 'Process One Text (Arabic)',
+    'process_two_text_ar' => 'Process Two Text (Arabic)',
+    'process_three_text_ar' => 'Process Three Text (Arabic)',
+] as $field => $label)
+    <div class="form-group">
+        <label for="{{ $field }}">{{ $label }}</label>
+        <textarea name="{{ $field }}" id="{{ $field }}" class="form-control" dir="rtl" lang="ar" rows="4">{{ old($field, $serviceDetail->{$field} ?? '') }}</textarea>
+        @error($field) <small class="admin-u-021">{{ $message }}</small> @enderror
+    </div>
+@endforeach
+
 <div class="form-group">
     <label for="primary_image">Primary Image</label>
     <input type="file" name="primary_image" id="primary_image" class="form-control" accept="image/*" @unless($isEdit) required @endunless>

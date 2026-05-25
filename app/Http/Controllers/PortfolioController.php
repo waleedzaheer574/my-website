@@ -126,16 +126,22 @@ class PortfolioController extends Controller
     {
         return $request->validate([
             'title' => ['required', 'string', 'max:255'],
+            'title_ar' => ['nullable', 'string', 'max:255'],
             'category' => ['nullable', 'string', 'max:255'],
+            'category_ar' => ['nullable', 'string', 'max:255'],
             'client' => ['nullable', 'string', 'max:255'],
             'tags' => ['nullable', 'string', 'max:255'],
+            'tags_ar' => ['nullable', 'string', 'max:255'],
             'duration' => ['nullable', 'string', 'max:255'],
+            'duration_ar' => ['nullable', 'string', 'max:255'],
             'demo_url' => ['nullable', 'url', 'max:255'],
             'image' => [($imageRequired ? 'required' : 'nullable'), 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:2048'],
             'secondary_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:1536'],
             'detail_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp,svg', 'max:1536'],
             'short_description' => ['nullable', 'string'],
+            'short_description_ar' => ['nullable', 'string'],
             'description' => ['nullable', 'string'],
+            'description_ar' => ['nullable', 'string'],
             'sort_order' => ['nullable', 'integer', 'min:0'],
         ]);
     }

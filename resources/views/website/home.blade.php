@@ -1,6 +1,6 @@
 @extends('layouts.website')
 
-@section('title', 'Home')
+@section('title', __('website.nav.home'))
 
 @push('css')
   <link rel="preload" href="{{ asset('website/assets/img/generated/home-hero-optimized.jpg') }}" as="image" fetchpriority="high">
@@ -12,10 +12,10 @@
   $serviceIcons = ['fa-code', 'fa-mobile-alt', 'fa-pencil-ruler', 'fa-cloud', 'fa-shield-alt', 'fa-arrow-trend-up'];
   $whyItems = $whyNexas->take(3);
   $stats = [
-    ['icon' => 'fa-users', 'value' => '50+', 'label' => 'Happy Clients', 'tone' => 'blue'],
-    ['icon' => 'fa-briefcase', 'value' => '120+', 'label' => 'Projects Completed', 'tone' => 'green'],
-    ['icon' => 'fa-trophy', 'value' => '5+', 'label' => 'Years Experience', 'tone' => 'blue'],
-    ['icon' => 'fa-globe', 'value' => '10+', 'label' => 'Countries Served', 'tone' => 'green'],
+    ['icon' => 'fa-users', 'value' => '50+', 'label' => __('website.home.stats.clients'), 'tone' => 'blue'],
+    ['icon' => 'fa-briefcase', 'value' => '120+', 'label' => __('website.home.stats.projects'), 'tone' => 'green'],
+    ['icon' => 'fa-trophy', 'value' => '5+', 'label' => __('website.home.stats.experience'), 'tone' => 'blue'],
+    ['icon' => 'fa-globe', 'value' => '10+', 'label' => __('website.home.stats.countries'), 'tone' => 'green'],
   ];
   $fallbackLogos = ['Google', 'Microsoft', 'Upwork', 'Fiverr', 'Clutch', 'GoodFirms', 'Shopify', 'WordPress'];
   $trustedLogoEntries = $logos->isNotEmpty() ? $logos : collect($fallbackLogos);
@@ -57,17 +57,14 @@
     <div class="container">
       <div class="tcw-it-hero-grid">
         <div class="tcw-it-hero-copy wow fadeInUp" data-wow-duration="1s">
-          <span class="tcw-it-kicker">Digital solutions to power your growth</span>
-          <h1>We Build Digital Solutions That <span>Drive Your Business Forward</span></h1>
-          <p>
-            We deliver scalable, secure, and future-ready digital experiences that help businesses grow,
-            streamline operations, and stay ahead in the competitive digital world.
-          </p>
+          <span class="tcw-it-kicker">{{ __('website.home.kicker') }}</span>
+          <h1>{{ __('website.home.heading') }} <span>{{ __('website.home.heading_highlight') }}</span></h1>
+          <p>{{ __('website.home.intro') }}</p>
           <div class="tcw-it-actions">
             <a href="{{ route('website.services') }}" class="tcw-it-btn tcw-it-btn-primary">
-              Our Services <i class="fas fa-arrow-right"></i>
+              {{ __('website.home.our_services') }} <i class="fas fa-arrow-right"></i>
             </a>
-            <a href="{{ route('website.portfolio') }}" class="tcw-it-btn tcw-it-btn-secondary">View Portfolio</a>
+            <a href="{{ route('website.portfolio') }}" class="tcw-it-btn tcw-it-btn-secondary">{{ __('website.home.view_portfolio') }}</a>
           </div>
           <div class="tcw-it-client-proof">
             <div class="tcw-it-avatars" aria-hidden="true">
@@ -76,16 +73,16 @@
               <span>SEO</span>
               <span>AI</span>
             </div>
-            <strong>50+ Happy Clients</strong>
-            <small>Worldwide</small>
+            <strong>{{ __('website.home.happy_clients') }}</strong>
+            <small>{{ __('website.home.worldwide') }}</small>
           </div>
         </div>
 
         <div class="tcw-it-hero-form-panel wow fadeIn" data-wow-duration="1s" data-wow-delay="0.15s">
           <div class="service-card tcw-hero_form_card">
-            <div class="tcw-form_badge">Free consultation</div>
-            <h3 class="form-title">Start Your Digital Growth Journey</h3>
-            <p class="tcw-form_intro">Tell us about your idea or project. Our experts will get in touch with you to create a powerful strategy for your business success.</p>
+            <div class="tcw-form_badge">{{ __('website.common.free_consultation') }}</div>
+            <h3 class="form-title">{{ __('website.home.consultation_title') }}</h3>
+            <p class="tcw-form_intro">{{ __('website.home.consultation_text') }}</p>
 
             @if(session('success'))
               <div class="alert-success">
@@ -109,13 +106,13 @@
               <div class="row tcw-form-row">
                 <div class="col-md-6">
                   <div class="tcw-form-field">
-                    <input type="text" name="full_name" placeholder="Full Name" value="{{ old('full_name') }}" class="@error('full_name') is-invalid @enderror" required>
+                    <input type="text" name="full_name" placeholder="{{ __('website.common.full_name') }}" value="{{ old('full_name') }}" class="@error('full_name') is-invalid @enderror" required>
                     @error('full_name') <span class="field-error">{{ $message }}</span> @enderror
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="tcw-form-field">
-                    <input type="text" name="company_name" placeholder="Company Name" value="{{ old('company_name') }}" class="@error('company_name') is-invalid @enderror" required>
+                    <input type="text" name="company_name" placeholder="{{ __('website.common.company_name') }}" value="{{ old('company_name') }}" class="@error('company_name') is-invalid @enderror" required>
                     @error('company_name') <span class="field-error">{{ $message }}</span> @enderror
                   </div>
                 </div>
@@ -124,13 +121,13 @@
               <div class="row tcw-form-row">
                 <div class="col-md-6">
                   <div class="tcw-form-field">
-                    <input type="text" name="company_website" placeholder="Company Website" value="{{ old('company_website') }}" class="@error('company_website') is-invalid @enderror">
+                    <input type="text" name="company_website" placeholder="{{ __('website.common.company_website') }}" value="{{ old('company_website') }}" class="@error('company_website') is-invalid @enderror">
                     @error('company_website') <span class="field-error">{{ $message }}</span> @enderror
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="tcw-form-field">
-                    <input type="email" name="company_email" placeholder="Company Email" value="{{ old('company_email') }}" class="@error('company_email') is-invalid @enderror" required>
+                    <input type="email" name="company_email" placeholder="{{ __('website.common.company_email') }}" value="{{ old('company_email') }}" class="@error('company_email') is-invalid @enderror" required>
                     @error('company_email') <span class="field-error">{{ $message }}</span> @enderror
                   </div>
                 </div>
@@ -138,7 +135,7 @@
 
               <div class="tcw-form-field">
                 <div class="phone-field-wrap">
-                  <input type="tel" id="full_phone" name="phone_no" placeholder="Phone Number" autocomplete="tel" value="{{ old('phone_no') }}" class="@error('phone_no') is-invalid @enderror" required>
+                  <input type="tel" id="full_phone" name="phone_no" placeholder="{{ __('website.common.phone_number') }}" autocomplete="tel" value="{{ old('phone_no') }}" class="@error('phone_no') is-invalid @enderror" required>
                   <input type="hidden" name="country" id="country_name">
                 </div>
                 @error('phone_no') <span class="field-error">{{ $message }}</span> @enderror
@@ -146,17 +143,17 @@
 
               <div class="tcw-form-field">
                 <select name="service_type" class="@error('service_type') is-invalid @enderror" required>
-                  <option value="" disabled {{ old('service_type') ? '' : 'selected' }}>Choose Service</option>
+                  <option value="" disabled {{ old('service_type') ? '' : 'selected' }}>{{ __('website.common.choose_service') }}</option>
                   @foreach($services as $service)
                     <option value="{{ $service->service_title }}" {{ old('service_type') === $service->service_title ? 'selected' : '' }}>
-                      {{ $service->service_title }}
+                      {{ $service->localized('service_title') }}
                     </option>
                   @endforeach
                 </select>
                 @error('service_type') <span class="field-error">{{ $message }}</span> @enderror
               </div>
 
-              <button type="submit">Submit Request</button>
+              <button type="submit">{{ __('website.common.submit_request') }}</button>
             </form>
           </div>
         </div>
@@ -167,12 +164,13 @@
   <section class="tcw-it-section tcw-it-services">
     <div class="container">
       <div class="tcw-it-section-head text-center">
-        <span>What We Do</span>
-        <h2>Our Services</h2>
+        <span>{{ __('website.home.what_we_do') }}</span>
+        <h2>{{ __('website.home.our_services') }}</h2>
       </div>
 
-      <div class="cs-slider tcw-it-service-slider">
+      <div class="cs-slider tcw-it-service-slider" dir="{{ app()->isLocale('ar') ? 'rtl' : 'ltr' }}">
         <div class="cs-slider_container"
+          data-rtl="{{ app()->isLocale('ar') ? '1' : '0' }}"
           data-autoplay="2400"
           data-loop="1"
           data-speed="700"
@@ -191,13 +189,13 @@
                 <a href="{{ $service->detail ? route('website.service-details.show', $service->detail->slug) : route('website.services') }}" class="tcw-it-service-card">
                   <div class="tcw-it-card-icon {{ $loop->odd ? 'is-green' : 'is-blue' }}">
                     @if($service->icon)
-                      <img src="{{ asset($service->icon) }}" alt="{{ $service->service_title }}" width="48" height="48" loading="lazy" decoding="async">
+                      <img src="{{ asset($service->icon) }}" alt="{{ $service->localized('service_title') }}" width="48" height="48" loading="lazy" decoding="async">
                     @else
                       <i class="fas {{ $serviceIcons[$loop->index] ?? 'fa-arrow-trend-up' }}"></i>
                     @endif
                   </div>
-                  <h3>{{ $service->service_title }}</h3>
-                  <p>{{ \Illuminate\Support\Str::limit($service->service_description, 112) }}</p>
+                  <h3>{{ $service->localized('service_title') }}</h3>
+                  <p>{{ \Illuminate\Support\Str::limit($service->localized('service_description'), 112) }}</p>
                   <span class="tcw-it-card-arrow"><i class="fas fa-arrow-right"></i></span>
                 </a>
               </div>
@@ -225,24 +223,26 @@
   <section class="tcw-it-section tcw-home-offers">
     <div class="container">
       <div class="tcw-it-section-head text-center">
-        <span>Featured Offers</span>
-        <h2>Subscribe to a ready launch package</h2>
+        <span>{{ __('website.home.featured_offers') }}</span>
+        <h2>{{ __('website.home.offers_title') }}</h2>
       </div>
 
       <div class="tcw-offer-grid tcw-home-premium-offer-grid">
         @php
           $homeOffers = $offers->isNotEmpty() ? $offers : collect([
-            new \App\Models\Offer(['title' => '5 Page Dynamic Website', 'slug' => '5-page-dynamic-website', 'category' => 'Website Development', 'description' => 'Premium business website with dynamic pages and inquiry flow.', 'currency' => 'AED', 'price' => 200, 'billing_cycle' => 'one_time', 'delivery_time' => '5 - 7 days', 'features' => ['Responsive pages', 'Admin editable content', 'Contact form'], 'is_popular' => true]),
-            new \App\Models\Offer(['title' => 'Ecommerce Website', 'slug' => 'ecommerce-website', 'category' => 'Online Store', 'description' => 'Conversion-focused ecommerce storefront and order flow.', 'currency' => 'AED', 'price' => 1200, 'billing_cycle' => 'one_time', 'delivery_time' => '2 - 3 weeks', 'features' => ['Product catalog', 'Checkout UI', 'Order dashboard']]),
-            new \App\Models\Offer(['title' => 'SEO Starter Package', 'slug' => 'seo-starter-package', 'category' => 'SEO Services', 'description' => 'Starter monthly SEO setup for visibility and technical health.', 'currency' => 'AED', 'price' => 150, 'billing_cycle' => 'monthly', 'delivery_time' => 'Monthly', 'features' => ['Keyword plan', 'On-page SEO', 'Monthly report']]),
-            new \App\Models\Offer(['title' => 'Laravel SaaS System', 'slug' => 'laravel-saas-system', 'category' => 'SaaS Development', 'description' => 'Custom Laravel SaaS with auth, dashboard, workflows and admin.', 'currency' => 'AED', 'price' => 3000, 'billing_cycle' => 'one_time', 'delivery_time' => '4 - 8 weeks', 'features' => ['Laravel backend', 'User dashboard', 'Admin panel']]),
+            new \App\Models\Offer(['title' => '5 Page Dynamic Website', 'title_ar' => 'موقع ديناميكي من 5 صفحات', 'slug' => '5-page-dynamic-website', 'category' => 'Website Development', 'category_ar' => 'تطوير المواقع', 'description' => 'Premium business website with dynamic pages and inquiry flow.', 'description_ar' => 'موقع احترافي لأعمالك بصفحات ديناميكية ومسار واضح لاستقبال الطلبات.', 'currency' => 'AED', 'price' => 200, 'billing_cycle' => 'one_time', 'delivery_time' => '5 - 7 days', 'features' => ['Responsive pages', 'Admin editable content', 'Contact form'], 'features_ar' => ['صفحات متجاوبة', 'محتوى قابل للتعديل', 'نموذج تواصل'], 'is_popular' => true]),
+            new \App\Models\Offer(['title' => 'Ecommerce Website', 'title_ar' => 'موقع تجارة إلكترونية', 'slug' => 'ecommerce-website', 'category' => 'Online Store', 'category_ar' => 'متجر إلكتروني', 'description' => 'Conversion-focused ecommerce storefront and order flow.', 'description_ar' => 'متجر إلكتروني احترافي يركز على التحويل ومسار الطلب السهل.', 'currency' => 'AED', 'price' => 1200, 'billing_cycle' => 'one_time', 'delivery_time' => '2 - 3 weeks', 'features' => ['Product catalog', 'Checkout UI', 'Order dashboard'], 'features_ar' => ['كتالوج المنتجات', 'واجهة الدفع', 'لوحة الطلبات']]),
+            new \App\Models\Offer(['title' => 'SEO Starter Package', 'title_ar' => 'باقة تحسين محركات البحث', 'slug' => 'seo-starter-package', 'category' => 'SEO Services', 'category_ar' => 'خدمات SEO', 'description' => 'Starter monthly SEO setup for visibility and technical health.', 'description_ar' => 'باقة شهرية لرفع الظهور وتحسين الصحة التقنية للموقع.', 'currency' => 'AED', 'price' => 150, 'billing_cycle' => 'monthly', 'delivery_time' => 'Monthly', 'features' => ['Keyword plan', 'On-page SEO', 'Monthly report'], 'features_ar' => ['خطة كلمات مفتاحية', 'تحسين الصفحات', 'تقرير شهري']]),
+            new \App\Models\Offer(['title' => 'Laravel SaaS System', 'title_ar' => 'نظام Laravel SaaS', 'slug' => 'laravel-saas-system', 'category' => 'SaaS Development', 'category_ar' => 'تطوير SaaS', 'description' => 'Custom Laravel SaaS with auth, dashboard, workflows and admin.', 'description_ar' => 'نظام Laravel SaaS مخصص مع تسجيل دخول ولوحة تحكم وإدارة سير العمل.', 'currency' => 'AED', 'price' => 3000, 'billing_cycle' => 'one_time', 'delivery_time' => '4 - 8 weeks', 'features' => ['Laravel backend', 'User dashboard', 'Admin panel'], 'features_ar' => ['خلفية Laravel', 'لوحة المستخدم', 'لوحة الإدارة']]),
           ]);
         @endphp
         @foreach($homeOffers as $offer)
           @php
             $meta = $offerMeta[$offer->slug] ?? [];
             $isFeatured = (bool) ($meta['featured'] ?? false);
-            $badge = $meta['badge'] ?? ($offer->is_popular ? 'Popular' : null);
+            $badge = app()->getLocale() === 'ar'
+              ? ($offer->is_popular ? __('website.offer_detail.popular') : null)
+              : ($meta['badge'] ?? ($offer->is_popular ? 'Popular' : null));
             $icon = $meta['icon'] ?? 'fas fa-layer-group';
             $tone = $meta['tone'] ?? 'blue';
           @endphp
@@ -253,8 +253,8 @@
                 <b class="tcw-offer-badge">{{ $badge }}</b>
               @endif
             </div>
-            <h3>{{ $offer->title }}</h3>
-            <p>{{ $offer->description }}</p>
+            <h3>{{ $offer->localized('title') }}</h3>
+            <p>{{ $offer->localized('description') }}</p>
             <div class="tcw-offer-price">
               <strong>{{ $offer->price_label }}</strong>
               @if(!empty($meta['old_price']))
@@ -263,15 +263,15 @@
             </div>
             <small>{{ $offer->billing_label }} · {{ $offer->delivery_time }}</small>
             <ul>
-              @foreach(array_slice($offer->features ?? [], 0, 5) as $feature)
+              @foreach(array_slice($offer->localized('features') ?? [], 0, 5) as $feature)
                 <li><i class="fas fa-check-circle"></i>{{ $feature }}</li>
               @endforeach
               @if($offer->delivery_time)
-                <li><i class="fas fa-check-circle"></i>{{ $offer->delivery_time }} Delivery</li>
+                <li><i class="fas fa-check-circle"></i>{{ $offer->delivery_time }} {{ __('website.offer_detail.delivery') }}</li>
               @endif
             </ul>
             <a href="{{ $offer->exists ? route('website.offers.show', $offer->slug) : route('website.offers') }}" class="tcw-offer-card-btn {{ $isFeatured ? 'is-hot' : '' }}">
-              {{ $isFeatured ? 'Get Started' : 'View Details' }}
+              {{ $isFeatured ? __('website.common.get_started') : __('website.common.view_details') }}
             </a>
           </article>
         @endforeach
@@ -283,10 +283,10 @@
     <div class="container">
       <div class="tcw-it-proof-grid">
         <div class="tcw-it-proof-copy wow fadeInUp">
-          <span>Why Choose Us</span>
-          <h2>We Deliver More Than Just Code</h2>
-          <p>We combine technology, creativity and strategy to deliver solutions that create measurable impact.</p>
-          <a href="{{ url('/about') }}" class="tcw-it-btn tcw-it-btn-primary">Learn More About Us</a>
+          <span>{{ __('website.home.why_label') }}</span>
+          <h2>{{ __('website.home.why_title') }}</h2>
+          <p>{{ __('website.home.why_text') }}</p>
+          <a href="{{ url('/about') }}" class="tcw-it-btn tcw-it-btn-primary">{{ __('website.home.learn_about') }}</a>
         </div>
 
         @foreach($stats as $stat)
@@ -302,8 +302,8 @@
         <div class="tcw-it-why-grid">
           @foreach($whyItems as $whyNexa)
             <article class="tcw-it-why-card">
-              <h3>{{ $whyNexa->title }}</h3>
-              <p>{{ $whyNexa->description }}</p>
+              <h3>{{ $whyNexa->localized('title') }}</h3>
+              <p>{{ $whyNexa->localized('description') }}</p>
             </article>
           @endforeach
         </div>
@@ -313,9 +313,10 @@
 
   <section class="tcw-it-trusted">
     <div class="container">
-      <p>Trusted by businesses worldwide</p>
+      <p>{{ __('website.home.trusted') }}</p>
       <div class="cs-slider tcw-it-logo-slider">
         <div class="cs-slider_container"
+          data-rtl="{{ app()->isLocale('ar') ? '1' : '0' }}"
           data-autoplay="2200"
           data-loop="1"
           data-speed="700"
@@ -350,18 +351,18 @@
   <section class="tcw-it-section tcw-it-portfolio">
     <div class="container">
       <div class="tcw-it-section-head">
-        <span>Selected Work</span>
-        <h2>Featured Portfolio</h2>
+        <span>{{ __('website.home.selected_work') }}</span>
+        <h2>{{ __('website.home.featured_portfolio') }}</h2>
       </div>
       <div class="tcw-it-portfolio-grid">
         @forelse($homePortfolios->take(4) as $portfolio)
           <a href="{{ route('website.portfolio-details.show', $portfolio->slug) }}" class="tcw-it-portfolio-card">
-            <img src="{{ asset($portfolio->image) }}" alt="{{ $portfolio->title }}" loading="lazy" decoding="async">
+            <img src="{{ asset($portfolio->image) }}" alt="{{ $portfolio->localized('title') }}" loading="lazy" decoding="async">
             <div>
-              <small>{{ $portfolio->category ?: 'Project' }}</small>
-              <h3>{{ $portfolio->title }}</h3>
-              @if($portfolio->short_description)
-                <p>{{ \Illuminate\Support\Str::limit($portfolio->short_description, 105) }}</p>
+              <small>{{ $portfolio->localized('category') ?: __('website.portfolio_detail.project') }}</small>
+              <h3>{{ $portfolio->localized('title') }}</h3>
+              @if($portfolio->localized('short_description'))
+                <p>{{ \Illuminate\Support\Str::limit($portfolio->localized('short_description'), 105) }}</p>
               @endif
             </div>
           </a>
@@ -393,11 +394,11 @@
   <section class="tcw-it-section tcw-blog-section">
     <div class="container">
       <div class="tcw-it-section-head">
-        <span>Our Blog</span>
-        <h2>All Articles</h2>
+        <span>{{ __('website.home.our_blog') }}</span>
+        <h2>{{ __('website.home.all_articles') }}</h2>
       </div>
     </div>
-    @include('partials.website.blog-slider', ['blogs' => $latestBlogs, 'emptyText' => 'No blogs found.'])
+    @include('partials.website.blog-slider', ['blogs' => $latestBlogs, 'emptyText' => __('website.common.no_blogs')])
   </section>
 </main>
 @endsection

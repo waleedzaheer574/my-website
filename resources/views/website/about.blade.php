@@ -8,7 +8,7 @@
   <div class="cs-hero cs-style8 cs-type1 cs-center text-center tcw-about-hero">
     <div class="container">
       <div class="cs-hero_text wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.2s">
-        <h1 class="cs-hero_title"><b class="cs-accent_color">About</b> Us</h1>
+        <h1 class="cs-hero_title"><b class="cs-accent_color">{{ __('website.about.title_prefix') }}</b> {{ __('website.about.title_suffix') }}</h1>
         <a href="#service" class="cs-down_btn cs-accent_color cs-accent_color_2_hover cs-smoth_scroll"><i class="fas fa-angle-down"></i></a>
       </div>
     </div>
@@ -23,15 +23,15 @@
     <div class="cs-height_140 cs-height_lg_80"></div>
     <div class="container wow fadeIn" data-wow-duration="1s" data-wow-delay="0.2s">
       <div class="cs-section_heading cs-style2 cs-size2">
-        <div class="cs-section_subtitle">Our awesome services</div>
-        <h2 class="cs-section_title">Our best services will make <br>
-          your <b class="cs-accent_color cs-with_bar">
-            business
+        <div class="cs-section_subtitle">{{ __('website.about.services_label') }}</div>
+        <h2 class="cs-section_title">{{ __('website.about.services_title') }} <br>
+          <b class="cs-accent_color cs-with_bar">
+            {{ __('website.about.services_highlight') }}
             <svg width="208" height="11" viewBox="0 0 208 11" fill="none" xmlns="http://www.w3.org/2000/svg" class="cs-accent_color_2">
               <path d="M8.90002 10.1C72.2 10.6 135.6 10.7 198.9 10.5C200.8 10.5 200.8 7.49998 198.9 7.49998C135.6 7.79998 72.2 7.69998 8.90002 7.09998C6.90002 7.09998 6.90002 10.1 8.90002 10.1Z" fill="currentColor"/>
               <path d="M1.90002 3.79999C69.9 3.79999 137.9 4.09999 205.9 4.89999C207.8 4.89999 207.8 1.89999 205.9 1.89999C137.9 1.19999 69.9 0.799988 1.90002 0.799988C-0.0999756 0.799988 -0.0999756 3.79999 1.90002 3.79999Z" fill="currentColor"/>
             </svg>
-          </b> easy</h2>
+          </b> {{ __('website.about.services_tail') }}</h2>
       </div>
       <div class="cs-height_70 cs-height_lg_50"></div>
     </div>
@@ -49,20 +49,20 @@
               <div class="cs-icon_box_in">
                 <div class="cs-icon_box_icon cs-center cs-transition_4" data-src="{{ asset('website/assets/img/design-agency/iconbox-shape1.svg') }}">
                   @if($service->icon)
-                    <img src="{{ asset($service->icon) }}" alt="{{ $service->service_title }}" class="tcw-icon-img-48" width="48" height="48" loading="lazy" decoding="async">
+                    <img src="{{ asset($service->icon) }}" alt="{{ $service->localized('service_title') }}" class="tcw-icon-img-48" width="48" height="48" loading="lazy" decoding="async">
                   @else
                     <i class="fas fa-briefcase tcw-icon-fallback-white-lg"></i>
                   @endif
                 </div>
-                <h2 class="cs-icon_box_title cs-semi_bold cs-transition_3">{{ $service->service_title }}</h2>
-                <div class="cs-icon_box_subtitle cs-transition_3">{{ \Illuminate\Support\Str::limit($service->service_description ?? '', 135) }}</div>
+                <h2 class="cs-icon_box_title cs-semi_bold cs-transition_3">{{ $service->localized('service_title') }}</h2>
+                <div class="cs-icon_box_subtitle cs-transition_3">{{ \Illuminate\Support\Str::limit($service->localized('service_description') ?? '', 135) }}</div>
               </div>
             </a>
             <div class="cs-height_30 cs-height_lg_30"></div>
           </div>
         @empty
           <div class="col-12">
-            <div class="cs-section_text">Services will appear here after you add them from the dashboard.</div>
+            <div class="cs-section_text">{{ __('website.about.empty_services') }}</div>
           </div>
         @endforelse
       </div>
@@ -70,7 +70,7 @@
       @if($services->count() > 6)
         <div class="tcw-load-more-wrap wow fadeInUp" data-wow-duration="0.9s" data-wow-delay="0.1s">
           <button type="button" class="tcw-load-more-btn" data-load-more-btn>
-            <i class="fas fa-sync-alt"></i> Load More
+            <i class="fas fa-sync-alt"></i> {{ __('website.common.load_more') }}
           </button>
         </div>
       @endif
@@ -85,18 +85,18 @@
     <div class="row">
       <div class="col-lg-6">
         <div class="cs-section_heading cs-style2 cs-size2">
-          <div class="cs-section_subtitle">Our portfolio</div>
-          <h2 class="cs-section_title">Our Featured <br><b class="cs-extra_bold cs-accent_color cs-with_bar">
-            Portfolio
+          <div class="cs-section_subtitle">{{ __('website.about.portfolio_label') }}</div>
+          <h2 class="cs-section_title">{{ __('website.about.featured') }} <br><b class="cs-extra_bold cs-accent_color cs-with_bar">
+            {{ __('website.about.portfolio') }}
             <svg width="208" height="11" viewBox="0 0 208 11" fill="none" xmlns="http://www.w3.org/2000/svg" class="cs-accent_color_2">
               <path d="M8.90002 10.1C72.2 10.6 135.6 10.7 198.9 10.5C200.8 10.5 200.8 7.49998 198.9 7.49998C135.6 7.79998 72.2 7.69998 8.90002 7.09998C6.90002 7.09998 6.90002 10.1 8.90002 10.1Z" fill="currentColor"/>
               <path d="M1.90002 3.79999C69.9 3.79999 137.9 4.09999 205.9 4.89999C207.8 4.89999 207.8 1.89999 205.9 1.89999C137.9 1.19999 69.9 0.799988 1.90002 0.799988C-0.0999756 0.799988 -0.0999756 3.79999 1.90002 3.79999Z" fill="currentColor"/>
             </svg>
           </b></h2>
-          <div class="cs-section_text">Explore our latest client work and digital projects.</div>
+          <div class="cs-section_text">{{ __('website.about.portfolio_text') }}</div>
           <div class="cs-height_30 cs-height_lg_30"></div>
           <a href="{{ route('website.portfolio') }}" class="cs-btn cs-style6 cs-btn_lg cs-rounded text-uppercase cs-medium cs-accent_border cs-accent_bg cs-white cs-accent_10_bg_hover cs-accent_40_border_hover">
-            <span class="cs-btn_text">View All</span>
+            <span class="cs-btn_text">{{ __('website.common.view_all') }}</span>
           </a>
         </div>
         <div class="cs-height_0 cs-height_lg_50"></div>
@@ -110,9 +110,9 @@
                   <div class="cs-slide">
                     <a href="{{ route('website.portfolio-details.show', $portfolio->slug) }}" class="cs-portfolio cs-style3">
                       <div class="cs-portfolio_img">
-                        <img src="{{ asset($portfolio->image ?: 'website/assets/img/generated/home-hero-optimized.jpg') }}" alt="{{ $portfolio->title }}" width="560" height="380" loading="lazy" decoding="async">
+                        <img src="{{ asset($portfolio->image ?: 'website/assets/img/generated/home-hero-optimized.jpg') }}" alt="{{ $portfolio->localized('title') }}" width="560" height="380" loading="lazy" decoding="async">
                       </div>
-                      <h2 class="cs-portfolio_title">{{ $portfolio->title }}</h2>
+                      <h2 class="cs-portfolio_title">{{ $portfolio->localized('title') }}</h2>
                     </a>
                   </div>
                 @empty
@@ -121,7 +121,7 @@
                       <div class="cs-portfolio_img">
                         <img src="{{ asset('website/assets/img/generated/home-hero-optimized.jpg') }}" alt="Portfolio" width="560" height="380" loading="lazy" decoding="async">
                       </div>
-                      <h2 class="cs-portfolio_title">Portfolio coming soon</h2>
+                      <h2 class="cs-portfolio_title">{{ __('website.about.portfolio_empty') }}</h2>
                     </a>
                   </div>
                 @endforelse
@@ -150,17 +150,17 @@
         <div class="col-xl-5 offset-xl-1 col-lg-6">
           <div class="cs-vertical_middle">
             <div class="cs-cta_info">
-              <h2 class="cs-cta_title">Have a project? <b class="cs-accent_color cs-with_bar">
-                Let's talk
+              <h2 class="cs-cta_title">{{ __('website.about.cta_prefix') }} <b class="cs-accent_color cs-with_bar">
+                {{ __('website.about.cta_highlight') }}
                 <svg width="208" height="11" viewBox="0 0 208 11" fill="none" xmlns="http://www.w3.org/2000/svg" class="cs-accent_color_2">
                   <path d="M8.90002 10.1C72.2 10.6 135.6 10.7 198.9 10.5C200.8 10.5 200.8 7.49998 198.9 7.49998C135.6 7.79998 72.2 7.69998 8.90002 7.09998C6.90002 7.09998 6.90002 10.1 8.90002 10.1Z" fill="currentColor"/>
                   <path d="M1.90002 3.79999C69.9 3.79999 137.9 4.09999 205.9 4.89999C207.8 4.89999 207.8 1.89999 205.9 1.89999C137.9 1.19999 69.9 0.799988 1.90002 0.799988C-0.0999756 0.799988 -0.0999756 3.79999 1.90002 3.79999Z" fill="currentColor"/>
                 </svg>
               </b></h2>
-              <div class="cs-cta_subtitle">Tell us about your next idea and we will help you plan the right next step.</div>
+              <div class="cs-cta_subtitle">{{ __('website.about.cta_text') }}</div>
               <div class="cs-cta_btns">
                 <a href="{{ url('/contact') }}" class="cs-btn cs-style6 cs-btn_lg cs-rounded text-uppercase cs-medium cs-accent_border cs-accent_bg cs-white cs-accent_10_bg_hover cs-accent_40_border_hover">
-                  <span class="cs-btn_text">Contact Us</span>
+                  <span class="cs-btn_text">{{ __('website.nav.contact') }}</span>
                 </a>
               </div>
             </div>

@@ -60,6 +60,25 @@
     @error('author_bio') <small class="admin-u-021">{{ $message }}</small> @enderror
 </div>
 
+<h3>Arabic Content</h3>
+<div class="form-group">
+    <label for="title_ar">Blog Title (Arabic)</label>
+    <input type="text" name="title_ar" id="title_ar" class="form-control" dir="rtl" lang="ar" value="{{ old('title_ar', $blog->title_ar ?? '') }}">
+    @error('title_ar') <small class="admin-u-021">{{ $message }}</small> @enderror
+</div>
+<div class="form-group">
+    <label for="category_ar">Category (Arabic)</label>
+    <input type="text" name="category_ar" id="category_ar" class="form-control" dir="rtl" lang="ar" value="{{ old('category_ar', $blog->category_ar ?? '') }}">
+    @error('category_ar') <small class="admin-u-021">{{ $message }}</small> @enderror
+</div>
+@foreach(['excerpt_ar' => 'Short Description (Arabic)', 'content_ar' => 'Blog Content (Arabic)', 'author_bio_ar' => 'Author Bio (Arabic)'] as $field => $label)
+    <div class="form-group">
+        <label for="{{ $field }}">{{ $label }}</label>
+        <textarea name="{{ $field }}" id="{{ $field }}" class="form-control" dir="rtl" lang="ar" rows="{{ $field === 'content_ar' ? 10 : 4 }}">{{ old($field, $blog->{$field} ?? '') }}</textarea>
+        @error($field) <small class="admin-u-021">{{ $message }}</small> @enderror
+    </div>
+@endforeach
+
 <div class="admin-u-023">
     <div class="form-group">
         <label for="published_at">Publish Date</label>

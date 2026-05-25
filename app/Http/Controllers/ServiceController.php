@@ -87,7 +87,9 @@ class ServiceController extends Controller
         return $request->validate([
             'icon' => ['nullable', 'file', 'mimes:jpg,jpeg,png,webp,svg', 'max:512'],
             'service_title' => ['required', 'string', 'max:255'],
+            'service_title_ar' => ['nullable', 'string', 'max:255'],
             'service_description' => ['required', 'string'],
+            'service_description_ar' => ['nullable', 'string'],
             'order' => ['nullable', 'integer', 'min:0'],
         ], [
             'icon.file' => 'The icon must be a JPG, PNG, WEBP, or SVG file.',

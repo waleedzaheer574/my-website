@@ -1,6 +1,6 @@
 @extends('layouts.website')
 
-@section('title', 'Offers & Pricing')
+@section('title', __('website.offers.title'))
 @section('hide_global_faqs', '1')
 
 @section('content')
@@ -13,11 +13,12 @@
       'mobile-app-development' => ['icon' => 'fas fa-mobile-alt', 'old_price' => 'AED 1,200', 'tone' => 'pink'],
   ];
 
-  $categories = collect(['All Offers'])
+  $categories = collect([__('website.offers.all')])
       ->merge($offers->pluck('category')->filter()->unique()->values())
       ->when(!$offers->pluck('category')->contains('Design'), fn ($items) => $items->push('Design'))
       ->when(!$offers->pluck('category')->contains('SaaS Solutions'), fn ($items) => $items->push('SaaS Solutions'))
       ->values();
+  $benefitIcons = ['fas fa-shield-alt', 'far fa-clock', 'fas fa-lock', 'fas fa-headset'];
 @endphp
 
 <main class="tcw-saas-page tcw-offers-page">
@@ -25,9 +26,9 @@
     <div class="container">
       <div class="tcw-offers-hero-grid">
         <div class="tcw-offers-hero-copy">
-          <h1>Our Exclusive <span>Offers</span></h1>
-          <p class="tcw-offers-lead">Choose the perfect solution for your business</p>
-          <p>High-quality digital services at the best prices. Select an offer and start your journey with us today.</p>
+          <h1>{{ __('website.offers.heading') }} <span>{{ __('website.offers.highlight') }}</span></h1>
+          <p class="tcw-offers-lead">{{ __('website.offers.lead') }}</p>
+          <p>{{ __('website.offers.intro') }}</p>
         </div>
         <div class="tcw-offers-visual" aria-hidden="true">
           <span class="tcw-offers-orb is-one"></span>
@@ -45,14 +46,14 @@
   <section class="tcw-offers-catalog" id="offers">
     <div class="container">
       <div class="tcw-offers-toolbar">
-        <div class="tcw-offers-filters" aria-label="Offer categories">
+        <div class="tcw-offers-filters" aria-label="{{ __('website.offers.categories') }}">
           @foreach($categories as $category)
-            <a href="#offers" class="{{ $loop->first ? 'is-active' : '' }}" data-offer-category="{{ $category }}">{{ $category }}</a>
+            <a href="#offers" class="{{ $loop->first ? 'is-active' : '' }}" data-offer-category="{{ $loop->first ? '*' : $category }}">{{ $category }}</a>
           @endforeach
         </div>
-        <div class="tcw-billing-toggle" aria-label="Billing options">
-          <span>Monthly</span>
-          <b>One Time</b>
+        <div class="tcw-billing-toggle" aria-label="{{ __('website.offers.billing') }}">
+          <span>{{ __('website.offers.monthly') }}</span>
+          <b>{{ __('website.offers.one_time') }}</b>
         </div>
       </div>
 
@@ -72,8 +73,8 @@
                 <b class="tcw-offer-badge">{{ $badge }}</b>
               @endif
             </div>
-            <h3>{{ $offer->title }}</h3>
-            <p>{{ $offer->description }}</p>
+            <h3>{{ $offer->localized('title') }}</h3>
+            <p>{{ $offer->localized('description') }}</p>
             <div class="tcw-offer-price">
               <strong>{{ $offer->price_label }}</strong>
               @if(!empty($meta['old_price']))
@@ -81,49 +82,39 @@
               @endif
             </div>
             <ul>
-              @foreach(array_slice($offer->features ?? [], 0, 6) as $feature)
+              @foreach(array_slice($offer->localized('features') ?? [], 0, 6) as $feature)
                 <li><i class="fas fa-check-circle"></i>{{ $feature }}</li>
               @endforeach
               @if($offer->delivery_time)
-                <li><i class="fas fa-check-circle"></i>{{ $offer->delivery_time }} Delivery</li>
+                <li><i class="fas fa-check-circle"></i>{{ $offer->delivery_time }} {{ __('website.offers.delivery') }}</li>
               @endif
             </ul>
             @if($offer->exists)
               <a href="{{ $isFeatured ? route('website.checkout', $offer->slug) : route('website.offers.show', $offer->slug) }}" class="tcw-offer-card-btn {{ $isFeatured ? 'is-hot' : '' }}">
-                {{ $isFeatured ? 'Get Started' : 'View Details' }}
+                {{ $isFeatured ? __('website.common.get_started') : __('website.common.view_details') }}
               </a>
             @else
-              <a href="{{ route('login') }}" class="tcw-offer-card-btn">View Details</a>
+              <a href="{{ route('login') }}" class="tcw-offer-card-btn">{{ __('website.common.view_details') }}</a>
             @endif
           </article>
         @endforeach
       </div>
 
       <div class="tcw-offers-benefits">
-        <article>
-          <i class="fas fa-shield-alt"></i>
-          <div><h4>100% Satisfaction</h4><p>We guarantee high-quality work and client satisfaction.</p></div>
-        </article>
-        <article>
-          <i class="far fa-clock"></i>
-          <div><h4>On Time Delivery</h4><p>We value your time and always deliver on time.</p></div>
-        </article>
-        <article>
-          <i class="fas fa-lock"></i>
-          <div><h4>Secure Payments</h4><p>Your payments are safe with our secure gateways.</p></div>
-        </article>
-        <article>
-          <i class="fas fa-headset"></i>
-          <div><h4>24/7 Support</h4><p>Our team is always here to support you.</p></div>
-        </article>
+        @foreach(__('website.offers.benefits') as $benefit)
+          <article>
+            <i class="{{ $benefitIcons[$loop->index] }}"></i>
+            <div><h4>{{ $benefit['title'] }}</h4><p>{{ $benefit['text'] }}</p></div>
+          </article>
+        @endforeach
       </div>
 
       <div class="tcw-offers-custom-cta">
         <div>
-          <h3>Can't find what you need?</h3>
-          <p>Let's discuss your custom project.</p>
+          <h3>{{ __('website.offers.custom_title') }}</h3>
+          <p>{{ __('website.offers.custom_text') }}</p>
         </div>
-        <a href="{{ route('website.contact') }}">Request Custom Quote <i class="fas fa-arrow-right"></i></a>
+        <a href="{{ route('website.contact') }}">{{ __('website.offers.custom_button') }} <i class="fas fa-arrow-right"></i></a>
       </div>
     </div>
   </section>
@@ -149,7 +140,7 @@
 
         cards.forEach((card) => {
           const category = normalize(card.dataset.offerCategory);
-          const shouldShow = selected === 'all offers' || category === selected;
+          const shouldShow = selected === '*' || category === selected;
           card.classList.toggle('is-hidden', !shouldShow);
         });
       });

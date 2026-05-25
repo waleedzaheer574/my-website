@@ -15,6 +15,7 @@
   $isQuote = request()->is('quote-generator*');
   $isOffers = request()->is('offers*') || request()->is('checkout*');
   $isHome = request()->is('/');
+  $isArabic = app()->getLocale() === 'ar';
 @endphp
 
 <!-- Start Preloader -->
@@ -38,17 +39,17 @@
       </div>
 
       <div class="cs-main_header_center">
-        <nav class="tcw-nav" aria-label="Primary navigation">
+        <nav class="tcw-nav" aria-label="{{ __('website.nav.home') }}">
           <ul class="tcw-nav_list">
             <li class="tcw-nav_item {{ $isHome ? 'is-active' : '' }}">
-              <a href="{{ url('/') }}">Home</a>
+              <a href="{{ url('/') }}">{{ __('website.nav.home') }}</a>
             </li>
             <li class="tcw-nav_item {{ $isAbout ? 'is-active' : '' }}">
-              <a href="{{ url('/about') }}">About Us</a>
+              <a href="{{ url('/about') }}">{{ __('website.nav.about') }}</a>
             </li>
             <li class="tcw-nav_item tcw-has_dropdown {{ $isService ? 'is-active' : '' }}">
               <span class="tcw-dropdown_link_group">
-                <a href="{{ route('website.services') }}">Services</a>
+                <a href="{{ route('website.services') }}">{{ __('website.nav.services') }}</a>
                 <button class="tcw-dropdown_toggle" type="button" aria-expanded="false" aria-controls="tcw-services-dropdown" aria-label="Toggle services dropdown">
                   <i class="fas fa-chevron-down"></i>
                 </button>
@@ -59,14 +60,14 @@
                     <a href="{{ $service->detail ? route('website.service-details.show', $service->detail->slug) : route('website.services') }}" class="tcw-service_item" role="listitem">
                       <span class="tcw-service_icon">
                         @if($service->icon)
-                          <img src="{{ asset($service->icon) }}" alt="{{ $service->service_title }}" width="48" height="48" loading="lazy" decoding="async">
+                          <img src="{{ asset($service->icon) }}" alt="{{ $service->localized('service_title') }}" width="48" height="48" loading="lazy" decoding="async">
                         @else
                           <i class="fas fa-briefcase"></i>
                         @endif
                       </span>
                       <span class="tcw-service_content">
-                        <span class="tcw-service_title">{{ $service->service_title }}</span>
-                        <span class="tcw-service_text">{{ \Illuminate\Support\Str::limit($service->service_description, 90) }}</span>
+                        <span class="tcw-service_title">{{ $service->localized('service_title') }}</span>
+                        <span class="tcw-service_text">{{ \Illuminate\Support\Str::limit($service->localized('service_description'), 90) }}</span>
                       </span>
                       <span class="tcw-service_arrow"><i class="fas fa-arrow-right"></i></span>
                     </a>
@@ -75,22 +76,22 @@
               </div>
             </li>
             <li class="tcw-nav_item {{ $isPortfolio ? 'is-active' : '' }}">
-              <a href="{{ url('/portfolio') }}">Portfolio</a>
+              <a href="{{ url('/portfolio') }}">{{ __('website.nav.portfolio') }}</a>
             </li>
             <li class="tcw-nav_item {{ $isOffers ? 'is-active' : '' }}">
-              <a href="{{ route('website.offers') }}">Offers</a>
+              <a href="{{ route('website.offers') }}">{{ __('website.nav.offers') }}</a>
             </li>
             <li class="tcw-nav_item {{ $isIndustries ? 'is-active' : '' }}">
-              <a href="{{ route('website.industries') }}">Industries</a>
+              <a href="{{ route('website.industries') }}">{{ __('website.nav.industries') }}</a>
             </li>
             <li class="tcw-nav_item {{ $isTestimonials ? 'is-active' : '' }}">
-              <a href="{{ route('website.testimonials') }}">Testimonials</a>
+              <a href="{{ route('website.testimonials') }}">{{ __('website.nav.testimonials') }}</a>
             </li>
             <li class="tcw-nav_item {{ $isBlog ? 'is-active' : '' }}">
-              <a href="{{ url('/blog') }}">Blog</a>
+              <a href="{{ url('/blog') }}">{{ __('website.nav.blog') }}</a>
             </li>
             <li class="tcw-nav_item {{ $isQuote ? 'is-active' : '' }}">
-              <a href="{{ route('website.quote-generator') }}">Quote</a>
+              <a href="{{ route('website.quote-generator') }}">{{ __('website.nav.quote') }}</a>
             </li>
           </ul>
         </nav>
@@ -99,15 +100,19 @@
       <div class="cs-main_header_right">
         <div class="tcw-header_actions">
           @auth
-            <a href="{{ auth()->user()->isAdmin() ? route('dashboard') : route('user.dashboard') }}" class="tcw-header_auth" aria-label="Dashboard" title="Dashboard">
+            <a href="{{ auth()->user()->isAdmin() ? route('dashboard') : route('user.dashboard') }}" class="tcw-header_auth" aria-label="{{ __('website.nav.dashboard') }}" title="{{ __('website.nav.dashboard') }}">
               <i class="fas fa-user"></i>
             </a>
           @else
-            <a href="{{ route('login') }}" class="tcw-header_auth" aria-label="Login" title="Login">
+            <a href="{{ route('login') }}" class="tcw-header_auth" aria-label="{{ __('website.nav.login') }}" title="{{ __('website.nav.login') }}">
               <i class="fas fa-user"></i>
             </a>
           @endauth
-          <a href="{{ url('/contact') }}" class="tcw-header_cta">Contact Us</a>
+          <div class="tcw-language-switch" aria-label="{{ __('website.language.label') }}">
+            <a href="{{ route('language.switch', 'en') }}" class="{{ $isArabic ? '' : 'is-active' }}">EN</a>
+            <a href="{{ route('language.switch', 'ar') }}" class="{{ $isArabic ? 'is-active' : '' }}">AR</a>
+          </div>
+          <a href="{{ url('/contact') }}" class="tcw-header_cta">{{ __('website.nav.contact') }}</a>
         </div>
 
         <button class="tcw-menu_toggle" type="button" aria-expanded="false" aria-controls="tcw-mobile-nav" aria-label="Open navigation">
@@ -120,12 +125,12 @@
 
     <div class="tcw-mobile_panel" id="tcw-mobile-nav" hidden>
       <div class="tcw-mobile_panel_inner">
-        <a href="{{ url('/') }}" class="tcw-mobile_link {{ $isHome ? 'is-active' : '' }}">Home</a>
-        <a href="{{ url('/about') }}" class="tcw-mobile_link {{ $isAbout ? 'is-active' : '' }}">About Us</a>
+        <a href="{{ url('/') }}" class="tcw-mobile_link {{ $isHome ? 'is-active' : '' }}">{{ __('website.nav.home') }}</a>
+        <a href="{{ url('/about') }}" class="tcw-mobile_link {{ $isAbout ? 'is-active' : '' }}">{{ __('website.nav.about') }}</a>
 
         <div class="tcw-mobile_group {{ $isService ? 'is-open' : '' }}">
           <button class="tcw-mobile_group_toggle" type="button" aria-expanded="{{ $isService ? 'true' : 'false' }}">
-            <span>Services</span>
+            <span>{{ __('website.nav.services') }}</span>
             <i class="fas fa-plus"></i>
           </button>
           <div class="tcw-mobile_group_body" @unless($isService) hidden @endunless>
@@ -133,38 +138,42 @@
               <a href="{{ $service->detail ? route('website.service-details.show', $service->detail->slug) : route('website.services') }}" class="tcw-mobile_sublink">
                 <span class="tcw-mobile_sublink_icon">
                   @if($service->icon)
-                    <img src="{{ asset($service->icon) }}" alt="{{ $service->service_title }}" width="42" height="42" loading="lazy" decoding="async">
+                    <img src="{{ asset($service->icon) }}" alt="{{ $service->localized('service_title') }}" width="42" height="42" loading="lazy" decoding="async">
                   @else
                     <i class="fas fa-briefcase"></i>
                   @endif
                 </span>
               <span class="tcw-mobile_sublink_content">
-                <span class="tcw-mobile_sublink_title">{{ $service->service_title }}</span>
-                <span class="tcw-mobile_sublink_text">{{ \Illuminate\Support\Str::limit($service->service_description, 80) }}</span>
+                <span class="tcw-mobile_sublink_title">{{ $service->localized('service_title') }}</span>
+                <span class="tcw-mobile_sublink_text">{{ \Illuminate\Support\Str::limit($service->localized('service_description'), 80) }}</span>
               </span>
             </a>
           @endforeach
         </div>
         </div>
 
-        <a href="{{ url('/portfolio') }}" class="tcw-mobile_link {{ $isPortfolio ? 'is-active' : '' }}">Portfolio</a>
-        <a href="{{ route('website.offers') }}" class="tcw-mobile_link {{ $isOffers ? 'is-active' : '' }}">Offers</a>
-        <a href="{{ route('website.industries') }}" class="tcw-mobile_link {{ $isIndustries ? 'is-active' : '' }}">Industries</a>
-        <a href="{{ route('website.testimonials') }}" class="tcw-mobile_link {{ $isTestimonials ? 'is-active' : '' }}">Testimonials</a>
-        <a href="{{ url('/blog') }}" class="tcw-mobile_link {{ $isBlog ? 'is-active' : '' }}">Blog</a>
-        <a href="{{ route('website.quote-generator') }}" class="tcw-mobile_link {{ $isQuote ? 'is-active' : '' }}">Quote Generator</a>
+        <a href="{{ url('/portfolio') }}" class="tcw-mobile_link {{ $isPortfolio ? 'is-active' : '' }}">{{ __('website.nav.portfolio') }}</a>
+        <a href="{{ route('website.offers') }}" class="tcw-mobile_link {{ $isOffers ? 'is-active' : '' }}">{{ __('website.nav.offers') }}</a>
+        <a href="{{ route('website.industries') }}" class="tcw-mobile_link {{ $isIndustries ? 'is-active' : '' }}">{{ __('website.nav.industries') }}</a>
+        <a href="{{ route('website.testimonials') }}" class="tcw-mobile_link {{ $isTestimonials ? 'is-active' : '' }}">{{ __('website.nav.testimonials') }}</a>
+        <a href="{{ url('/blog') }}" class="tcw-mobile_link {{ $isBlog ? 'is-active' : '' }}">{{ __('website.nav.blog') }}</a>
+        <a href="{{ route('website.quote-generator') }}" class="tcw-mobile_link {{ $isQuote ? 'is-active' : '' }}">{{ __('website.nav.quote_generator') }}</a>
+        <div class="tcw-language-switch tcw-language-switch-mobile" aria-label="{{ __('website.language.label') }}">
+          <a href="{{ route('language.switch', 'en') }}" class="{{ $isArabic ? '' : 'is-active' }}">{{ __('website.language.english') }}</a>
+          <a href="{{ route('language.switch', 'ar') }}" class="{{ $isArabic ? 'is-active' : '' }}">{{ __('website.language.arabic') }}</a>
+        </div>
         @auth
-          <a href="{{ auth()->user()->isAdmin() ? route('dashboard') : route('user.dashboard') }}" class="tcw-mobile_link">My Dashboard</a>
+          <a href="{{ auth()->user()->isAdmin() ? route('dashboard') : route('user.dashboard') }}" class="tcw-mobile_link">{{ __('website.nav.dashboard') }}</a>
           <form action="{{ route('logout') }}" method="POST" class="tcw-mobile_auth_form">
             @csrf
-            <button type="submit">Logout</button>
+            <button type="submit">{{ __('website.nav.logout') }}</button>
           </form>
         @else
-          <a href="{{ route('login') }}" class="tcw-mobile_link">Login</a>
+          <a href="{{ route('login') }}" class="tcw-mobile_link">{{ __('website.nav.login') }}</a>
         @endauth
         <div class="tcw-mobile_cta_wrap">
-          <p>Have a project in mind? Let us shape the right launch plan.</p>
-          <a href="{{ url('/contact') }}" class="tcw-header_cta tcw-header_cta_full">Start a Project</a>
+          <p>{{ __('website.nav.project_prompt') }}</p>
+          <a href="{{ url('/contact') }}" class="tcw-header_cta tcw-header_cta_full">{{ __('website.nav.start_project') }}</a>
         </div>
       </div>
     </div>

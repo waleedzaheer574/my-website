@@ -20,8 +20,8 @@ class NewsletterSubscriptionController extends Controller
         );
 
         $message = $subscription->wasRecentlyCreated
-            ? 'Thank you for subscribing. Your email has been saved.'
-            : 'You are already subscribed with this email.';
+            ? __('website.footer.subscribed')
+            : __('website.footer.already_subscribed');
 
         return back()->with('newsletter_success', $message);
     }

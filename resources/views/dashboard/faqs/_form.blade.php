@@ -43,6 +43,18 @@
     @error('answer') <small class="admin-u-021">{{ $message }}</small> @enderror
 </div>
 
+<h3>Arabic Content</h3>
+<div class="form-group">
+    <label for="question_ar">Question (Arabic)</label>
+    <input type="text" name="question_ar" id="question_ar" class="form-control" dir="rtl" lang="ar" value="{{ old('question_ar', $faq?->question_ar) }}">
+    @error('question_ar') <small class="admin-u-021">{{ $message }}</small> @enderror
+</div>
+<div class="form-group">
+    <label for="answer_ar">Answer (Arabic)</label>
+    <textarea name="answer_ar" id="answer_ar" class="form-control" dir="rtl" lang="ar" rows="6">{{ old('answer_ar', $faq?->answer_ar) }}</textarea>
+    @error('answer_ar') <small class="admin-u-021">{{ $message }}</small> @enderror
+</div>
+
 <label class="admin-u-038">
     <input type="checkbox" name="is_active" value="1" {{ old('is_active', $faq?->is_active ?? true) ? 'checked' : '' }}>
     Active
