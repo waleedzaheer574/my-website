@@ -16,11 +16,6 @@ class AiCallLeadController extends Controller
 {
     public function store(Request $request): JsonResponse
     {
-//    Log::info('VOICEFLOW REQUEST', [
-//     'payload' => $request->all()
-// ]);
-
-        \Log::info('VAPI REQUEST RECEIVED', $request->all());
         $payload = $request->all();
 
         Log::info('VAPI REQUEST RECEIVED', [
@@ -38,13 +33,16 @@ class AiCallLeadController extends Controller
                 'message' => 'Unauthorized webhook request.',
             ], 401);
         }
+
         $data = $this->flattenLeadPayload($payload);
         $data = $this->normalizeLeadEmail($data);
+
         Log::info('RAW EMAIL DEBUG', [
-    'email' => $data['email'] ?? null,
-    'company_email' => $data['company_email'] ?? null,
-    'payload' => $data,
-]);
+            'email' => $data['email'] ?? null,
+            'company_email' => $data['company_email'] ?? null,
+            'payload' => $data,
+        ]);
+
         $validator = Validator::make($data, [
             'full_name' => ['nullable', 'string', 'max:255'],
             'name' => ['nullable', 'string', 'max:255'],

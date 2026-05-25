@@ -187,58 +187,96 @@
   cursor: pointer;
 }
 
-.tcw-ai-call-flow {
-  display: grid;
-  gap: 10px;
-  margin: 20px 0;
-  padding: 16px;
-  border: 1px solid rgba(56, 189, 248, 0.2);
-  border-radius: 18px;
-  background: rgba(15, 23, 42, 0.04);
+.tcw-voice-popup {
+  max-width: 420px;
+  padding: 34px 28px 28px;
+  text-align: center;
 }
 
-.tcw-ai-call-flow span {
-  display: grid;
-  grid-template-columns: 34px 1fr;
-  align-items: center;
-  gap: 10px;
-  color: #0f172a;
-  font-size: 14px;
-  font-weight: 800;
-}
-
-.tcw-ai-call-flow i {
+.tcw-voice-orb {
+  position: relative;
+  width: 84px;
+  height: 84px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
+  margin: 16px auto 20px;
   border-radius: 50%;
   color: #fff;
   background: linear-gradient(135deg, #38BDF8, #2563EB);
-  font-style: normal;
-  font-size: 12px;
+  font-size: 30px;
+  box-shadow: 0 18px 38px rgba(37, 99, 235, 0.3);
 }
 
-.tcw-ai-api-box {
-  margin-top: 14px;
-  padding: 14px;
-  border: 1px solid rgba(2, 132, 199, 0.2);
-  border-radius: 14px;
-  color: #334155;
-  background: #f8fafc;
+.tcw-voice-orb::before,
+.tcw-voice-orb::after {
+  content: "";
+  position: absolute;
+  inset: -10px;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  border-radius: 50%;
+  opacity: 0;
+}
+
+.tcw-voice-popup.is-connecting .tcw-voice-orb::before,
+.tcw-voice-popup.is-live .tcw-voice-orb::before,
+.tcw-voice-popup.is-live .tcw-voice-orb::after {
+  animation: tcwVoicePulse 1.8s ease-out infinite;
+  opacity: 1;
+}
+
+.tcw-voice-popup.is-live .tcw-voice-orb::after {
+  animation-delay: 0.65s;
+}
+
+@keyframes tcwVoicePulse {
+  from { transform: scale(0.9); opacity: 0.6; }
+  to { transform: scale(1.45); opacity: 0; }
+}
+
+.tcw-voice-popup h2 {
+  font-size: 28px;
+}
+
+.tcw-voice-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0 auto 22px;
+  padding: 9px 14px;
+  border-radius: 999px;
+  color: #475569;
+  background: #f1f5f9;
   font-size: 13px;
-  line-height: 1.65;
+  font-weight: 800;
 }
 
-.tcw-ai-api-box code {
-  display: block;
-  margin-top: 8px;
-  padding: 10px 12px;
-  border-radius: 10px;
+.tcw-voice-status i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #94a3b8;
+}
+
+.tcw-voice-popup.is-connecting .tcw-voice-status i {
+  background: #f59e0b;
+}
+
+.tcw-voice-popup.is-live .tcw-voice-status {
   color: #0369a1;
   background: #e0f2fe;
-  overflow-wrap: anywhere;
+}
+
+.tcw-voice-popup.is-live .tcw-voice-status i {
+  background: #22c55e;
+}
+
+.tcw-voice-help {
+  margin: 0 auto 22px;
+  color: #475569;
+  font-size: 14px;
+  line-height: 1.65;
 }
 
 .tcw-ai-call-actions {
@@ -266,6 +304,23 @@
   border: 1px solid #38BDF8;
   color: #fff;
   background: linear-gradient(135deg, #38BDF8, #2563EB);
+}
+
+.tcw-ai-end-call {
+  display: none !important;
+  border: 1px solid #ef4444;
+  color: #fff;
+  background: #ef4444;
+}
+
+.tcw-voice-popup.is-live .tcw-ai-call-primary,
+.tcw-voice-popup.is-connecting .tcw-ai-call-primary {
+  display: none;
+}
+
+.tcw-voice-popup.is-live .tcw-ai-end-call,
+.tcw-voice-popup.is-connecting .tcw-ai-end-call {
+  display: inline-flex !important;
 }
 
 .tcw-ai-call-secondary {
@@ -306,6 +361,10 @@
 
   .tcw-ai-call-actions {
     grid-template-columns: 1fr;
+  }
+
+  .tcw-voice-popup {
+    padding: 30px 18px 20px;
   }
 }
 
@@ -390,11 +449,9 @@
       </a>
     @endif
 
-    @if($floatingPhone)
-      <button type="button" id="openAiCallFlow" class="tcw-floating-contact__icon tcw-floating-contact__button" aria-label="AI call workflow">
-        <i class="fas fa-phone"></i>
-      </button>
-    @endif
+    <button type="button" id="openAiCallFlow" class="tcw-floating-contact__icon tcw-floating-contact__button" aria-label="Call AI receptionist">
+      <i class="fas fa-phone"></i>
+    </button>
   </div>
 
   <a href="{{ route('website.quote-generator') }}" class="tcw-floating-contact__quote">
@@ -403,32 +460,24 @@
 </div>
 
 <div id="aiCallFlowPopup" class="tcw-popup-overlay">
-  <div class="tcw-popup">
+  <div class="tcw-popup tcw-voice-popup" data-vapi-call-panel>
     <button class="tcw-popup-close" id="closeAiCallFlow" type="button">&times;</button>
 
     <div class="tcw-popup-kicker">AI receptionist</div>
-    <h2>AI Call Lead Workflow</h2>
-    <p class="tcw-form-intro">Visitor call karega, AI receptionist requirement samjhega, lead information collect karega, Laravel API call hogi, lead database me save hogi aur admin ko email mil jayegi.</p>
+    <span class="tcw-voice-orb" aria-hidden="true">
+      <i class="fas fa-phone"></i>
+    </span>
+    <h2>Talk to Our AI Receptionist</h2>
+    <p class="tcw-voice-help">Available 24/7 to answer your questions and collect project requirements.</p>
 
-    <div class="tcw-ai-call-flow" aria-label="AI call workflow">
-      <span><i>01</i> Visitor calls AI number</span>
-      <span><i>02</i> Vapi AI receptionist answers and greets customer</span>
-      <span><i>03</i> AI understands requirement and explains Multitechwave services</span>
-      <span><i>04</i> AI collects name, email, phone, budget and requirement</span>
-      <span><i>05</i> AI calls Laravel API and lead is saved in database</span>
-      <span><i>06</i> Admin receives email and contacts customer</span>
-    </div>
-
-    <div class="tcw-ai-api-box">
-      <strong>Call agent integration API</strong>
-      <code>POST {{ url('/api/ai-call-leads') }}</code>
-      Send JSON fields: <strong>full_name/name</strong>, <strong>email/company_email</strong>, <strong>phone/phone_no</strong>, <strong>budget</strong>, <strong>requirement</strong>, <strong>service_type</strong>, <strong>summary</strong>, <strong>transcript</strong>, <strong>vapi_call_id/call_id</strong>.
+    <div class="tcw-voice-status" role="status" aria-live="polite">
+      <i></i>
+      <span data-vapi-status>Ready to connect</span>
     </div>
 
     <div class="tcw-ai-call-actions">
-      @if($floatingPhone)
-        <a href="tel:{{ preg_replace('/\s+/', '', $floatingPhone) }}" class="tcw-ai-call-primary">Call AI Number</a>
-      @endif
+      <button type="button" class="tcw-ai-call-primary" data-vapi-start-call>Start Call</button>
+      <button type="button" class="tcw-ai-end-call" data-vapi-end-call>End Call</button>
       <button type="button" class="tcw-ai-call-secondary" id="closeAiCallFlowSecondary">Close</button>
     </div>
   </div>
@@ -495,29 +544,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const openBtn = document.getElementById('openQuotePopup');
   const popup = document.getElementById('quotePopup');
   const closeBtn = document.getElementById('closeQuotePopup');
-  const aiCallOpenBtn = document.getElementById('openAiCallFlow');
-  const aiCallPopup = document.getElementById('aiCallFlowPopup');
-  const aiCallCloseBtn = document.getElementById('closeAiCallFlow');
-  const aiCallSecondaryCloseBtn = document.getElementById('closeAiCallFlowSecondary');
-
-  if (aiCallOpenBtn && aiCallPopup && aiCallCloseBtn) {
-    aiCallOpenBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      aiCallPopup.style.display = 'flex';
-    });
-
-    [aiCallCloseBtn, aiCallSecondaryCloseBtn].forEach(function(button) {
-      button?.addEventListener('click', function() {
-        aiCallPopup.style.display = 'none';
-      });
-    });
-
-    window.addEventListener('click', function(e) {
-      if (e.target === aiCallPopup) {
-        aiCallPopup.style.display = 'none';
-      }
-    });
-  }
 
   if (!openBtn || !popup || !closeBtn) {
     return;
@@ -540,4 +566,154 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
 });
+</script>
+
+<script type="module">
+  const publicKey = 'cb76a6ad-b880-49b3-b054-5eb72bb56309';
+  const assistantId = 'b0438229-6d34-4a88-b499-664f55278c99';
+  const callButton = document.getElementById('openAiCallFlow');
+  const callPopup = document.getElementById('aiCallFlowPopup');
+  const callPanel = callPopup?.querySelector('[data-vapi-call-panel]');
+  const statusText = callPopup?.querySelector('[data-vapi-status]');
+  const startButton = callPopup?.querySelector('[data-vapi-start-call]');
+  const endButton = callPopup?.querySelector('[data-vapi-end-call]');
+  const closeButtons = [
+    document.getElementById('closeAiCallFlow'),
+    document.getElementById('closeAiCallFlowSecondary'),
+  ].filter(Boolean);
+  let vapi = null;
+  let vapiPromise = null;
+  let callAttempt = 0;
+  let isStarting = false;
+  let isConnected = false;
+
+  if (callButton && callPopup && callPanel && statusText && startButton && endButton) {
+    const setStatus = (label, state = '') => {
+      statusText.textContent = label;
+      callPanel.classList.remove('is-connecting', 'is-live');
+
+      if (state) {
+        callPanel.classList.add(state);
+      }
+    };
+
+    const showPopup = () => {
+      callPopup.style.display = 'flex';
+    };
+
+    const getVapi = async () => {
+      if (vapi) {
+        return vapi;
+      }
+
+      if (!vapiPromise) {
+        vapiPromise = import('https://cdn.jsdelivr.net/npm/@vapi-ai/web@latest/+esm')
+          .then(({ default: Vapi }) => {
+            vapi = new Vapi(publicKey);
+
+            vapi.on('call-start', () => {
+              isStarting = false;
+              isConnected = true;
+              setStatus('Connected', 'is-live');
+            });
+
+            vapi.on('call-end', () => {
+              isStarting = false;
+              isConnected = false;
+              setStatus('Ended');
+            });
+
+            vapi.on('error', (error) => {
+              isStarting = false;
+              isConnected = false;
+              setStatus('Connection error');
+              console.error('Vapi voice call error.', error);
+            });
+
+            return vapi;
+          })
+          .catch((error) => {
+            vapiPromise = null;
+            throw error;
+          });
+      }
+
+      return vapiPromise;
+    };
+
+    const startCall = async () => {
+      showPopup();
+
+      if (isStarting || isConnected) {
+        return;
+      }
+
+      const activeAttempt = ++callAttempt;
+      isStarting = true;
+      setStatus('Connecting...', 'is-connecting');
+
+      try {
+        if (!navigator.mediaDevices?.getUserMedia) {
+          throw new Error('Microphone access is not supported in this browser.');
+        }
+
+        const microphoneStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        microphoneStream.getTracks().forEach((track) => track.stop());
+
+        if (activeAttempt !== callAttempt) {
+          return;
+        }
+
+        const client = await getVapi();
+
+        if (activeAttempt !== callAttempt) {
+          return;
+        }
+
+        await client.start(assistantId);
+      } catch (error) {
+        if (activeAttempt !== callAttempt) {
+          return;
+        }
+
+        isStarting = false;
+        setStatus(error?.name === 'NotAllowedError' ? 'Microphone permission denied' : 'Unable to connect');
+        console.error('Vapi voice call could not start.', error);
+      }
+    };
+
+    const endCall = () => {
+      callAttempt++;
+
+      if ((isStarting || isConnected) && vapi) {
+        vapi.stop();
+      }
+
+      isStarting = false;
+      isConnected = false;
+      setStatus('Ended');
+    };
+
+    callButton.addEventListener('click', (event) => {
+      event.preventDefault();
+      startCall();
+    });
+
+    startButton.addEventListener('click', startCall);
+    endButton.addEventListener('click', endCall);
+
+    closeButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        endCall();
+        callPopup.style.display = 'none';
+      });
+    });
+
+    window.addEventListener('click', (event) => {
+      if (event.target === callPopup) {
+        endCall();
+        callPopup.style.display = 'none';
+      }
+    });
+  }
 </script>
