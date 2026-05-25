@@ -57,11 +57,6 @@
                 <h2 class="cs-icon_box_title cs-semi_bold cs-transition_3">{{ $service->service_title }}</h2>
                 <div class="cs-icon_box_subtitle cs-transition_3">{{ \Illuminate\Support\Str::limit($service->service_description ?? '', 135) }}</div>
               </div>
-              <div class="cs-icon_box_shape cs-accent_color">
-                <svg class="cs-transition_3" xmlns="http://www.w3.org/2000/svg" opacity="0.051" width="247px" height="257px">
-                  <path fill-rule="evenodd" fill="currentColor" d="M0.717,256.609 C0.717,256.609 7.824,164.313 102.262,127.457 C196.699,90.601 230.049,0.643 230.049,0.643 L246.891,241.481 L0.717,256.609 Z"/>
-                </svg>
-              </div>
             </a>
             <div class="cs-height_30 cs-height_lg_30"></div>
           </div>

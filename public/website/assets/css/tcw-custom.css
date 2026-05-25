@@ -3016,19 +3016,13 @@
     background: linear-gradient(45deg, #38BDF8 0%, #38BDF8 100%);
   }
 
-  /* .cs-icon_box.cs-style6::after {
-    background-image: linear-gradient(0deg, #38BDF8 0%, #38BDF8 100%);
-  } */
+ 
 
   .cs-icon_box.cs-style6:hover {
     box-shadow: 0 18px 40px rgba(56, 189, 248, 0.25);
   }
 
-  /* .cs-shape_bg.cs-style8:after,
-  .cs-counter.cs-style5:hover .cs-counter_number {
-    background-color: #38BDF8;
-    color: #38BDF8;
-  } */
+
 
   .tcw-site-header {
     padding-top: 18px;
@@ -5197,12 +5191,7 @@
   min-height: 354px;
 }
 
-.tcw-about-services-grid .cs-icon_box.cs-style6 .cs-icon_box_in {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  width: 100%;
-}
+
 
 .tcw-about-services-grid .cs-icon_box.cs-style6 .cs-icon_box_subtitle {
   flex: 1 1 auto;
