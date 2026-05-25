@@ -3016,19 +3016,19 @@
     background: linear-gradient(45deg, #38BDF8 0%, #38BDF8 100%);
   }
 
-  .cs-icon_box.cs-style6::after {
+  /* .cs-icon_box.cs-style6::after {
     background-image: linear-gradient(0deg, #38BDF8 0%, #38BDF8 100%);
-  }
+  } */
 
   .cs-icon_box.cs-style6:hover {
     box-shadow: 0 18px 40px rgba(56, 189, 248, 0.25);
   }
 
-  .cs-shape_bg.cs-style8:after,
+  /* .cs-shape_bg.cs-style8:after,
   .cs-counter.cs-style5:hover .cs-counter_number {
     background-color: #38BDF8;
     color: #38BDF8;
-  }
+  } */
 
   .tcw-site-header {
     padding-top: 18px;
@@ -23664,4 +23664,207 @@ body:has(.tcw-article-page) {
   .tcw-about-page .tcw-review-next {
     right: 8px;
   }
+}
+
+/* Use the Home primary CTA gradient across header interactions and quick quote access. */
+.tcw-site-header .tcw-nav_item:hover > a,
+.tcw-site-header .tcw-nav_item:hover > .tcw-dropdown_link_group,
+.tcw-site-header .tcw-nav_item:focus-within > a,
+.tcw-site-header .tcw-nav_item:focus-within > .tcw-dropdown_link_group,
+.tcw-site-header .tcw-nav_item.is-active > a,
+.tcw-site-header .tcw-nav_item.is-active > .tcw-dropdown_link_group,
+.tcw-site-header .tcw-nav_item.is-open > .tcw-dropdown_link_group,
+.tcw-site-header .tcw-header_cta,
+.tcw-site-header .tcw-header_cta:hover,
+.tcw-site-header .tcw-header_icon:hover,
+.tcw-floating-contact .tcw-floating-contact__quote,
+.tcw-floating-contact .tcw-floating-contact__quote:hover,
+.tcw-floating-contact .tcw-floating-contact__quote:focus-visible {
+  background: linear-gradient(135deg, #1768ff, #5c2dff) !important;
+  color: #ffffff !important;
+}
+
+.tcw-site-header .tcw-nav_item:hover > a,
+.tcw-site-header .tcw-nav_item:hover > .tcw-dropdown_link_group,
+.tcw-site-header .tcw-nav_item:focus-within > a,
+.tcw-site-header .tcw-nav_item:focus-within > .tcw-dropdown_link_group,
+.tcw-site-header .tcw-nav_item.is-active > a,
+.tcw-site-header .tcw-nav_item.is-active > .tcw-dropdown_link_group,
+.tcw-site-header .tcw-nav_item.is-open > .tcw-dropdown_link_group,
+.tcw-site-header .tcw-header_cta,
+.tcw-site-header .tcw-header_cta:hover,
+.tcw-floating-contact .tcw-floating-contact__quote,
+.tcw-floating-contact .tcw-floating-contact__quote:hover,
+.tcw-floating-contact .tcw-floating-contact__quote:focus-visible {
+  border-color: transparent !important;
+  box-shadow: 0 16px 34px rgba(51, 94, 255, 0.28) !important;
+}
+
+.tcw-floating-contact .tcw-floating-contact__quote:hover,
+.tcw-floating-contact .tcw-floating-contact__quote:focus-visible {
+  filter: brightness(1.08);
+}
+
+@media (max-width: 991px) {
+  .tcw-site-header .tcw-mobile_link.is-active,
+  .tcw-site-header .tcw-mobile_group.is-open .tcw-mobile_group_toggle,
+  .tcw-site-header .tcw-mobile_group_toggle:hover,
+  .tcw-site-header .tcw-mobile_group_toggle:focus {
+    background: linear-gradient(135deg, #1768ff, #5c2dff) !important;
+    color: #ffffff !important;
+  }
+
+  .tcw-site-header .tcw-mobile_group.is-open .tcw-mobile_group_toggle i,
+  .tcw-site-header .tcw-mobile_group_toggle:hover i,
+  .tcw-site-header .tcw-mobile_group_toggle:focus i {
+    color: #ffffff !important;
+  }
+}
+
+/* Carry the primary blue-violet action theme through public-site controls. */
+.tcw-site-header .tcw-header_auth:hover,
+.tcw-site-header .tcw-header_auth:focus-visible,
+.tcw-site-header .tcw-service_item:hover .tcw-service_icon,
+.tcw-floating-contact .tcw-floating-contact__icon:hover,
+.tcw-floating-contact .tcw-floating-contact__icon:focus-visible,
+.tcw-it-btn-primary,
+.cs-btn.cs-style6.cs-accent_bg,
+.cs-btn.cs-style6.cs-accent_bg_2,
+.tcw-load-more-btn,
+.tcw-offer-card-btn,
+.tcw-offer-card-btn.is-hot,
+.tcw-contact-submit,
+.tcw-quote-submit,
+.tcw-page-action,
+.tcw-service-modern .tcw-detail-btn-primary,
+.tcw-service-modern .tcw-detail-btn-light,
+.tcw-portfolio-modern .tcw-detail-btn-primary,
+.tcw-portfolio-modern .tcw-detail-btn-light,
+.tcw-service-index-cta > a,
+.tcw-article-cta a,
+.case-study-card_link,
+.service-card button,
+.view-all,
+.cs-footer_newsletter_btn {
+  border-color: transparent !important;
+  background: linear-gradient(135deg, #1768ff, #5c2dff) !important;
+  color: #ffffff !important;
+  box-shadow: 0 16px 34px rgba(51, 94, 255, 0.28) !important;
+}
+
+.tcw-it-btn-primary:hover,
+.cs-btn.cs-style6.cs-accent_bg:hover,
+.cs-btn.cs-style6.cs-accent_bg_2:hover,
+.tcw-load-more-btn:hover,
+.tcw-offer-card-btn:hover,
+.tcw-contact-submit:hover,
+.tcw-quote-submit:hover,
+.tcw-page-action:hover,
+.tcw-service-modern .tcw-detail-btn-primary:hover,
+.tcw-service-modern .tcw-detail-btn-light:hover,
+.tcw-portfolio-modern .tcw-detail-btn-primary:hover,
+.tcw-portfolio-modern .tcw-detail-btn-light:hover,
+.tcw-service-index-cta > a:hover,
+.tcw-article-cta a:hover,
+.case-study-card_link:hover,
+.service-card button:hover,
+.view-all:hover,
+.cs-footer_newsletter_btn:hover {
+  color: #ffffff !important;
+  filter: brightness(1.08);
+}
+
+.tcw-review-arrow:hover,
+.tcw-blog-rail_arrow:hover {
+  border-color: transparent !important;
+  background: linear-gradient(135deg, #1768ff, #5c2dff) !important;
+  color: #ffffff !important;
+}
+
+/* Match hero eyebrow labels and repeated accent text to the primary theme. */
+.tcw-it-home .tcw-it-kicker,
+.tcw-it-home .tcw-it-section-head > span,
+.tcw-detail-eyebrow,
+.tcw-detail-kicker,
+.tcw-saas-kicker,
+.cs-section_subtitle,
+.tcw-page-kicker,
+.tcw-service-index-heading > span,
+.tcw-service-tech-panel-index > span,
+.tcw-blog-related-head > span,
+.tcw-article-category,
+.tcw-it-home .tcw-it-hero-copy h1 span,
+.tcw-dimensional-hero h1 span,
+.tcw-service-modern .tcw-detail-hero-copy h1 span,
+.tcw-portfolio-modern .tcw-detail-hero-copy h1 span,
+.tcw-offers-hero h1 span,
+.cs-hero.cs-style8 .cs-hero_title b,
+.tcw-about-hero .cs-hero_title b,
+.cs-section_title .cs-accent_color {
+  background: linear-gradient(135deg, #3d86ff, #8355ff) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+.tcw-detail-eyebrow,
+.tcw-detail-kicker,
+.tcw-article-category {
+  border-color: rgba(92, 45, 255, 0.34) !important;
+  background-color: rgba(51, 94, 255, 0.12) !important;
+}
+
+/* Keep the About portfolio heading clear while unifying heading underline accents. */
+.tcw-about-page .tcw-about-portfolio-section .cs-section_title {
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+}
+
+.cs-section_title .cs-with_bar svg,
+.cs-section_title .cs-with_bar svg path,
+.cs-cta_title .cs-with_bar svg,
+.cs-cta_title .cs-with_bar svg path {
+  color: #5b63ff !important;
+  fill: #5b63ff !important;
+  -webkit-text-fill-color: initial !important;
+}
+
+body .cs-section_title .cs-with_bar svg.cs-accent_color_2,
+body .cs-section_title .cs-with_bar svg.cs-accent_color_2 path,
+body .cs-cta_title .cs-with_bar svg.cs-accent_color_2,
+body .cs-cta_title .cs-with_bar svg.cs-accent_color_2 path {
+  color: #5b63ff !important;
+  fill: #5b63ff !important;
+  -webkit-text-fill-color: initial !important;
+}
+
+.tcw-it-section-head h2::after,
+.tcw-it-proof-copy h2::after,
+.tcw-detail-heading h2::after,
+.tcw-service-modern .tcw-about-detail-section .tcw-detail-heading h2::after,
+.tcw-detail-heading.text-center h2::after,
+.tcw-service-index-heading h1::after,
+.tcw-service-index-heading h2::after,
+.tcw-service-tech-panel-index > span::after,
+.tcw-quote-page .tcw-quote-result-left h1::after {
+  background: linear-gradient(90deg, #1768ff, #5c2dff) !important;
+}
+
+/* Match footer interactive hover accents to the primary theme. */
+.tcw-footer .widget_nav_menu .menu a:hover,
+.tcw-footer .widget_nav_menu .menu a:focus-visible,
+.tcw-footer .cs-social_btns a:hover,
+.tcw-footer .cs-social_btns a:focus-visible,
+.tcw-footer .cs-address_widgert li:hover i {
+  background: linear-gradient(135deg, #3d86ff, #8355ff) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+.tcw-footer .cs-social_btns a:hover,
+.tcw-footer .cs-social_btns a:focus-visible {
+  transform: translateY(-2px);
 }
