@@ -37,16 +37,16 @@
                             <td>{{ $whyNexa->id }}</td>
                             <td>
                                 @if($whyNexa->icon)
-                                    <img class="admin-u-078" src="{{ asset($whyNexa->icon) }}" alt="{{ $whyNexa->title }}">
+                                    <img class="admin-u-078" src="{{ asset($whyNexa->icon) }}" alt="{{ $whyNexa->localized('title') }}">
                                 @else
                                     <span class="admin-u-041">-</span>
                                 @endif
                             </td>
-                            <td><strong>{{ $whyNexa->title }}</strong></td>
-                            <td>{{ \Illuminate\Support\Str::limit($whyNexa->description, 90) }}</td>
+                            <td><strong>{{ $whyNexa->localized('title') }}</strong></td>
+                            <td>{{ \Illuminate\Support\Str::limit($whyNexa->localized('description'), 90) }}</td>
                             <td>
                                 <span class="admin-status-pill {{ $whyNexa->is_active ? 'is-active' : 'is-inactive' }}">
-                                    {{ $whyNexa->is_active ? 'Active' : 'Hidden' }}
+                                    {{ $whyNexa->is_active ? __('website.client.status_labels.active') : __('website.client.status_labels.hidden') }}
                                 </span>
                             </td>
                             <td>{{ $whyNexa->sort_order }}</td>

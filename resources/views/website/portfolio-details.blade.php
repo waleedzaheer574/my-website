@@ -7,7 +7,7 @@
   $description = $portfolio->localized('description') ?: $portfolio->localized('short_description') ?: __('website.portfolio_detail.fallback_description');
   $gallery = collect([$portfolio->image, $portfolio->secondary_image, $portfolio->detail_image])->filter()->unique()->values();
   $tags = collect(explode(',', (string) $portfolio->localized('tags')))->map(fn ($tag) => trim($tag))->filter()->values();
-  $techItems = $tags->isNotEmpty() ? $tags : collect(array_filter([$portfolio->localized('category'), 'UI/UX', 'Development', 'Responsive Design', 'Performance']));
+  $techItems = $tags->isNotEmpty() ? $tags : collect(array_filter([$portfolio->localized('category'), ...__('website.portfolio_detail.default_highlights')]));
   $rawDemoUrl = trim((string) $portfolio->demo_url);
   $demoUrl = $rawDemoUrl !== '' ? $rawDemoUrl : __('website.portfolio_detail.request');
   $demoHref = $rawDemoUrl !== ''
@@ -80,10 +80,10 @@
             </div>
             <div class="tcw-detail-richtext">{!! nl2br(e($description)) !!}</div>
             <div class="tcw-feature-mini-grid tcw-portfolio-facts">
-              <div class="tcw-feature-mini"><i class="fas fa-user-tie"></i><div><h4>{{ __('website.portfolio_detail.client') }}</h4><p>{{ $portfolio->client ?: 'N/A' }}</p></div></div>
-              <div class="tcw-feature-mini"><i class="fas fa-layer-group"></i><div><h4>{{ __('website.portfolio_detail.category') }}</h4><p>{{ $portfolio->localized('category') ?: 'N/A' }}</p></div></div>
-              <div class="tcw-feature-mini"><i class="fas fa-clock"></i><div><h4>{{ __('website.portfolio_detail.duration') }}</h4><p>{{ $portfolio->localized('duration') ?: 'N/A' }}</p></div></div>
-              <div class="tcw-feature-mini"><i class="fas fa-layer-group"></i><div><h4>{{ __('website.portfolio_detail.services') }}</h4><p>{{ $portfolio->localized('tags') ?: ($portfolio->localized('category') ?: 'N/A') }}</p></div></div>
+              <div class="tcw-feature-mini"><i class="fas fa-user-tie"></i><div><h4>{{ __('website.portfolio_detail.client') }}</h4><p>{{ $portfolio->client ?: __('website.common.not_available') }}</p></div></div>
+              <div class="tcw-feature-mini"><i class="fas fa-layer-group"></i><div><h4>{{ __('website.portfolio_detail.category') }}</h4><p>{{ $portfolio->localized('category') ?: __('website.common.not_available') }}</p></div></div>
+              <div class="tcw-feature-mini"><i class="fas fa-clock"></i><div><h4>{{ __('website.portfolio_detail.duration') }}</h4><p>{{ $portfolio->localized('duration') ?: __('website.common.not_available') }}</p></div></div>
+              <div class="tcw-feature-mini"><i class="fas fa-layer-group"></i><div><h4>{{ __('website.portfolio_detail.services') }}</h4><p>{{ $portfolio->localized('tags') ?: ($portfolio->localized('category') ?: __('website.common.not_available')) }}</p></div></div>
               <div class="tcw-feature-mini tcw-portfolio-demo-fact"><i class="fas fa-link"></i><div><h4>{{ __('website.portfolio_detail.demo') }}</h4><p>@if($demoHref)<a href="{{ $demoHref }}" target="_blank" rel="noopener noreferrer">{{ $demoUrl }}</a>@else{{ $demoUrl }}@endif</p></div></div>
             </div>
           </div>
@@ -97,9 +97,9 @@
               </a>
             </div>
             <div class="tcw-detail-info-card">
-              <div><i class="fas fa-user-tie"></i><strong>{{ __('website.portfolio_detail.client') }}</strong><span>{{ $portfolio->client ?: 'N/A' }}</span></div>
-              <div><i class="fas fa-layer-group"></i><strong>{{ __('website.portfolio_detail.category') }}</strong><span>{{ $portfolio->localized('category') ?: 'N/A' }}</span></div>
-              <div><i class="fas fa-clock"></i><strong>{{ __('website.portfolio_detail.duration') }}</strong><span>{{ $portfolio->localized('duration') ?: 'N/A' }}</span></div>
+              <div><i class="fas fa-user-tie"></i><strong>{{ __('website.portfolio_detail.client') }}</strong><span>{{ $portfolio->client ?: __('website.common.not_available') }}</span></div>
+              <div><i class="fas fa-layer-group"></i><strong>{{ __('website.portfolio_detail.category') }}</strong><span>{{ $portfolio->localized('category') ?: __('website.common.not_available') }}</span></div>
+              <div><i class="fas fa-clock"></i><strong>{{ __('website.portfolio_detail.duration') }}</strong><span>{{ $portfolio->localized('duration') ?: __('website.common.not_available') }}</span></div>
             </div>
           </div>
         </div>

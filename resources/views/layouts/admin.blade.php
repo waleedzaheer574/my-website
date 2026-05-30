@@ -174,9 +174,9 @@
                                 <i class="far fa-envelope"></i>
                                 <span>
                                     <strong>{{ $notification->full_name }}</strong>
-                                    <small>{{ $notification->service_type }} · {{ $notification->status_label }}</small>
+                                    <small>{{ $notification->service_label }} · {{ $notification->status_label }}</small>
                                 </span>
-                                <time>{{ $notification->created_at->diffForHumans() }}</time>
+                                <time>{{ $notification->created_at->locale(app()->getLocale())->diffForHumans() }}</time>
                             </a>
                         @empty
                             <p>No notifications yet.</p>

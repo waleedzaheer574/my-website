@@ -1,7 +1,7 @@
 @extends('layouts.website')
 
 @php
-  $publishedDate = optional($blog->published_at)->format('d M, Y') ?: $blog->created_at->format('d M, Y');
+  $publishedDate = $blog->published_at?->locale(app()->getLocale())->translatedFormat('d M, Y') ?: $blog->created_at->locale(app()->getLocale())->translatedFormat('d M, Y');
   $authorName = $blog->author_name ?: 'Multitechwave';
   $authorInitial = \Illuminate\Support\Str::of($authorName)->substr(0, 1)->upper();
   $contentWithBreaks = preg_replace('/<\/(p|h[1-6]|li|blockquote)>/i', '$0'.PHP_EOL.PHP_EOL, (string) $blog->localized('content'));
@@ -78,7 +78,7 @@
               <div>
                 <small>{{ __('website.article.author') }}</small>
                 <h2>{{ $authorName }}</h2>
-                <p>{{ $blog->localized('author_bio') ?: 'The Multitechwave team writes about growth, design, SEO, and performance-driven digital experiences.' }}</p>
+                <p>{{ $blog->localized('author_bio') ?: __('website.blog.author_fallback') }}</p>
               </div>
               <div class="tcw-article-author-links">
                 <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ $shareUrl }}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
@@ -120,7 +120,7 @@
           @forelse($relatedBlogs as $relatedBlog)
             <a href="{{ route('website.blog-details.show', $relatedBlog->slug) }}" class="tcw-article-card tcw-load-more-item {{ $loop->index >= 4 ? 'is-hidden' : '' }}" data-load-more-item>
               <img src="{{ asset($relatedBlog->featured_image) }}" alt="{{ $relatedBlog->localized('title') }}" loading="lazy" decoding="async">
-              <time>{{ optional($relatedBlog->published_at)->format('d M, Y') ?: $relatedBlog->created_at->format('d M, Y') }}</time>
+              <time>{{ $relatedBlog->published_at?->locale(app()->getLocale())->translatedFormat('d M, Y') ?: $relatedBlog->created_at->locale(app()->getLocale())->translatedFormat('d M, Y') }}</time>
               <h3>{{ $relatedBlog->localized('title') }}</h3>
               <span>{{ __('website.article.read_more') }} <i class="fas fa-arrow-right"></i></span>
             </a>

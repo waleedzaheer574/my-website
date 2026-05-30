@@ -10,7 +10,7 @@
             <div class="tcw-quote-result-left">
               <span class="tcw-detail-eyebrow">{{ __('website.quote.instant') }}</span>
               <h1>{{ $quote->reference }}</h1>
-              <p>{{ __('website.quote.ready', ['service' => $quote->service_title]) }}</p>
+              <p>{{ __('website.quote.ready', ['service' => $quote->service_label]) }}</p>
               <div class="tcw-quote-actions">
                 <a href="{{ route('website.quote-generator.download', $quote->public_token) }}" class="tcw-quote-submit">
                   {{ __('website.quote.download') }} <i class="fas fa-file-pdf"></i>

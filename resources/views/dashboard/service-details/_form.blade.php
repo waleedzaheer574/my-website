@@ -6,7 +6,7 @@
         <option value="">Not linked</option>
         @foreach($services as $service)
             <option value="{{ $service->id }}" @selected((string) old('service_id', $serviceDetail->service_id ?? '') === (string) $service->id)>
-                {{ $service->service_title }}
+                {{ $service->localized('service_title') }}
             </option>
         @endforeach
     </select>

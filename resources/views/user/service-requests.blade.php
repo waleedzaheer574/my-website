@@ -43,10 +43,10 @@
               @forelse($serviceRequests as $request)
                 <tr>
                   <td><i class="far fa-file-alt"></i><strong>SR-{{ str_pad((string) $request->id, 4, '0', STR_PAD_LEFT) }}</strong></td>
-                  <td><strong>{{ $request->service_type }}</strong></td>
+                  <td><strong>{{ $request->service_label }}</strong></td>
                   <td>{{ $request->company_name }}</td>
                   <td><span class="tcw-client-status is-{{ $request->status }}">{{ $request->status_label }}</span></td>
-                  <td>{{ $request->created_at->locale(app()->getLocale())->translatedFormat('M d, Y') }}<small>{{ $request->created_at->format('h:i A') }}</small></td>
+                  <td>{{ $request->created_at->locale(app()->getLocale())->translatedFormat('M d, Y') }}<small>{{ $request->created_at->locale(app()->getLocale())->translatedFormat('h:i A') }}</small></td>
                   <td><button type="button"><i class="fas fa-ellipsis-h"></i></button></td>
                 </tr>
               @empty
@@ -64,9 +64,9 @@
                 <strong>SR-{{ str_pad((string) $request->id, 4, '0', STR_PAD_LEFT) }}</strong>
                 <b class="tcw-client-status is-{{ $request->status }}">{{ $request->status_label }}</b>
               </div>
-              <h2>{{ $request->service_type }}</h2>
+              <h2>{{ $request->service_label }}</h2>
               <p>{{ $request->company_name }}</p>
-              <footer><span><i class="far fa-building"></i> {{ $request->company_name }}</span><time><i class="far fa-calendar-alt"></i> {{ $request->created_at->locale(app()->getLocale())->translatedFormat('M d, Y') }} {{ $request->created_at->format('h:i A') }}</time></footer>
+              <footer><span><i class="far fa-building"></i> {{ $request->company_name }}</span><time><i class="far fa-calendar-alt"></i> {{ $request->created_at->locale(app()->getLocale())->translatedFormat('M d, Y h:i A') }}</time></footer>
             </article>
           @empty
             <p>{{ __('website.client.no_service_requests') }}</p>

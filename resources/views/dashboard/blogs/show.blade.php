@@ -8,27 +8,27 @@
     <div class="card">
         <div class="admin-u-017">
             <div>
-                <img class="admin-u-074" src="{{ asset($blog->featured_image) }}" alt="{{ $blog->title }}">
+                <img class="admin-u-074" src="{{ asset($blog->featured_image) }}" alt="{{ $blog->localized('title') }}">
             </div>
 
             <div>
-                <h3 class="admin-u-018">{{ $blog->title }}</h3>
+                <h3 class="admin-u-018">{{ $blog->localized('title') }}</h3>
                 <p><strong>Author:</strong> {{ $blog->author_name }}</p>
-                <p><strong>Category:</strong> {{ $blog->category ?: 'N/A' }}</p>
-                <p><strong>Status:</strong> {{ $blog->is_active ? 'Active' : 'Inactive' }}</p>
-                <p><strong>Published:</strong> {{ $blog->published_at ? $blog->published_at->format('d M, Y h:i A') : 'Draft' }}</p>
+                <p><strong>Category:</strong> {{ $blog->localized('category') ?: __('website.common.not_available') }}</p>
+                <p><strong>Status:</strong> {{ $blog->is_active ? __('website.client.status_labels.active') : __('website.client.status_labels.inactive') }}</p>
+                <p><strong>Published:</strong> {{ $blog->published_at ? $blog->published_at->locale(app()->getLocale())->translatedFormat('d M, Y h:i A') : __('website.common.draft') }}</p>
                 <p><strong>Views:</strong> {{ $blog->views }}</p>
-                @if($blog->excerpt)
-                    <p><strong>Excerpt:</strong> {{ $blog->excerpt }}</p>
+                @if($blog->localized('excerpt'))
+                    <p><strong>Excerpt:</strong> {{ $blog->localized('excerpt') }}</p>
                 @endif
-                @if($blog->author_bio)
-                    <p><strong>Author Bio:</strong> {{ $blog->author_bio }}</p>
+                @if($blog->localized('author_bio'))
+                    <p><strong>Author Bio:</strong> {{ $blog->localized('author_bio') }}</p>
                 @endif
             </div>
 
             <div>
                 <h4 class="admin-u-019">Content</h4>
-                <div class="admin-u-020">{{ $blog->content }}</div>
+                <div class="admin-u-020">{{ $blog->localized('content') }}</div>
             </div>
 
             <div class="admin-u-009">

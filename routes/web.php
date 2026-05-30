@@ -6,6 +6,7 @@ use App\Http\Controllers\HomeController;
 use  App\Http\Controllers\DashboardController;
 
 use Illuminate\Http\Request;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\ServiceDetailController;
@@ -72,6 +73,31 @@ Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login.post');
 Route::get('/register', [LoginController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [LoginController::class, 'register'])->name('register.post');
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+
+    return redirect()->route('user.dashboard')->with('success', 'Email verified successfully. Welcome to your dashboard.');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+Route::post('/email/verification-notification', function (Request $request) {
+    if ($request->user()->hasVerifiedEmail()) {
+        $message = 'Your email is already verified.';
+        $redirect = route('user.dashboard');
+
+        return $request->expectsJson()
+            ? response()->json(compact('message', 'redirect'))
+            : redirect($redirect)->with('success', $message);
+    }
+
+    $request->user()->sendEmailVerificationNotification();
+    $message = 'Verification link sent. Please check your inbox.';
+
+    return $request->expectsJson()
+        ? response()->json(compact('message'))
+        : back()->with('status', $message);
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 Route::get('/forgot-password', [LoginController::class, 'showForgotPasswordForm'])->name('password.request');
 Route::post('/forgot-password', [LoginController::class, 'resetForgottenPassword'])->name('password.update');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
@@ -84,7 +110,7 @@ Route::get('/quote-generator/{token}', [QuoteRequestController::class, 'show'])-
 Route::get('/quote-generator/{token}/proposal', [QuoteRequestController::class, 'proposal'])->name('website.quote-generator.proposal');
 Route::get('/quote-generator/{token}/proposal/download', [QuoteRequestController::class, 'download'])->name('website.quote-generator.download');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/user/dashboard', [UserDashboardController::class, 'index'])->name('user.dashboard');
     Route::get('/user/service-requests', [UserDashboardController::class, 'serviceRequests'])->name('user.service-requests');
     Route::get('/user/quote-requests', [UserDashboardController::class, 'quoteRequests'])->name('user.quote-requests');

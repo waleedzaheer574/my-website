@@ -91,8 +91,8 @@
             @forelse($recentServices as $service)
                 <div>
                     <i class="fas fa-cloud-upload-alt"></i>
-                    <p><strong>{{ $service->service_title }}</strong><span>{{ \Illuminate\Support\Str::limit($service->service_description, 72) }}</span></p>
-                    <time>{{ $service->created_at->format('d M, Y') }}</time>
+                    <p><strong>{{ $service->localized('service_title') }}</strong><span>{{ \Illuminate\Support\Str::limit($service->localized('service_description'), 72) }}</span></p>
+                    <time>{{ $service->created_at->locale(app()->getLocale())->translatedFormat('d M, Y') }}</time>
                 </div>
             @empty
                 <p>No services added yet.</p>
@@ -105,10 +105,10 @@
                 <div>
                     <p>
                         <strong>{{ $request->full_name }}{{ $request->company_name ? ' · '.$request->company_name : '' }}</strong>
-                        <span>{{ $request->service_type }}</span>
+                        <span>{{ $request->service_label }}</span>
                         <mark>{{ $request->status_label }}</mark>
                     </p>
-                    <time>{{ $request->created_at->format('d M, Y h:i A') }}</time>
+                    <time>{{ $request->created_at->locale(app()->getLocale())->translatedFormat('d M, Y h:i A') }}</time>
                 </div>
             @empty
                 <p>No service requests yet.</p>
@@ -120,8 +120,8 @@
             @forelse($recentBlogs as $blog)
                 <div>
                     <img src="{{ asset($blog->featured_image) }}" alt="">
-                    <p><strong>{{ $blog->title }}</strong><span>{{ $blog->author_name }} · {{ $blog->category ?: 'Blog' }}</span></p>
-                    <time>{{ $blog->created_at->format('d M, Y') }}</time>
+                    <p><strong>{{ $blog->localized('title') }}</strong><span>{{ $blog->author_name }} · {{ $blog->localized('category') ?: __('website.blog.title') }}</span></p>
+                    <time>{{ $blog->created_at->locale(app()->getLocale())->translatedFormat('d M, Y') }}</time>
                 </div>
             @empty
                 <p>No blogs added yet.</p>
@@ -132,8 +132,8 @@
             <header><h2>Recent Orders</h2><a href="{{ route('orders.admin.index') }}">View all</a></header>
             @forelse($recentOrders as $order)
                 <div>
-                    <p><strong>{{ $order->reference }}</strong><span>{{ $order->offer?->title ?? 'Custom Offer' }} · {{ $order->user?->name ?? $order->client_name }}</span><mark class="{{ $order->payment_status === 'paid' ? 'is-paid' : '' }}">{{ ucfirst(str_replace('_', ' ', $order->payment_status)) }}</mark></p>
-                    <time>{{ $order->amount_label }}<br>{{ $order->created_at->format('d M, Y h:i A') }}</time>
+                    <p><strong>{{ $order->reference }}</strong><span>{{ $order->offer?->localized('title') ?? __('website.client.offer') }} · {{ $order->user?->name ?? $order->client_name }}</span><mark class="{{ $order->payment_status === 'paid' ? 'is-paid' : '' }}">{{ __('website.client.status_labels.'.$order->payment_status) }}</mark></p>
+                    <time>{{ $order->amount_label }}<br>{{ $order->created_at->locale(app()->getLocale())->translatedFormat('d M, Y h:i A') }}</time>
                 </div>
             @empty
                 <p>No orders yet.</p>
@@ -144,10 +144,10 @@
             <header><h2>Recent Projects</h2><a href="{{ route('projects.admin.index') }}">View all</a></header>
             @forelse($recentProjects as $project)
                 <div>
-                    <p><strong>{{ $project->title }}</strong><span>{{ $project->user?->name ?? 'Client' }} · {{ $project->order?->reference ?? 'Project' }}</span></p>
+                    <p><strong>{{ $project->title_label }}</strong><span>{{ $project->user?->name ?? __('website.quote.client') }} · {{ $project->order?->reference ?? __('website.portfolio_detail.project') }}</span></p>
                     <mark>{{ $project->status_label }}</mark>
                     <b><i style="width: {{ $project->progress }}%"></i></b>
-                    <time>{{ $project->progress }}% · {{ $project->created_at->format('d M, Y h:i A') }}</time>
+                    <time>{{ $project->progress }}% · {{ $project->created_at->locale(app()->getLocale())->translatedFormat('d M, Y h:i A') }}</time>
                 </div>
             @empty
                 <p>No projects yet.</p>
@@ -159,7 +159,7 @@
             @forelse($topServices as $service)
                 <div>
                     <i class="fas fa-globe"></i>
-                    <p><strong>{{ $service->service_type }}</strong><span>{{ $service->aggregate }} Requests</span></p>
+                    <p><strong>{{ $service->service_label }}</strong><span>{{ $service->aggregate }} Requests</span></p>
                     <b>{{ round(($service->aggregate / $topServicesTotal) * 100) }}%</b>
                 </div>
             @empty

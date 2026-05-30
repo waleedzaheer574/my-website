@@ -14,7 +14,7 @@
         @forelse($projects as $project)
           <tr>
             <td>{{ $project->id }}</td>
-            <td><strong>{{ $project->title }}</strong><small>{{ $project->order?->reference }}</small></td>
+            <td><strong>{{ $project->title_label }}</strong><small>{{ $project->order?->reference }}</small></td>
             <td>{{ $project->user?->name }}</td>
             <td>{{ $project->status_label }}</td>
             <td>{{ $project->progress }}%</td>

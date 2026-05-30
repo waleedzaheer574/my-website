@@ -12,28 +12,18 @@
   $isMobile = str_contains($slug, 'mobile') || str_contains($slug, 'app');
 
   $fallbackOverviewCards = $isEcommerce
-      ? ['Modern & Responsive Design', 'SEO Friendly Structure', 'Easy Product Management', 'Secure Checkout System']
+      ? __('website.offer_detail.fallback.overview.ecommerce')
       : ($isSaas
-          ? ['Scalable Laravel Architecture', 'User Dashboard', 'Subscription Ready', 'Admin Control Panel']
+          ? __('website.offer_detail.fallback.overview.saas')
           : ($isSeo
-              ? ['Technical SEO Audit', 'Keyword Planning', 'On-page Improvements', 'Monthly Reporting']
-              : ['Responsive Interface', 'Clean User Journey', 'Fast Performance', 'Admin Friendly Setup']));
+              ? __('website.offer_detail.fallback.overview.seo')
+              : __('website.offer_detail.fallback.overview.standard')));
 
-  $fallbackTopFeatures = collect($offer->localized('features') ?? [])->merge($isEcommerce ? [
-      'Product catalog & categories',
-      'Shopping cart & checkout',
-      'Multiple payment gateways',
-      'Order management system',
-      'Customer account area',
-      'Discounts & coupons',
-      'Reviews & ratings',
-      'Responsive on all devices',
-  ] : [
-      'Professional UI structure',
-      'Dashboard-ready workflow',
-      'Secure user experience',
-      'Mobile responsive layout',
-  ])->unique()->take(8)->values();
+  $fallbackTopFeatures = collect($offer->localized('features') ?? [])
+      ->merge($isEcommerce ? __('website.offer_detail.fallback.features.ecommerce') : __('website.offer_detail.fallback.features.standard'))
+      ->unique()
+      ->take(8)
+      ->values();
 
   $fallbackStack = $isSeo
       ? ['SEO Audit', 'Search Console', 'Analytics', 'Schema', 'Speed', 'Reports']
@@ -44,31 +34,14 @@
   $overviewCards = collect($offer->localized('overview_items') ?: $fallbackOverviewCards)->filter()->values();
   $topFeatures = collect($offer->localized('detail_features') ?: $fallbackTopFeatures->map(fn ($feature, $index) => [
       'title' => $feature,
-      'description' => $index % 2 === 0 ? 'Smooth workflow with reliable controls.' : 'Built for modern business needs.',
+      'description' => $index % 2 === 0 ? __('website.offer_detail.fallback.feature_even') : __('website.offer_detail.fallback.feature_odd'),
   ])->all())->filter(fn ($item) => !empty($item['title']))->take(8)->values();
   $stack = collect($offer->tech_stack ?: $fallbackStack)->filter()->values();
-  $timeline = collect($offer->localized('delivery_timeline') ?: [
-      ['title' => 'Discovery', 'description' => 'Understanding your requirements.'],
-      ['title' => 'Design', 'description' => 'Creating UI/UX designs.'],
-      ['title' => 'Development', 'description' => 'Building your solution.'],
-      ['title' => 'Review', 'description' => 'Testing and client review.'],
-      ['title' => 'Launch', 'description' => 'Deploy and launch.'],
-  ])->filter(fn ($item) => !empty($item['title']))->values();
-  $faqs = collect($offer->localized('faqs') ?: [
-      ['question' => 'Can I manage content easily?', 'answer' => 'Yes. After checkout, your dashboard will show project status, milestones, messages and delivery updates.'],
-      ['question' => 'Will my website be mobile friendly?', 'answer' => 'Yes. Every package is built with responsive layouts for mobile, tablet and desktop screens.'],
-      ['question' => 'Do you provide domain & hosting?', 'answer' => 'We can guide setup and connect your preferred domain and hosting during delivery.'],
-      ['question' => 'Will I get support after delivery?', 'answer' => 'Yes. You can use your dashboard and support chat for updates after delivery.'],
-  ])->filter(fn ($item) => !empty($item['question']))->values();
-  $whyChoose = collect($offer->localized('why_choose') ?: [
-      'Professional & modern designs',
-      'On-time delivery',
-      'Lifetime support',
-      'Money back guarantee',
-      '100% client satisfaction',
-  ])->filter()->values();
-  $overviewText = $offer->localized('detail_overview') ?: "This {$offer->localized('title')} package is perfect for businesses looking for a professional, scalable and conversion-focused digital experience. It includes everything you need to launch with confidence.";
-  $heroVisualTitle = $offer->localized('hero_visual_title') ?: ($isEcommerce ? 'Super fast eCommerce experience' : 'Premium digital experience');
+  $timeline = collect($offer->localized('delivery_timeline') ?: __('website.offer_detail.fallback.timeline'))->filter(fn ($item) => !empty($item['title']))->values();
+  $faqs = collect($offer->localized('faqs') ?: __('website.offer_detail.fallback.faqs'))->filter(fn ($item) => !empty($item['question']))->values();
+  $whyChoose = collect($offer->localized('why_choose') ?: __('website.offer_detail.fallback.why_choose'))->filter()->values();
+  $overviewText = $offer->localized('detail_overview') ?: __('website.offer_detail.fallback.overview_text', ['title' => $offer->localized('title')]);
+  $heroVisualTitle = $offer->localized('hero_visual_title') ?: ($isEcommerce ? __('website.offer_detail.fallback.visual_ecommerce') : __('website.offer_detail.fallback.visual_standard'));
 @endphp
 
 <main class="tcw-saas-page tcw-offer-detail-page">
@@ -89,7 +62,7 @@
           <p>{{ $offer->localized('description') }}</p>
 
           <div class="tcw-detail-mini-stats">
-            <span><i class="far fa-clock"></i>{{ $offer->delivery_time ?: __('website.offer_detail.custom') }} {{ __('website.offer_detail.delivery') }}</span>
+            <span><i class="far fa-clock"></i>{{ $offer->delivery_label ?: __('website.offer_detail.custom') }} {{ __('website.offer_detail.delivery') }}</span>
             <span><i class="fas fa-shield-alt"></i>{{ __('website.offer_detail.satisfaction') }}</span>
             <span><i class="fas fa-medal"></i>{{ __('website.offer_detail.money_back') }}</span>
             <span><i class="fas fa-headset"></i>{{ __('website.offer_detail.support') }}</span>
@@ -114,7 +87,7 @@
         <aside class="tcw-detail-price-card">
           <span>{{ __('website.offer_detail.total_price') }}</span>
           <strong>{{ $offer->price_label }}</strong>
-          <small>{{ $offer->billing_label }} | {{ $offer->delivery_time ?: __('website.offer_detail.timeline_after') }}</small>
+          <small>{{ $offer->billing_label }} | {{ $offer->delivery_label ?: __('website.offer_detail.timeline_after') }}</small>
           <a href="{{ route('website.checkout', $offer->slug) }}">{{ __('website.offer_detail.subscribe') }}</a>
           <ul>
             <li><i class="far fa-credit-card"></i>{{ __('website.offer_detail.secure_payment') }}</li>
@@ -189,7 +162,7 @@
               @endforeach
             </div>
             <div class="tcw-detail-timeline-note">
-              <span><i class="far fa-clock"></i>{{ __('website.offer_detail.total_time') }}: {{ $offer->delivery_time ?: __('website.offer_detail.timeline_after') }}</span>
+              <span><i class="far fa-clock"></i>{{ __('website.offer_detail.total_time') }}: {{ $offer->delivery_label ?: __('website.offer_detail.timeline_after') }}</span>
               <span><i class="fas fa-bullseye"></i>{{ __('website.offer_detail.on_time') }}</span>
             </div>
           </section>
@@ -231,7 +204,7 @@
                 <span>{{ $related->localized('category') ?: __('website.offer_detail.offer') }}</span>
                 <h3>{{ $related->localized('title') }}</h3>
                 <strong>{{ $related->price_label }}</strong>
-                <small>{{ $related->delivery_time ?: __('website.offer_detail.custom_timeline') }}</small>
+                <small>{{ $related->delivery_label ?: __('website.offer_detail.custom_timeline') }}</small>
               </a>
             @endforeach
           </div>

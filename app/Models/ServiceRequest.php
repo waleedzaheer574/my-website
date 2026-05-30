@@ -51,6 +51,22 @@ class ServiceRequest extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function getServiceLabelAttribute(): string
+    {
+        if (app()->getLocale() !== 'ar') {
+            return $this->service_type;
+        }
+
+        static $arabicServiceTitles;
+
+        $arabicServiceTitles ??= Service::query()
+            ->whereNotNull('service_title_ar')
+            ->pluck('service_title_ar', 'service_title')
+            ->all();
+
+        return $arabicServiceTitles[$this->service_type] ?? $this->service_type;
+    }
+
     public function getStatusLabelAttribute(): string
     {
         $key = "website.client.status_labels.{$this->status}";

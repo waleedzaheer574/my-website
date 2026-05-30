@@ -38,7 +38,11 @@ class Faq extends Model
 
     public static function pageLabel(?string $pageKey): string
     {
-        return self::PAGE_OPTIONS[$pageKey] ?? str((string) $pageKey)->replace('_', ' ')->title()->value();
+        $key = 'website.client.faq_pages.'.(string) $pageKey;
+
+        return __($key) !== $key
+            ? __($key)
+            : (self::PAGE_OPTIONS[$pageKey] ?? str((string) $pageKey)->replace('_', ' ')->title()->value());
     }
 
     public static function sanitizeAnswer(?string $answer): string

@@ -81,6 +81,12 @@ class DashboardController extends Controller
             ->orderByDesc('aggregate')
             ->take(4)
             ->get();
+        $serviceLabels = Service::query()->pluck('service_title_ar', 'service_title');
+        $topServices->each(function ($service) use ($serviceLabels) {
+            $service->service_label = app()->getLocale() === 'ar'
+                ? (($serviceLabels[$service->service_type] ?? null) ?: $service->service_type)
+                : $service->service_type;
+        });
         $topServicesTotal = max(1, (int) $topServices->sum('aggregate'));
         $supportOverview = [
             'active' => class_exists(SupportConversation::class) ? SupportConversation::count() : 0,

@@ -78,7 +78,7 @@
     <div class="form-group">
         <label for="image">Main Image</label>
         @if($isEdit && $portfolio->image)
-            <img class="admin-u-083" src="{{ asset($portfolio->image) }}" alt="{{ $portfolio->title }}">
+            <img class="admin-u-083" src="{{ asset($portfolio->image) }}" alt="{{ $portfolio->localized('title') }}">
         @endif
         <input type="file" name="image" id="image" class="form-control" accept="image/*" {{ $isEdit ? '' : 'required' }}>
         @error('image') <small class="admin-u-021">{{ $message }}</small> @enderror
@@ -87,7 +87,7 @@
     <div class="form-group">
         <label for="secondary_image">Secondary Image</label>
         @if($isEdit && $portfolio->secondary_image)
-            <img class="admin-u-083" src="{{ asset($portfolio->secondary_image) }}" alt="{{ $portfolio->title }}">
+            <img class="admin-u-083" src="{{ asset($portfolio->secondary_image) }}" alt="{{ $portfolio->localized('title') }}">
         @endif
         <input type="file" name="secondary_image" id="secondary_image" class="form-control" accept="image/*">
         @error('secondary_image') <small class="admin-u-021">{{ $message }}</small> @enderror
@@ -96,7 +96,7 @@
     <div class="form-group">
         <label for="detail_image">Detail Image</label>
         @if($isEdit && $portfolio->detail_image)
-            <img class="admin-u-083" src="{{ asset($portfolio->detail_image) }}" alt="{{ $portfolio->title }}">
+            <img class="admin-u-083" src="{{ asset($portfolio->detail_image) }}" alt="{{ $portfolio->localized('title') }}">
         @endif
         <input type="file" name="detail_image" id="detail_image" class="form-control" accept="image/*">
         @error('detail_image') <small class="admin-u-021">{{ $message }}</small> @enderror

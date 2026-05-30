@@ -32,18 +32,18 @@
                         <tr>
                             <td>{{ $portfolio->id }}</td>
                             <td>
-                                <img class="admin-u-076" src="{{ asset($portfolio->image) }}" alt="{{ $portfolio->title }}">
+                                <img class="admin-u-076" src="{{ asset($portfolio->image) }}" alt="{{ $portfolio->localized('title') }}">
                             </td>
                             <td>
-                                <strong>{{ $portfolio->title }}</strong>
+                                <strong>{{ $portfolio->localized('title') }}</strong>
                                 @if($portfolio->is_featured)
                                     <div class="admin-u-050">Featured on Home</div>
                                 @endif
                             </td>
-                            <td>{{ $portfolio->category ?: 'N/A' }}</td>
+                            <td>{{ $portfolio->localized('category') ?: __('website.common.not_available') }}</td>
                             <td>
                                 <span class="admin-status-pill {{ $portfolio->is_active ? 'is-active' : 'is-inactive' }}">
-                                    {{ $portfolio->is_active ? 'Active' : 'Hidden' }}
+                                    {{ $portfolio->is_active ? __('website.client.status_labels.active') : __('website.client.status_labels.hidden') }}
                                 </span>
                             </td>
                             <td>{{ $portfolio->sort_order }}</td>

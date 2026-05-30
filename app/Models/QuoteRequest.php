@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class QuoteRequest extends Model
 {
@@ -62,6 +63,11 @@ class QuoteRequest extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function getServiceLabelAttribute(): string
+    {
+        return $this->service?->localized('service_title') ?: $this->service_title;
+    }
+
     public function getEstimateLabelAttribute(): string
     {
         return $this->currency.' '.number_format($this->estimated_min).' - '.number_format($this->estimated_max);
@@ -74,18 +80,55 @@ class QuoteRequest extends Model
             'growth' => '$1,500 - $3,500',
             'scale' => '$3,500 - $7,500',
             'enterprise' => '$7,500+',
-            default => $this->budget_range ?: 'Custom budget',
+            default => $this->budget_range ?: __('website.quote.custom_budget'),
         };
     }
 
     public function getTimelineLabelAttribute(): string
     {
         return match ($this->timeline) {
-            'fast' => 'Fast launch',
-            'urgent' => 'Urgent priority delivery',
-            'standard' => 'Flexible / Standard timeline',
-            default => $this->timeline ?: 'Standard',
+            'fast' => __('website.quote.timeline_options.fast'),
+            'urgent' => __('website.quote.timeline_options.urgent'),
+            'standard' => __('website.quote.timeline_options.standard'),
+            default => $this->timeline ?: __('website.quote.timeline_options.default'),
         };
+    }
+
+    public function getLocalizedDeliverablesAttribute(): array
+    {
+        if (app()->getLocale() !== 'ar') {
+            return $this->deliverables ?? [];
+        }
+
+        $title = Str::lower($this->service_title);
+        $type = match (true) {
+            Str::contains($title, ['seo', 'marketing', 'ads', 'social']) => 'marketing',
+            Str::contains($title, ['app', 'erp', 'crm', 'automation', 'cloud', 'saas']) => 'software',
+            Str::contains($title, ['brand', 'graphic', 'video']) => 'creative',
+            default => 'standard',
+        };
+
+        return __('website.quote.generated.deliverables.'.$type);
+    }
+
+    public function getLocalizedAssumptionsAttribute(): array
+    {
+        if (app()->getLocale() !== 'ar') {
+            return $this->assumptions ?? [];
+        }
+
+        return [
+            __('website.quote.generated.assumptions.budget', ['budget' => $this->budget_label]),
+            __('website.quote.generated.assumptions.timeline', ['timeline' => $this->timeline_label]),
+            __('website.quote.generated.assumptions.final_price'),
+        ];
+    }
+
+    public function getLocalizedNextStepsAttribute(): array
+    {
+        return app()->getLocale() === 'ar'
+            ? __('website.quote.generated.next_steps')
+            : ($this->next_steps ?? []);
     }
 
     public function getStatusLabelAttribute(): string

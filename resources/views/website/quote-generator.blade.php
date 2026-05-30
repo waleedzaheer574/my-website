@@ -22,7 +22,7 @@
 
     <section class="tcw-quote-section">
       <div class="container">
-        <form action="{{ route('website.quote-generator.store') }}" method="POST" class="tcw-quote-form wow fadeInUp" data-wow-duration="1s">
+        <form action="{{ route('website.quote-generator.store') }}" method="POST" class="tcw-quote-form wow fadeInUp" data-wow-duration="1s" data-ajax-request-form>
           @csrf
           <div class="tcw-quote-form-head">
             <span>{{ __('website.quote.step') }}</span>
@@ -58,12 +58,14 @@
             </label>
             <label>
               <span>{{ __('website.quote.service') }}</span>
-              <select name="service_id" required>
-                <option value="">{{ __('website.quote.select_service') }}</option>
-                @foreach($services as $service)
-                  <option value="{{ $service->id }}" @selected(old('service_id') == $service->id)>{{ $service->localized('service_title') }}</option>
-                @endforeach
-              </select>
+              <div class="tcw-service-select">
+                <select name="service_id" required>
+                  <option value="">{{ __('website.quote.select_service') }}</option>
+                  @foreach($services as $service)
+                    <option value="{{ $service->id }}" @selected(old('service_id') == $service->id)>{{ $service->localized('service_title') }}</option>
+                  @endforeach
+                </select>
+              </div>
             </label>
             <label>
               <span>{{ __('website.quote.budget') }}</span>

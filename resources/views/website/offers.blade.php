@@ -6,17 +6,17 @@
 @section('content')
 @php
   $offerMeta = [
-      '5-page-dynamic-website' => ['icon' => 'fa-regular fa-window-maximize', 'badge' => 'Best Seller', 'old_price' => 'AED 300', 'tone' => 'blue'],
-      'ecommerce-website' => ['icon' => 'fas fa-shopping-cart', 'badge' => 'Popular', 'old_price' => 'AED 1,600', 'tone' => 'pink'],
-      'laravel-saas-system' => ['icon' => 'fas fa-code', 'badge' => 'Most Popular', 'old_price' => 'AED 4,500', 'tone' => 'purple', 'featured' => true],
+      '5-page-dynamic-website' => ['icon' => 'fa-regular fa-window-maximize', 'badge' => __('website.offers.badges.best_seller'), 'old_price' => 'AED 300', 'tone' => 'blue'],
+      'ecommerce-website' => ['icon' => 'fas fa-shopping-cart', 'badge' => __('website.offers.badges.popular'), 'old_price' => 'AED 1,600', 'tone' => 'pink'],
+      'laravel-saas-system' => ['icon' => 'fas fa-code', 'badge' => __('website.offers.badges.most_popular'), 'old_price' => 'AED 4,500', 'tone' => 'purple', 'featured' => true],
       'seo-starter-package' => ['icon' => 'fas fa-search-location', 'old_price' => 'AED 250', 'tone' => 'violet'],
       'mobile-app-development' => ['icon' => 'fas fa-mobile-alt', 'old_price' => 'AED 1,200', 'tone' => 'pink'],
   ];
 
   $categories = collect([__('website.offers.all')])
-      ->merge($offers->pluck('category')->filter()->unique()->values())
-      ->when(!$offers->pluck('category')->contains('Design'), fn ($items) => $items->push('Design'))
-      ->when(!$offers->pluck('category')->contains('SaaS Solutions'), fn ($items) => $items->push('SaaS Solutions'))
+      ->merge($offers->map(fn ($offer) => $offer->localized('category'))->filter()->unique()->values())
+      ->when(!$offers->map(fn ($offer) => $offer->localized('category'))->contains(__('website.offers.design')), fn ($items) => $items->push(__('website.offers.design')))
+      ->when(!$offers->map(fn ($offer) => $offer->localized('category'))->contains(__('website.offers.saas_solutions')), fn ($items) => $items->push(__('website.offers.saas_solutions')))
       ->values();
   $benefitIcons = ['fas fa-shield-alt', 'far fa-clock', 'fas fa-lock', 'fas fa-headset'];
 @endphp
@@ -62,11 +62,11 @@
           @php
             $meta = $offerMeta[$offer->slug] ?? [];
             $isFeatured = (bool) ($meta['featured'] ?? false);
-            $badge = $meta['badge'] ?? ($offer->is_popular ? 'Popular' : null);
+            $badge = $meta['badge'] ?? ($offer->is_popular ? __('website.offers.badges.popular') : null);
             $icon = $meta['icon'] ?? 'fas fa-layer-group';
             $tone = $meta['tone'] ?? 'blue';
           @endphp
-          <article class="tcw-offer-card tcw-premium-offer-card {{ $isFeatured ? 'is-featured' : '' }}" data-offer-card data-offer-category="{{ $offer->category ?: 'Uncategorized' }}">
+          <article class="tcw-offer-card tcw-premium-offer-card {{ $isFeatured ? 'is-featured' : '' }}" data-offer-card data-offer-category="{{ $offer->localized('category') ?: __('website.offers.uncategorized') }}">
             <div class="tcw-offer-card-top">
               <span class="tcw-offer-icon is-{{ $tone }}"><i class="{{ $icon }}"></i></span>
               @if($badge)
@@ -85,8 +85,8 @@
               @foreach(array_slice($offer->localized('features') ?? [], 0, 6) as $feature)
                 <li><i class="fas fa-check-circle"></i>{{ $feature }}</li>
               @endforeach
-              @if($offer->delivery_time)
-                <li><i class="fas fa-check-circle"></i>{{ $offer->delivery_time }} {{ __('website.offers.delivery') }}</li>
+              @if($offer->delivery_label)
+                <li><i class="fas fa-check-circle"></i>{{ $offer->delivery_label }} {{ __('website.offers.delivery') }}</li>
               @endif
             </ul>
             @if($offer->exists)

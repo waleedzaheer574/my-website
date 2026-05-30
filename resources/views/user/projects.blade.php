@@ -24,7 +24,7 @@
         @forelse($projects as $project)
           <a href="{{ route('user.projects.show', $project) }}">
             <div>
-              <strong>{{ $project->title }}</strong>
+              <strong>{{ $project->title_label }}</strong>
               <span>{{ $project->order?->reference ?: __('website.client.project_workspace') }} · {{ $project->status_label }}</span>
             </div>
             <b style="--progress: {{ $project->progress }}%"><i></i>{{ $project->progress }}%</b>

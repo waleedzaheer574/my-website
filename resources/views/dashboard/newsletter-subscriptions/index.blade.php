@@ -29,8 +29,8 @@
                         <tr>
                             <td>{{ $subscription->id }}</td>
                             <td><strong>{{ $subscription->email }}</strong></td>
-                            <td>{{ $subscription->source_url ?: 'N/A' }}</td>
-                            <td>{{ optional($subscription->created_at)->format('Y-m-d H:i') }}</td>
+                            <td>{{ $subscription->source_url ?: __('website.common.not_available') }}</td>
+                            <td>{{ $subscription->created_at?->locale(app()->getLocale())->translatedFormat('Y-m-d H:i') }}</td>
                         </tr>
                     @empty
                         <tr>

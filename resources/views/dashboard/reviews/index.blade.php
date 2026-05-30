@@ -34,16 +34,16 @@
                             <td>{{ $review->id }}</td>
                             <td>
                                 <strong>{{ $review->client_name }}</strong>
-                                @if($review->designation)
-                                    <div class="admin-u-040">{{ $review->designation }}</div>
+                                @if($review->localized('designation'))
+                                    <div class="admin-u-040">{{ $review->localized('designation') }}</div>
                                 @endif
                             </td>
-                            <td>{{ \Illuminate\Support\Str::limit($review->review_text, 120) }}</td>
+                            <td>{{ \Illuminate\Support\Str::limit($review->localized('review_text'), 120) }}</td>
                             <td>{{ $review->rating ?? 5 }}/5</td>
-                            <td>{{ $review->badge ?: 'Slider' }}</td>
+                            <td>{{ $review->localized('badge') ?: __('website.common.slider') }}</td>
                             <td>
                                 <span class="admin-status-pill {{ $review->is_active ? 'is-active' : 'is-inactive' }}">
-                                    {{ $review->is_active ? 'Active' : 'Hidden' }}
+                                    {{ $review->is_active ? __('website.client.status_labels.active') : __('website.client.status_labels.hidden') }}
                                 </span>
                             </td>
                             <td>{{ $review->sort_order }}</td>

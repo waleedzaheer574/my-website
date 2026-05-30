@@ -17,10 +17,10 @@
         @forelse($offers as $offer)
           <tr>
             <td>{{ $offer->id }}</td>
-            <td><strong>{{ $offer->title }}</strong><small>{{ $offer->category }}</small></td>
+            <td><strong>{{ $offer->localized('title') }}</strong><small>{{ $offer->localized('category') }}</small></td>
             <td>{{ $offer->price_label }}</td>
             <td>{{ $offer->billing_label }}</td>
-            <td>{{ $offer->is_active ? 'Active' : 'Hidden' }}</td>
+            <td>{{ $offer->is_active ? __('website.client.status_labels.active') : __('website.client.status_labels.hidden') }}</td>
             <td>
               <div class="admin-u-031">
                 <a class="admin-u-073" href="{{ route('offers.admin.edit', $offer) }}">Edit</a>

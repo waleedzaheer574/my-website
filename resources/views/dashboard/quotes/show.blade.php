@@ -10,7 +10,7 @@
         <div class="admin-u-026">
             <div>
                 <h3 class="admin-u-049">Quote Details</h3>
-                <p class="admin-u-028">{{ $quote->service_title }} estimate for {{ $quote->client_name }}.</p>
+                <p class="admin-u-028">{{ $quote->service_label }} estimate for {{ $quote->client_name }}.</p>
             </div>
             <a class="btn btn-primary" href="{{ route('website.quote-generator.download', $quote->public_token) }}">Download PDF</a>
         </div>
@@ -26,7 +26,7 @@
                     @method('PATCH')
                     <select name="status" onchange="this.form.submit()">
                         @foreach($statuses as $value => $label)
-                            <option value="{{ $value }}" @selected($quote->status === $value)>{{ $label }}</option>
+                            <option value="{{ $value }}" @selected($quote->status === $value)>{{ __('website.client.status_labels.'.$value) }}</option>
                         @endforeach
                     </select>
                 </form>
@@ -47,7 +47,7 @@
         <div class="admin-quote-section">
             <h3>Deliverables</h3>
             <ul>
-                @foreach($quote->deliverables ?? [] as $deliverable)
+                @foreach($quote->localized_deliverables as $deliverable)
                     <li>{{ $deliverable }}</li>
                 @endforeach
             </ul>
@@ -56,7 +56,7 @@
         <div class="admin-quote-section">
             <h3>Assumptions</h3>
             <ul>
-                @foreach($quote->assumptions ?? [] as $assumption)
+                @foreach($quote->localized_assumptions as $assumption)
                     <li>{{ $assumption }}</li>
                 @endforeach
             </ul>

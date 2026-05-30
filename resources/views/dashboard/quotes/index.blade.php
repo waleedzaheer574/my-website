@@ -42,7 +42,7 @@
                                     </span>
                                 </span>
                             </td>
-                            <td>{{ $quote->service_title }}</td>
+                            <td>{{ $quote->service_label }}</td>
                             <td>{{ $quote->estimate_label }}</td>
                             <td>
                                 <form action="{{ route('quotes.status.update', $quote) }}" method="POST" class="admin-status-form is-{{ $quote->status }}">
@@ -50,15 +50,15 @@
                                     @method('PATCH')
                                     <select name="status" onchange="this.form.submit()">
                                         @foreach($statuses as $value => $label)
-                                            <option value="{{ $value }}" @selected($quote->status === $value)>{{ $label }}</option>
+                                            <option value="{{ $value }}" @selected($quote->status === $value)>{{ __('website.client.status_labels.'.$value) }}</option>
                                         @endforeach
                                     </select>
                                 </form>
                             </td>
                             <td>
                                 <span class="admin-request-date">
-                                    {{ $quote->created_at->format('d M, Y') }}
-                                    <small>{{ $quote->created_at->format('h:i A') }}</small>
+                                    {{ $quote->created_at->locale(app()->getLocale())->translatedFormat('d M, Y') }}
+                                    <small>{{ $quote->created_at->locale(app()->getLocale())->translatedFormat('h:i A') }}</small>
                                 </span>
                             </td>
                             <td>
@@ -88,7 +88,7 @@
                             <span>{{ $quote->client_name }}<small>{{ $quote->client_email }}</small></span>
                         </dd>
                         <dt>Service</dt>
-                        <dd>{{ $quote->service_title }}</dd>
+                        <dd>{{ $quote->service_label }}</dd>
                         <dt>Estimate</dt>
                         <dd>{{ $quote->estimate_label }}</dd>
                         <dt>Status</dt>
@@ -98,13 +98,13 @@
                                 @method('PATCH')
                                 <select name="status" onchange="this.form.submit()">
                                     @foreach($statuses as $value => $label)
-                                        <option value="{{ $value }}" @selected($quote->status === $value)>{{ $label }}</option>
+                                        <option value="{{ $value }}" @selected($quote->status === $value)>{{ __('website.client.status_labels.'.$value) }}</option>
                                     @endforeach
                                 </select>
                             </form>
                         </dd>
                         <dt>Submitted</dt>
-                        <dd>{{ $quote->created_at->format('d M, Y h:i A') }}</dd>
+                        <dd>{{ $quote->created_at->locale(app()->getLocale())->translatedFormat('d M, Y h:i A') }}</dd>
                     </dl>
                     <footer>
                         <a href="{{ route('quotes.show', $quote) }}">View</a>

@@ -12,7 +12,7 @@
         <article class="{{ $message->user->isAdmin() ? 'is-admin' : 'is-client' }}" data-id="{{ $message->id }}">
           <strong>{{ $message->user->name }}</strong>
           <p>{{ $message->body }}</p>
-          <time>{{ $message->created_at->format('d M, h:i A') }}</time>
+          <time>{{ $message->created_at->locale(app()->getLocale())->translatedFormat('d M, h:i A') }}</time>
         </article>
       @empty
         <p>No messages yet.</p>

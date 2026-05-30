@@ -43,10 +43,10 @@
               @forelse($quoteRequests as $quote)
                 <tr>
                   <td><i class="far fa-file-pdf"></i><strong>{{ $quote->reference }}</strong></td>
-                  <td><strong>{{ $quote->service_title }}</strong></td>
+                  <td><strong>{{ $quote->service_label }}</strong></td>
                   <td>{{ $quote->estimate_label }}</td>
                   <td><span class="tcw-client-status is-{{ $quote->status }}">{{ $quote->status_label }}</span></td>
-                  <td>{{ $quote->created_at->locale(app()->getLocale())->translatedFormat('M d, Y') }}<small>{{ $quote->created_at->format('h:i A') }}</small></td>
+                  <td>{{ $quote->created_at->locale(app()->getLocale())->translatedFormat('M d, Y') }}<small>{{ $quote->created_at->locale(app()->getLocale())->translatedFormat('h:i A') }}</small></td>
                   <td>
                     <div class="tcw-client-action-links">
                       <a href="{{ route('website.quote-generator.proposal', $quote->public_token) }}" title="{{ __('website.client.view_quote') }}"><i class="far fa-eye"></i></a>
@@ -69,11 +69,11 @@
                 <strong>{{ $quote->reference }}</strong>
                 <b class="tcw-client-status is-{{ $quote->status }}">{{ $quote->status_label }}</b>
               </div>
-              <h2>{{ $quote->service_title }}</h2>
+              <h2>{{ $quote->service_label }}</h2>
               <p>{{ $quote->estimate_label }}</p>
               <footer>
                 <span><i class="far fa-eye"></i> {{ $quote->estimate_label }}</span>
-                <time><i class="far fa-calendar-alt"></i> {{ $quote->created_at->locale(app()->getLocale())->translatedFormat('M d, Y') }} {{ $quote->created_at->format('h:i A') }}</time>
+                <time><i class="far fa-calendar-alt"></i> {{ $quote->created_at->locale(app()->getLocale())->translatedFormat('M d, Y h:i A') }}</time>
               </footer>
               <div class="tcw-client-action-links">
                 <a href="{{ route('website.quote-generator.proposal', $quote->public_token) }}"><i class="far fa-eye"></i> {{ __('website.client.view_quote') }}</a>

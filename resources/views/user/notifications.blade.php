@@ -22,11 +22,18 @@
       </header>
       <section class="tcw-notification-list">
         @forelse($notifications as $notification)
+          @php
+            $notificationEvent = $notification->data['event'] ?? null;
+            $notificationTitleKey = $notificationEvent ? 'website.client.notification_events.'.$notificationEvent.'.title' : null;
+            $notificationMessageKey = $notificationEvent ? 'website.client.notification_events.'.$notificationEvent.'.message' : null;
+            $notificationTitle = $notificationTitleKey && __($notificationTitleKey) !== $notificationTitleKey ? __($notificationTitleKey) : ($notification->data['title'] ?? __('website.client.update'));
+            $notificationMessage = $notificationMessageKey && __($notificationMessageKey) !== $notificationMessageKey ? __($notificationMessageKey) : ($notification->data['message'] ?? __('website.client.request_updated'));
+          @endphp
           <a href="{{ route('user.notifications.open', $notification->id) }}" class="{{ $notification->read_at ? '' : 'is-unread' }}">
             <i class="{{ $notification->data['icon'] ?? 'far fa-bell' }}"></i>
             <div>
-              <strong>{{ $notification->data['title'] ?? __('website.client.update') }}</strong>
-              <span>{{ $notification->data['message'] ?? __('website.client.request_updated') }}</span>
+              <strong>{{ $notificationTitle }}</strong>
+              <span>{{ $notificationMessage }}</span>
               <time>{{ $notification->created_at->locale(app()->getLocale())->diffForHumans() }}</time>
             </div>
           </a>

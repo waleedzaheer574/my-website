@@ -8,11 +8,13 @@
   $companyPhone = $companySetting?->phone ?: '+012 3456 7890';
   $footerServices = ($websiteServices ?? collect())->take(6);
   $newsletterError = session('errors')?->getBag('newsletter')?->first('email');
+  $showFooterLinkIcons = app()->getLocale() !== 'ar';
+  $footerArrowIcon = app()->getLocale() === 'ar' ? 'fas fa-angle-left' : 'fas fa-angle-right';
   $footerSocialLinks = [
-    ['url' => '#', 'icon' => 'fab fa-fonticons-fi', 'label' => 'Fiverr'],
-    ['url' => $companySetting?->facebook ?: '#', 'icon' => 'fab fa-facebook-f', 'label' => 'Facebook'],
-    ['url' => $companySetting?->linkedin ?: '#', 'icon' => 'fab fa-linkedin-in', 'label' => 'LinkedIn'],
     ['url' => $companySetting?->instagram ?: '#', 'icon' => 'fab fa-instagram', 'label' => 'Instagram'],
+    ['url' => $companySetting?->linkedin ?: '#', 'icon' => 'fab fa-linkedin-in', 'label' => 'LinkedIn'],
+    ['url' => $companySetting?->facebook ?: '#', 'icon' => 'fab fa-facebook-f', 'label' => 'Facebook'],
+    ['url' => '#', 'icon' => 'fab fa-fonticons-fi', 'label' => 'Fiverr'],
   ];
 @endphp
 
@@ -28,9 +30,9 @@
           </div>
         </div>
         <div class="cs-footer_item cs-address_widgert">
-          <ul>
-            <li><i class="far fa-envelope-open"></i>{{ $companyEmail }}</li>
-            <li><i class="far fa-address-book"></i>{{ $companyPhone }}</li>
+          <ul class="tcw-footer-contact-list">
+            <li class="tcw-footer-contact-item"><i class="far fa-envelope" aria-hidden="true"></i><span dir="ltr">{{ $companyEmail }}</span></li>
+            <li class="tcw-footer-contact-item"><i class="fas fa-phone-alt" aria-hidden="true"></i><span dir="ltr">{{ $companyPhone }}</span></li>
           </ul>
         </div>
       </div><!-- .col -->
@@ -40,12 +42,18 @@
           <ul class="menu">
             @forelse($footerServices as $service)
               <li>
-                <a href="{{ $service->detail ? route('website.service-details.show', $service->detail->slug) : route('website.services') }}">
-                  {{ $service->localized('service_title') }}
+                <a class="tcw-footer-link" href="{{ $service->detail ? route('website.service-details.show', $service->detail->slug) : route('website.services') }}">
+                  @if($showFooterLinkIcons)<i class="{{ $footerArrowIcon }}" aria-hidden="true"></i>@endif
+                  <span>{{ $service->localized('service_title') }}</span>
                 </a>
               </li>
             @empty
-              <li><a href="{{ route('website.services') }}">{{ __('website.footer.services') }}</a></li>
+              <li>
+                <a class="tcw-footer-link" href="{{ route('website.services') }}">
+                  @if($showFooterLinkIcons)<i class="{{ $footerArrowIcon }}" aria-hidden="true"></i>@endif
+                  <span>{{ __('website.footer.services') }}</span>
+                </a>
+              </li>
             @endforelse
           </ul>
         </div>
@@ -54,10 +62,10 @@
         <div class="cs-footer_item widget_nav_menu">
           <h2 class="cs-widget_title">{{ __('website.footer.company') }}</h2>
           <ul class="menu">
-            <li><a href="{{ url('/privacy-policy') }}">{{ __('website.footer.privacy') }}</a></li>
-            <li><a href="{{ url('/sitemap') }}">{{ __('website.footer.sitemap') }}</a></li>
-            <li><a href="{{ url('/careers') }}">{{ __('website.footer.careers') }}</a></li>
-            <li><a href="{{ url('/terms') }}">{{ __('website.footer.terms') }}</a></li>
+            <li><a class="tcw-footer-link" href="{{ url('/privacy-policy') }}">@if($showFooterLinkIcons)<i class="{{ $footerArrowIcon }}" aria-hidden="true"></i>@endif<span>{{ __('website.footer.privacy') }}</span></a></li>
+            <li><a class="tcw-footer-link" href="{{ url('/sitemap') }}">@if($showFooterLinkIcons)<i class="{{ $footerArrowIcon }}" aria-hidden="true"></i>@endif<span>{{ __('website.footer.sitemap') }}</span></a></li>
+            <li><a class="tcw-footer-link" href="{{ url('/careers') }}">@if($showFooterLinkIcons)<i class="{{ $footerArrowIcon }}" aria-hidden="true"></i>@endif<span>{{ __('website.footer.careers') }}</span></a></li>
+            <li><a class="tcw-footer-link" href="{{ url('/terms') }}">@if($showFooterLinkIcons)<i class="{{ $footerArrowIcon }}" aria-hidden="true"></i>@endif<span>{{ __('website.footer.terms') }}</span></a></li>
           </ul>
         </div>
       </div><!-- .col -->
@@ -97,7 +105,7 @@
     </div>
     <div class="cs-height_60 cs-height_lg_40"></div>
     <div class="tcw-footer-copyright">
-      @copyright Multitechwave
+      &copy; {{ now()->year }} {{ __('website.footer.copyright') }}
     </div>
   </div>
 </footer>

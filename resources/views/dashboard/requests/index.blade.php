@@ -53,27 +53,27 @@
                                         {{ $request->company_email }}
                                     </a>
                                 @else
-                                    N/A
+                                    {{ __('website.common.not_available') }}
                                 @endif
                             </td>
-                            <td>{{ $request->phone_no ?: 'N/A' }}</td>
-                            <td>{{ $request->country ?: 'N/A' }}</td>
-                            <td>{{ $request->service_type }}</td>
-                            <td>{{ $request->source === 'ai_call' ? 'AI Call' : 'Website' }}</td>
-                            <td>{{ $request->budget ?: 'N/A' }}</td>
+                            <td>{{ $request->phone_no ?: __('website.common.not_available') }}</td>
+                            <td>{{ $request->country ?: __('website.common.not_available') }}</td>
+                            <td>{{ $request->service_label }}</td>
+                            <td>{{ __('website.client.source_labels.'.($request->source === 'ai_call' ? 'ai_call' : 'website')) }}</td>
+                            <td>{{ $request->budget ?: __('website.common.not_available') }}</td>
                             <td>
                                 @if($request->company_website)
                                     <a href="{{ $request->company_website }}" target="_blank" rel="noopener noreferrer">
                                         {{ str($request->company_website)->replace(['https://', 'http://'], '')->trim('/') }}
                                     </a>
                                 @else
-                                    N/A
+                                    {{ __('website.common.not_available') }}
                                 @endif
                             </td>
                             <td>
                                 <span class="admin-request-date">
-                                    {{ $request->created_at->format('d M, Y') }}
-                                    <small>{{ $request->created_at->format('h:i A') }}</small>
+                                    {{ $request->created_at->locale(app()->getLocale())->translatedFormat('d M, Y') }}
+                                    <small>{{ $request->created_at->locale(app()->getLocale())->translatedFormat('h:i A') }}</small>
                                 </span>
                             </td>
                             <td>
@@ -82,7 +82,7 @@
                                     @method('PATCH')
                                     <select name="status" onchange="this.form.submit()">
                                         @foreach($statuses as $value => $label)
-                                            <option value="{{ $value }}" @selected($request->status === $value)>{{ $label }}</option>
+                                            <option value="{{ $value }}" @selected($request->status === $value)>{{ __('website.client.status_labels.'.$value) }}</option>
                                         @endforeach
                                     </select>
                                 </form>
@@ -119,20 +119,20 @@
                             @method('PATCH')
                             <select name="status" onchange="this.form.submit()">
                                 @foreach($statuses as $value => $label)
-                                    <option value="{{ $value }}" @selected($request->status === $value)>{{ $label }}</option>
+                                    <option value="{{ $value }}" @selected($request->status === $value)>{{ __('website.client.status_labels.'.$value) }}</option>
                                 @endforeach
                             </select>
                         </form>
                     </header>
-                    <p>{{ $request->service_type }} · {{ $request->source === 'ai_call' ? 'AI Call' : 'Website' }}{{ $request->budget ? ' · '.$request->budget : '' }}</p>
+                    <p>{{ $request->service_label }} · {{ __('website.client.source_labels.'.($request->source === 'ai_call' ? 'ai_call' : 'website')) }}{{ $request->budget ? ' · '.$request->budget : '' }}</p>
                     @if($request->company_website)
                         <a href="{{ $request->company_website }}" target="_blank" rel="noopener noreferrer">
                             {{ str($request->company_website)->replace(['https://', 'http://'], '')->trim('/') }}
                         </a>
                     @endif
                     <footer>
-                        <span>{{ $request->created_at->format('d M, Y') }}</span>
-                        <span>{{ $request->created_at->format('h:i A') }}</span>
+                        <span>{{ $request->created_at->locale(app()->getLocale())->translatedFormat('d M, Y') }}</span>
+                        <span>{{ $request->created_at->locale(app()->getLocale())->translatedFormat('h:i A') }}</span>
                     </footer>
                 </article>
             @empty

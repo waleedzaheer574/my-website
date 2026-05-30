@@ -47,6 +47,22 @@ class AgencyProject extends Model
         return $this->belongsTo(OfferOrder::class, 'offer_order_id');
     }
 
+    public function getTitleLabelAttribute(): string
+    {
+        return $this->order?->offer?->localized('title') ?: $this->title;
+    }
+
+    public function getDescriptionLabelAttribute(): ?string
+    {
+        $offer = $this->order?->offer;
+
+        if ($offer && $this->description === $offer->description) {
+            return $offer->localized('description');
+        }
+
+        return $this->description;
+    }
+
     public function milestones()
     {
         return $this->hasMany(ProjectMilestone::class);

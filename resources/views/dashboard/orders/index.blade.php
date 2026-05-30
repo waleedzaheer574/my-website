@@ -27,11 +27,11 @@
           <tr>
             <td><strong>{{ $order->reference }}</strong><small>{{ $order->payment_method }}</small></td>
             <td>{{ $order->user?->name ?? $order->client_name }}<small>{{ $order->client_email }}</small></td>
-            <td>{{ $order->offer?->title ?? 'Custom Offer' }}</td>
+            <td>{{ $order->offer?->localized('title') ?? __('website.client.offer') }}</td>
             <td>{{ $order->amount_label }}</td>
-            <td><span class="admin-status-pill {{ $order->payment_status === 'paid' ? 'is-active' : 'is-inactive' }}">{{ ucfirst(str_replace('_', ' ', $order->payment_status)) }}</span></td>
+            <td><span class="admin-status-pill {{ $order->payment_status === 'paid' ? 'is-active' : 'is-inactive' }}">{{ __('website.client.status_labels.'.$order->payment_status) }}</span></td>
             <td>{{ $order->status_label }}</td>
-            <td>{{ $order->created_at->format('d M, Y h:i A') }}</td>
+            <td>{{ $order->created_at->locale(app()->getLocale())->translatedFormat('d M, Y h:i A') }}</td>
           </tr>
         @empty
           <tr><td colspan="7" class="admin-u-015">No orders found yet.</td></tr>

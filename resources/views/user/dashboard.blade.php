@@ -19,8 +19,8 @@
   $pendingPayments = $orders->where('payment_status', 'pending')->count();
   $recentRows = $serviceRequests->take(3)->map(fn ($request) => [
       'id' => 'SR-'.str_pad((string) $request->id, 4, '0', STR_PAD_LEFT),
-      'title' => $request->company_name ?: $request->service_type,
-      'service' => $request->service_type,
+      'title' => $request->company_name ?: $request->service_label,
+      'service' => $request->service_label,
       'status' => $request->status,
       'status_label' => $request->status_label,
       'date' => $request->created_at,
@@ -136,7 +136,7 @@
       <section class="tcw-client-panel tcw-deadlines-card">
         <div class="tcw-client-panel-head"><h2>{{ __('website.client.upcoming_deadlines') }}</h2><a href="{{ route('user.projects') }}">{{ __('website.client.view_all') }}</a></div>
         @forelse($projects->take(3) as $project)
-          <article><i class="far fa-calendar-alt"></i><div><strong>{{ $project->title }}</strong><span>{{ $project->due_at?->locale(app()->getLocale())->translatedFormat('M d, Y') ?: __('website.client.due_soon') }}</span></div><b>{{ __('website.client.days_left', ['days' => max(1, now()->diffInDays($project->due_at ?? now()->addDays(7), false))]) }}</b></article>
+          <article><i class="far fa-calendar-alt"></i><div><strong>{{ $project->title_label }}</strong><span>{{ $project->due_at?->locale(app()->getLocale())->translatedFormat('M d, Y') ?: __('website.client.due_soon') }}</span></div><b>{{ __('website.client.days_left', ['days' => max(1, now()->diffInDays($project->due_at ?? now()->addDays(7), false))]) }}</b></article>
         @empty
           <article><i class="far fa-calendar-alt"></i><div><strong>{{ __('website.client.no_deadlines') }}</strong><span>{{ __('website.client.start_new_project') }}</span></div><b>{{ __('website.client.new') }}</b></article>
         @endforelse

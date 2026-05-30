@@ -5,13 +5,17 @@
   @php
     $websiteBaseTitle = 'Multitechwave';
     $websiteTitle = trim($__env->yieldContent('title'));
+    $hasBlog = ($blog ?? null) instanceof \App\Models\Blog;
+    $hasPortfolio = ($portfolio ?? null) instanceof \App\Models\Portfolio;
+    $hasServiceDetail = ($serviceDetail ?? null) instanceof \App\Models\ServiceDetail;
+    $hasOffer = ($offer ?? null) instanceof \App\Models\Offer;
 
     if ($websiteTitle === '') {
-        if (!empty($blog?->title)) {
+        if ($hasBlog && !empty($blog->title)) {
             $websiteTitle = $blog->localized('title');
-        } elseif (!empty($portfolio?->title)) {
+        } elseif ($hasPortfolio && !empty($portfolio->title)) {
             $websiteTitle = $portfolio->localized('title');
-        } elseif (!empty($serviceDetail)) {
+        } elseif ($hasServiceDetail) {
             $websiteTitle = trim(($serviceDetail->localized('title_prefix') ?? '') . ' ' . ($serviceDetail->localized('title_highlight') ?? ''));
         } else {
             $path = request()->path();
@@ -94,22 +98,22 @@
     $seoType = 'website';
 
     if ($seoDescription === '') {
-        if (!empty($blog)) {
+        if ($hasBlog) {
             $seoDescription = $blog->localized('excerpt') ?: \Illuminate\Support\Str::limit(strip_tags((string) $blog->localized('content')), 160);
             $seoImage = $blog->featured_image ? asset($blog->featured_image) : $seoDefaultImage;
             $seoType = 'article';
             $seoKeywords = $seoKeywords ?: trim(implode(', ', array_filter([$blog->localized('category'), 'Multitechwave blog', 'digital marketing', 'web design', 'SEO'])));
-        } elseif (!empty($serviceDetail)) {
+        } elseif ($hasServiceDetail) {
             $serviceTitle = trim(($serviceDetail->localized('title_prefix') ?? '') . ' ' . ($serviceDetail->localized('title_highlight') ?? ''));
             $seoDescription = $serviceDetail->localized('description') ?: 'Learn more about '.$serviceTitle.' services from Multitechwave.';
             $seoImage = $serviceDetail->primary_image ? asset($serviceDetail->primary_image) : $seoDefaultImage;
             $seoKeywords = $seoKeywords ?: trim($serviceTitle.', web design, SEO, digital marketing, Multitechwave');
-        } elseif (!empty($portfolio)) {
+        } elseif ($hasPortfolio) {
             $seoDescription = $portfolio->localized('short_description') ?: \Illuminate\Support\Str::limit(strip_tags((string) $portfolio->localized('description')), 160);
             $seoImage = $portfolio->image ? asset($portfolio->image) : $seoDefaultImage;
             $seoType = 'article';
             $seoKeywords = $seoKeywords ?: trim(implode(', ', array_filter([$portfolio->localized('category'), $portfolio->localized('tags'), 'portfolio', 'Multitechwave'])));
-        } elseif (!empty($offer)) {
+        } elseif ($hasOffer) {
             $seoDescription = $offer->localized('description') ?: 'Explore '.$offer->localized('title').' services and pricing from Multitechwave.';
             $seoKeywords = $seoKeywords ?: trim(implode(', ', array_filter([$offer->localized('category'), $offer->localized('title'), 'digital services', 'Multitechwave'])));
         } else {
@@ -190,7 +194,7 @@
         ];
     }
 
-    if (!empty($blog)) {
+    if ($hasBlog) {
         $schemaGraph[] = [
             '@type' => 'BlogPosting',
             'headline' => $blog->localized('title'),
@@ -202,7 +206,7 @@
             'publisher' => ['@id' => $seoSiteUrl.'/#organization'],
             'mainEntityOfPage' => ['@id' => $seoCanonical.'/#webpage'],
         ];
-    } elseif (!empty($serviceDetail)) {
+    } elseif ($hasServiceDetail) {
         $schemaGraph[] = [
             '@type' => 'Service',
             'name' => trim(($serviceDetail->localized('title_prefix') ?? '') . ' ' . ($serviceDetail->localized('title_highlight') ?? '')),
@@ -210,7 +214,7 @@
             'provider' => ['@id' => $seoSiteUrl.'/#organization'],
             'url' => $seoCanonical,
         ];
-    } elseif (!empty($portfolio)) {
+    } elseif ($hasPortfolio) {
         $schemaGraph[] = [
             '@type' => 'CreativeWork',
             'name' => $portfolio->localized('title'),
@@ -219,7 +223,7 @@
             'creator' => ['@id' => $seoSiteUrl.'/#organization'],
             'url' => $seoCanonical,
         ];
-    } elseif (!empty($offer)) {
+    } elseif ($hasOffer) {
         $schemaGraph[] = [
             '@type' => 'Service',
             'name' => $offer->localized('title'),
@@ -268,7 +272,7 @@
     <meta property="article:published_time" content="{{ optional($blog->published_at ?: $blog->created_at)->toIso8601String() }}">
     <meta property="article:modified_time" content="{{ optional($blog->updated_at)->toIso8601String() }}">
     @if($blog->category)
-      <meta property="article:section" content="{{ $blog->category }}">
+      <meta property="article:section" content="{{ $blog->localized('category') }}">
     @endif
   @endif
   <meta name="twitter:card" content="summary_large_image">

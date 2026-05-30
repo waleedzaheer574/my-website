@@ -4,7 +4,7 @@
     <label for="icon">Service Icon</label>
     <input type="file" name="icon" id="icon" class="form-control" accept=".jpg,.jpeg,.png,.webp,.svg,image/jpeg,image/png,image/webp,image/svg+xml">
     @if($isEdit && $service->icon)
-        <img class="admin-u-092" src="{{ asset($service->icon) }}" alt="{{ $service->service_title }}">
+        <img class="admin-u-092" src="{{ asset($service->icon) }}" alt="{{ $service->localized('service_title') }}">
     @endif
     <small class="admin-u-048">Optional. Upload JPG, PNG, WEBP, or SVG icon.</small>
     @error('icon') <small class="admin-u-021">{{ $message }}</small> @enderror

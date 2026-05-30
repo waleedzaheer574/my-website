@@ -429,7 +429,7 @@
   }
 }
 </style>
-<div class="tcw-floating-contact" aria-label="Quick contact links">
+<div class="tcw-floating-contact" aria-label="{{ __('website.floating.quick_links') }}">
   <div class="tcw-floating-contact__icons">
     @if($floatingWhatsappDigits)
       <a href="https://wa.me/{{ $floatingWhatsappDigits }}" class="tcw-floating-contact__icon" target="_blank" rel="noopener noreferrer" aria-label="{{ __('website.floating.whatsapp') }}">
@@ -508,14 +508,16 @@
       </div>
 
       <div class="tcw-form-field">
-        <select name="service_type" required>
-          <option value="">{{ __('website.common.choose_service') }}</option>
-          @foreach($services as $service)
-            <option value="{{ $service->service_title }}">
-              {{ $service->localized('service_title') }}
-            </option>
-          @endforeach
-        </select>
+        <div class="tcw-service-select">
+          <select name="service_type" required>
+            <option value="">{{ __('website.common.choose_service') }}</option>
+            @foreach($services as $service)
+              <option value="{{ $service->service_title }}">
+                {{ $service->localized('service_title') }}
+              </option>
+            @endforeach
+          </select>
+        </div>
       </div>
 
       <button type="submit" class="tcw-popup-submit">{{ __('website.common.submit_request') }}</button>

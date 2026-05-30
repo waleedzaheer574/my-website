@@ -6049,3 +6049,33 @@ body.admin-dashboard-theme {
     font-size: 0.7rem;
   }
 }
+
+/* Match all admin scrollbars to the client navigation violet gradient. */
+.admin-dashboard-theme,
+.admin-dashboard-theme * {
+  scrollbar-color: #5038ff rgba(80, 56, 255, 0.14) !important;
+}
+
+.admin-dashboard-theme::-webkit-scrollbar,
+.admin-dashboard-theme *::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+.admin-dashboard-theme::-webkit-scrollbar-track,
+.admin-dashboard-theme *::-webkit-scrollbar-track {
+  background: rgba(80, 56, 255, 0.14) !important;
+  border-radius: 999px;
+}
+
+.admin-dashboard-theme::-webkit-scrollbar-thumb,
+.admin-dashboard-theme *::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #5038ff, #6d28d9) !important;
+  border-radius: 999px;
+  box-shadow: 0 0 12px rgba(79, 70, 229, 0.34);
+}
+
+.admin-dashboard-theme::-webkit-scrollbar-thumb:hover,
+.admin-dashboard-theme *::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #6048ff, #7c3aed) !important;
+}

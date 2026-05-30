@@ -40,7 +40,7 @@
                 @if($message->user_id !== auth()->id())<b>MTW</b>@endif
                 <div>
                   <p>{{ $message->body }}</p>
-                  <time>{{ $message->created_at->format('h:i A') }}</time>
+                  <time>{{ $message->created_at->locale(app()->getLocale())->translatedFormat('h:i A') }}</time>
                 </div>
               </article>
             @endforeach

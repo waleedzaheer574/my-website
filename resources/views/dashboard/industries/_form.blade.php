@@ -60,7 +60,7 @@
     <div class="form-group">
         <label for="icon">Icon Image</label>
         @if($isEdit && $industry->icon)
-            <img class="admin-u-079" src="{{ asset($industry->icon) }}" alt="{{ $industry->title }}">
+            <img class="admin-u-079" src="{{ asset($industry->icon) }}" alt="{{ $industry->localized('title') }}">
         @endif
         <input type="file" name="icon" id="icon" class="form-control" accept="image/*">
         @error('icon') <small class="admin-u-021">{{ $message }}</small> @enderror

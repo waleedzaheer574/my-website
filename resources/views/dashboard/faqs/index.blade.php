@@ -32,12 +32,12 @@
                             <td>{{ $faq->id }}</td>
                             <td>{{ \App\Models\Faq::pageLabel($faq->page_key) }}</td>
                             <td>
-                                <strong>{{ $faq->question }}</strong>
-                                <div class="admin-u-040">{{ \Illuminate\Support\Str::limit(strip_tags($faq->answer), 90) }}</div>
+                                <strong>{{ $faq->localized('question') }}</strong>
+                                <div class="admin-u-040">{{ \Illuminate\Support\Str::limit(strip_tags($faq->localized('answer')), 90) }}</div>
                             </td>
                             <td>
                                 <span class="admin-status-pill {{ $faq->is_active ? 'is-active' : 'is-inactive' }}">
-                                    {{ $faq->is_active ? 'Active' : 'Hidden' }}
+                                    {{ $faq->is_active ? __('website.client.status_labels.active') : __('website.client.status_labels.hidden') }}
                                 </span>
                             </td>
                             <td>{{ $faq->sort_order }}</td>

@@ -142,14 +142,16 @@
               </div>
 
               <div class="tcw-form-field">
-                <select name="service_type" class="@error('service_type') is-invalid @enderror" required>
-                  <option value="" disabled {{ old('service_type') ? '' : 'selected' }}>{{ __('website.common.choose_service') }}</option>
-                  @foreach($services as $service)
-                    <option value="{{ $service->service_title }}" {{ old('service_type') === $service->service_title ? 'selected' : '' }}>
-                      {{ $service->localized('service_title') }}
-                    </option>
-                  @endforeach
-                </select>
+                <div class="tcw-service-select">
+                  <select name="service_type" class="@error('service_type') is-invalid @enderror" required>
+                    <option value="" disabled {{ old('service_type') ? '' : 'selected' }}>{{ __('website.common.choose_service') }}</option>
+                    @foreach($services as $service)
+                      <option value="{{ $service->service_title }}" {{ old('service_type') === $service->service_title ? 'selected' : '' }}>
+                        {{ $service->localized('service_title') }}
+                      </option>
+                    @endforeach
+                  </select>
+                </div>
                 @error('service_type') <span class="field-error">{{ $message }}</span> @enderror
               </div>
 
@@ -261,13 +263,13 @@
                 <small>{{ $meta['old_price'] }}</small>
               @endif
             </div>
-            <small>{{ $offer->billing_label }} · {{ $offer->delivery_time }}</small>
+            <small>{{ $offer->billing_label }} · {{ $offer->delivery_label }}</small>
             <ul>
               @foreach(array_slice($offer->localized('features') ?? [], 0, 5) as $feature)
                 <li><i class="fas fa-check-circle"></i>{{ $feature }}</li>
               @endforeach
-              @if($offer->delivery_time)
-                <li><i class="fas fa-check-circle"></i>{{ $offer->delivery_time }} {{ __('website.offer_detail.delivery') }}</li>
+              @if($offer->delivery_label)
+                <li><i class="fas fa-check-circle"></i>{{ $offer->delivery_label }} {{ __('website.offer_detail.delivery') }}</li>
               @endif
             </ul>
             <a href="{{ $offer->exists ? route('website.offers.show', $offer->slug) : route('website.offers') }}" class="tcw-offer-card-btn {{ $isFeatured ? 'is-hot' : '' }}">

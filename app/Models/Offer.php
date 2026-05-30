@@ -83,9 +83,38 @@ class Offer extends Model
     public function getBillingLabelAttribute(): string
     {
         return match ($this->billing_cycle) {
-            'monthly' => app()->getLocale() === 'ar' ? 'شهري' : 'Monthly',
-            'yearly' => app()->getLocale() === 'ar' ? 'سنوي' : 'Yearly',
-            default => app()->getLocale() === 'ar' ? 'دفعة واحدة' : 'One-time',
+            'monthly' => __('website.dynamic.billing.monthly'),
+            'yearly' => __('website.dynamic.billing.yearly'),
+            default => __('website.dynamic.billing.one_time'),
         };
+    }
+
+    public function getDeliveryLabelAttribute(): ?string
+    {
+        if (! filled($this->delivery_time) || app()->getLocale() !== 'ar') {
+            return $this->delivery_time;
+        }
+
+        $delivery = trim($this->delivery_time);
+
+        if (preg_match('/^(\d+)\s*-\s*(\d+)\s*days?$/i', $delivery, $matches)) {
+            return __('website.dynamic.delivery.days_range', ['from' => $matches[1], 'to' => $matches[2]]);
+        }
+
+        if (preg_match('/^(\d+)\s*-\s*(\d+)\s*weeks?$/i', $delivery, $matches)) {
+            return __('website.dynamic.delivery.weeks_range', ['from' => $matches[1], 'to' => $matches[2]]);
+        }
+
+        if (preg_match('/^(\d+)\s*days?$/i', $delivery, $matches)) {
+            return __('website.dynamic.delivery.days', ['count' => $matches[1]]);
+        }
+
+        if (preg_match('/^(\d+)\s*weeks?$/i', $delivery, $matches)) {
+            return __('website.dynamic.delivery.weeks', ['count' => $matches[1]]);
+        }
+
+        return strtolower($delivery) === 'monthly'
+            ? __('website.dynamic.delivery.monthly')
+            : $delivery;
     }
 }

@@ -39,7 +39,7 @@
                 </td>
                 <td>{{ $conversation->user->email }}</td>
                 <td>{{ $conversation->messages_count }}</td>
-                <td>{{ optional($conversation->last_message_at)->format('d M, Y h:i A') ?: 'No messages yet' }}</td>
+                <td>{{ $conversation->last_message_at?->locale(app()->getLocale())->translatedFormat('d M, Y h:i A') ?: __('website.client.no_messages') }}</td>
                 <td><a href="{{ route('support-chats.show', $conversation) }}">Open</a></td>
               </tr>
             @empty
@@ -65,13 +65,13 @@
 
         <div class="admin-support-messages" id="admin-support-messages" data-last-id="{{ $activeConversation->messages->last()?->id ?? 0 }}">
           @if($activeConversation->messages->isNotEmpty())
-            <em>{{ $activeConversation->messages->first()->created_at->format('d M, Y') }}</em>
+            <em>{{ $activeConversation->messages->first()->created_at->locale(app()->getLocale())->translatedFormat('d M, Y') }}</em>
           @endif
           @foreach($activeConversation->messages as $message)
             <article class="{{ $message->user->isAdmin() ? 'is-admin' : 'is-client' }}" data-id="{{ $message->id }}">
               <strong>{{ $message->user->name }}</strong>
               <p>{{ $message->body }}</p>
-              <time>{{ $message->created_at->format('h:i A') }}</time>
+              <time>{{ $message->created_at->locale(app()->getLocale())->translatedFormat('h:i A') }}</time>
             </article>
           @endforeach
         </div>

@@ -942,6 +942,41 @@ document.addEventListener('DOMContentLoaded', function () {
           return;
         }
 
+        const hidePopup = function (popup) {
+          popup.classList.remove('is-visible');
+          popup.setAttribute('aria-hidden', 'true');
+        };
+
+        const showPopup = function (message, type) {
+          let popup = document.querySelector('.tcw-feedback-modal');
+
+          if (!popup) {
+            popup = document.createElement('div');
+            popup.className = 'tcw-feedback-modal';
+            popup.setAttribute('aria-hidden', 'true');
+            popup.innerHTML = '<div class="tcw-feedback-modal__backdrop" data-popup-close></div><section class="tcw-feedback-modal__card" role="alertdialog" aria-modal="true" aria-labelledby="tcwFeedbackTitle"><button type="button" class="tcw-feedback-modal__close" data-popup-close aria-label="Close">&times;</button><span class="tcw-feedback-modal__icon" aria-hidden="true">&#10003;</span><p class="tcw-feedback-modal__eyebrow"></p><h2 class="tcw-feedback-modal__title" id="tcwFeedbackTitle"></h2><p class="tcw-feedback-modal__message"></p><button type="button" class="tcw-feedback-modal__action" data-popup-close>Okay</button></section>';
+            document.body.appendChild(popup);
+            popup.querySelectorAll('[data-popup-close]').forEach(function (closeButton) {
+              closeButton.addEventListener('click', function () {
+                hidePopup(popup);
+              });
+            });
+          }
+
+          const isError = type === 'error';
+          popup.querySelector('.tcw-feedback-modal__icon').textContent = isError ? '\u00d7' : '\u2713';
+          popup.querySelector('.tcw-feedback-modal__eyebrow').textContent = isError ? 'Please try again' : 'Completed';
+          popup.querySelector('.tcw-feedback-modal__title').textContent = isError ? 'Unable to complete request' : 'Success!';
+          popup.querySelector('.tcw-feedback-modal__message').textContent = message;
+          popup.classList.toggle('is-error', isError);
+          popup.setAttribute('aria-hidden', 'false');
+          popup.classList.add('is-visible');
+          window.clearTimeout(popup.hideTimer);
+          popup.hideTimer = window.setTimeout(function () {
+            hidePopup(popup);
+          }, isError ? 5200 : 4200);
+        };
+
         const labels = {
           full_name: 'Full name',
           company_name: 'Company name',
@@ -956,7 +991,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const phonePattern = /^[\d\s()+-]{7,20}$/;
 
         const getAnchorElement = function (field) {
-          return field.closest('.phone-field-wrap') || field;
+          return field.closest('.tcw-service-select') || field.closest('.phone-field-wrap') || field;
         };
 
         const clearFormSummary = function (form) {
@@ -1055,7 +1090,7 @@ document.addEventListener('DOMContentLoaded', function () {
             });
           });
 
-          form.addEventListener('submit', function (event) {
+          form.addEventListener('submit', async function (event) {
             let isValid = true;
             let firstInvalidField = null;
 
@@ -1084,13 +1119,175 @@ document.addEventListener('DOMContentLoaded', function () {
             if (!isValid) {
               event.preventDefault();
               showFormSummary(form, 'Please fix the highlighted fields and try again.');
+              showPopup('Please fix the highlighted fields and try again.', 'error');
 
               if (firstInvalidField) {
                 firstInvalidField.focus();
                 firstInvalidField.scrollIntoView({ behavior: 'smooth', block: 'center' });
               }
+
+              return;
+            }
+
+            event.preventDefault();
+
+            const submitButton = form.querySelector('button[type="submit"]');
+            const originalButtonHtml = submitButton ? submitButton.innerHTML : '';
+
+            if (submitButton) {
+              submitButton.disabled = true;
+              submitButton.innerHTML = '<span class="tcw-submit-spinner" aria-hidden="true"></span>Processing...';
+            }
+
+            try {
+              const response = await fetch(form.action, {
+                method: form.method || 'POST',
+                body: new FormData(form),
+                headers: {
+                  Accept: 'application/json',
+                  'X-Requested-With': 'XMLHttpRequest',
+                },
+              });
+              const data = await response.json().catch(function () {
+                return {};
+              });
+
+              if (!response.ok) {
+                Object.entries(data.errors || {}).forEach(function ([fieldName, messages]) {
+                  const field = form.querySelector('[name="' + fieldName + '"]');
+
+                  if (field) {
+                    showFieldError(field, Array.isArray(messages) ? messages[0] : messages);
+                  }
+                });
+
+                const firstError = Object.values(data.errors || {})[0];
+                showPopup(Array.isArray(firstError) ? firstError[0] : (data.message || 'Please check the highlighted fields and try again.'), 'error');
+
+                if (data.redirect) {
+                  window.setTimeout(function () {
+                    window.location.assign(data.redirect);
+                  }, 1700);
+                  return;
+                }
+
+                if (submitButton) {
+                  submitButton.disabled = false;
+                  submitButton.innerHTML = originalButtonHtml;
+                }
+                return;
+              }
+
+              form.reset();
+              showPopup(data.message || 'Your request has been sent successfully.', 'success');
+
+              if (submitButton) {
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalButtonHtml;
+              }
+            } catch (error) {
+              showPopup('Your request could not be processed right now. Please try again.', 'error');
+
+              if (submitButton) {
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalButtonHtml;
+              }
             }
           });
+        });
+      });
+
+document.addEventListener('DOMContentLoaded', function () {
+        const form = document.querySelector('form[data-ajax-request-form]');
+
+        if (!form) {
+          return;
+        }
+
+        const submitButton = form.querySelector('[data-quote-submit]');
+        const originalButtonHtml = submitButton ? submitButton.innerHTML : '';
+        const hidePopup = function (popup) {
+          popup.classList.remove('is-visible');
+          popup.setAttribute('aria-hidden', 'true');
+        };
+
+        const showPopup = function (message, type) {
+          let popup = document.querySelector('.tcw-feedback-modal');
+
+          if (!popup) {
+            popup = document.createElement('div');
+            popup.className = 'tcw-feedback-modal';
+            popup.setAttribute('aria-hidden', 'true');
+            popup.innerHTML = '<div class="tcw-feedback-modal__backdrop" data-popup-close></div><section class="tcw-feedback-modal__card" role="alertdialog" aria-modal="true" aria-labelledby="tcwFeedbackTitle"><button type="button" class="tcw-feedback-modal__close" data-popup-close aria-label="Close">&times;</button><span class="tcw-feedback-modal__icon" aria-hidden="true">&#10003;</span><p class="tcw-feedback-modal__eyebrow"></p><h2 class="tcw-feedback-modal__title" id="tcwFeedbackTitle"></h2><p class="tcw-feedback-modal__message"></p><button type="button" class="tcw-feedback-modal__action" data-popup-close>Okay</button></section>';
+            document.body.appendChild(popup);
+            popup.querySelectorAll('[data-popup-close]').forEach(function (closeButton) {
+              closeButton.addEventListener('click', function () {
+                hidePopup(popup);
+              });
+            });
+          }
+
+          const isError = type === 'error';
+          popup.querySelector('.tcw-feedback-modal__icon').textContent = isError ? '\u00d7' : '\u2713';
+          popup.querySelector('.tcw-feedback-modal__eyebrow').textContent = isError ? 'Please try again' : 'Completed';
+          popup.querySelector('.tcw-feedback-modal__title').textContent = isError ? 'Unable to complete request' : 'Success!';
+          popup.querySelector('.tcw-feedback-modal__message').textContent = message;
+          popup.classList.toggle('is-error', isError);
+          popup.setAttribute('aria-hidden', 'false');
+          popup.classList.add('is-visible');
+          window.clearTimeout(popup.hideTimer);
+          popup.hideTimer = window.setTimeout(function () {
+            hidePopup(popup);
+          }, isError ? 5200 : 4200);
+        };
+
+        form.addEventListener('submit', async function (event) {
+          event.preventDefault();
+
+          if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<span class="tcw-submit-spinner" aria-hidden="true"></span>Processing...';
+          }
+
+          try {
+            const response = await fetch(form.action, {
+              method: form.method || 'POST',
+              body: new FormData(form),
+              headers: {
+                Accept: 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+              },
+            });
+            const data = await response.json().catch(function () {
+              return {};
+            });
+
+            if (!response.ok) {
+              const firstError = Object.values(data.errors || {})[0];
+              showPopup(Array.isArray(firstError) ? firstError[0] : (data.message || 'Please check the form and try again.'), 'error');
+
+              if (submitButton) {
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalButtonHtml;
+              }
+              return;
+            }
+
+            showPopup(data.message || 'Quote submitted successfully.', 'success');
+
+            if (data.redirect) {
+              window.setTimeout(function () {
+                window.location.assign(data.redirect);
+              }, 1700);
+            }
+          } catch (error) {
+            showPopup('Your quote could not be processed right now. Please try again.', 'error');
+
+            if (submitButton) {
+              submitButton.disabled = false;
+              submitButton.innerHTML = originalButtonHtml;
+            }
+          }
         });
       });
 

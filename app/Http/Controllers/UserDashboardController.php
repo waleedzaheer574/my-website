@@ -19,7 +19,7 @@ class UserDashboardController extends Controller
 
         $user = $request->user();
         $serviceRequests = ServiceRequest::where('user_id', $user->id)->latest()->get();
-        $quoteRequests = QuoteRequest::where('user_id', $user->id)->latest()->get();
+        $quoteRequests = QuoteRequest::with('service')->where('user_id', $user->id)->latest()->get();
         $orders = OfferOrder::with('offer')->where('user_id', $user->id)->latest()->get();
         $projects = AgencyProject::with('order.offer')->where('user_id', $user->id)->latest()->get();
         $subscriptions = AgencySubscription::with('offer')->where('user_id', $user->id)->latest()->get();
@@ -35,14 +35,14 @@ class UserDashboardController extends Controller
         $recentRequests = $serviceRequests
             ->map(fn (ServiceRequest $serviceRequest) => [
                 'type' => 'service',
-                'title' => $serviceRequest->service_type,
+                'title' => $serviceRequest->service_label,
                 'subtitle' => $serviceRequest->company_name,
                 'date' => $serviceRequest->created_at,
             ])
             ->concat($quoteRequests->map(fn (QuoteRequest $quoteRequest) => [
                 'type' => 'quote',
                 'title' => $quoteRequest->reference,
-                'subtitle' => $quoteRequest->service_title,
+                'subtitle' => $quoteRequest->service_label,
                 'date' => $quoteRequest->created_at,
             ]))
             ->sortByDesc('date')
@@ -93,7 +93,7 @@ class UserDashboardController extends Controller
         $user = $request->user();
 
         return view('user.quote-requests', [
-            'quoteRequests' => QuoteRequest::where('user_id', $user->id)->latest()->paginate(10),
+            'quoteRequests' => QuoteRequest::with('service')->where('user_id', $user->id)->latest()->paginate(10),
             ...$this->sidebarData($user),
         ]);
     }

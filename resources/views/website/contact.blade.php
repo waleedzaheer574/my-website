@@ -114,14 +114,16 @@
                 @error('phone_no') <span class="field-error">{{ $message }}</span> @enderror
               </div>
               <div class="tcw-form-field">
-                <select name="service_type" class="@error('service_type') is-invalid @enderror" required>
-                  <option value="" disabled {{ old('service_type') ? '' : 'selected' }}>{{ __('website.common.choose_service') }}</option>
-                  @foreach($services as $service)
-                    <option value="{{ $service->service_title }}" {{ old('service_type') === $service->service_title ? 'selected' : '' }}>
-                      {{ $service->localized('service_title') }}
-                    </option>
-                  @endforeach
-                </select>
+                <div class="tcw-service-select">
+                  <select name="service_type" class="@error('service_type') is-invalid @enderror" required>
+                    <option value="" disabled {{ old('service_type') ? '' : 'selected' }}>{{ __('website.common.choose_service') }}</option>
+                    @foreach($services as $service)
+                      <option value="{{ $service->service_title }}" {{ old('service_type') === $service->service_title ? 'selected' : '' }}>
+                        {{ $service->localized('service_title') }}
+                      </option>
+                    @endforeach
+                  </select>
+                </div>
                 @error('service_type') <span class="field-error">{{ $message }}</span> @enderror
               </div>
               <button type="submit">{{ __('website.common.submit_request') }}</button>

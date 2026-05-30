@@ -127,7 +127,7 @@
 
             <div class="tcw-summary-lines">
               <div><span>{{ __('website.checkout.package_price') }}</span><b>{{ $offer->price_label }}</b></div>
-              <div><span>{{ __('website.checkout.delivery_time') }}</span><b>{{ $offer->delivery_time ?: __('website.offer_detail.timeline_after') }}</b></div>
+              <div><span>{{ __('website.checkout.delivery_time') }}</span><b>{{ $offer->delivery_label ?: __('website.offer_detail.timeline_after') }}</b></div>
               <div><span>{{ __('website.checkout.subtotal') }}</span><b>{{ $offer->price_label }}</b></div>
             </div>
 

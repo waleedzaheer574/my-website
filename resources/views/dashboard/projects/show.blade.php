@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('header')
-  <h2 class="admin-u-001">{{ $project->title }}</h2>
+  <h2 class="admin-u-001">{{ $project->title_label }}</h2>
 @endsection
 
 @section('content')
@@ -14,7 +14,7 @@
         <label>Status</label>
         <select name="status" class="form-control">
           @foreach(\App\Models\AgencyProject::STATUSES as $value => $label)
-            <option value="{{ $value }}" @selected($project->status === $value)>{{ $label }}</option>
+            <option value="{{ $value }}" @selected($project->status === $value)>{{ __('website.client.status_labels.'.$value) }}</option>
           @endforeach
         </select>
       </div>
@@ -29,7 +29,9 @@
   <div class="card">
     <h3>Milestones</h3>
     @foreach($project->milestones as $milestone)
-      <p><strong>{{ $milestone->title }}</strong> — {{ ucfirst(str_replace('_', ' ', $milestone->status)) }}</p>
+      @php($milestoneLabelKey = 'website.client.milestone_labels.'.$milestone->title)
+      @php($milestoneStatusKey = 'website.client.status_labels.'.$milestone->status)
+      <p><strong>{{ __($milestoneLabelKey) !== $milestoneLabelKey ? __($milestoneLabelKey) : $milestone->title }}</strong> — {{ __($milestoneStatusKey) !== $milestoneStatusKey ? __($milestoneStatusKey) : ucfirst(str_replace('_', ' ', $milestone->status)) }}</p>
     @endforeach
   </div>
 

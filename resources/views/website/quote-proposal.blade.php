@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow, noarchive">
-  <title>{{ $quote->reference }} Proposal</title>
+  <title>{{ $quote->reference }} {{ __('website.quote.proposal_ui.document_title') }}</title>
   <style>
     * { box-sizing: border-box; }
     body {
@@ -233,55 +233,55 @@
         <strong>MULTITECHWAVE</strong>
         <span>Technology. Innovation. Solutions.</span>
       </div>
-      <div class="page-pill">Page 1 / 1</div>
+      <div class="page-pill">{{ __('website.quote.proposal_ui.page') }} 1 / 1</div>
     </div>
 
     <section class="hero">
       <div>
-        <div class="eyebrow">4D Proposal UI</div>
-        <h1>Premium<br>Project <span>Proposal</span></h1>
+        <div class="eyebrow">{{ __('website.quote.proposal_ui.eyebrow') }}</div>
+        <h1>{{ __('website.quote.proposal_ui.premium') }}<br>{{ __('website.quote.proposal_ui.project') }} <span>{{ __('website.quote.proposal_ui.proposal') }}</span></h1>
         <div class="reference">
           <strong>{{ $quote->reference }}</strong>
-          <span>Proposal Reference</span>
+          <span>{{ __('website.quote.proposal_ui.reference') }}</span>
         </div>
-        <div class="prepared">Prepared for <b>{{ $quote->client_name }}</b>{{ $quote->company_name ? ' at '.$quote->company_name : '' }}</div>
+        <div class="prepared">{{ __('website.quote.proposal_ui.prepared_for') }} <b>{{ $quote->client_name }}</b>{{ $quote->company_name ? ' '.__('website.quote.proposal_ui.at').' '.$quote->company_name : '' }}</div>
       </div>
       <div class="investment">
         <i>$</i>
-        <span>Estimated Investment</span>
+        <span>{{ __('website.quote.investment') }}</span>
         <strong>{{ $quote->estimate_label }}</strong>
         <small>{{ $quote->budget_label }}</small>
       </div>
     </section>
 
     <section class="meta-grid">
-      <div class="card"><span>Service</span><strong>{{ $quote->service_title }}</strong></div>
-      <div class="card"><span>Budget</span><strong>{{ $quote->budget_label }}</strong></div>
-      <div class="card"><span>Timeline</span><strong>{{ $quote->timeline_label }}</strong></div>
+      <div class="card"><span>{{ __('website.quote.service') }}</span><strong>{{ $quote->service_label }}</strong></div>
+      <div class="card"><span>{{ __('website.quote.budget') }}</span><strong>{{ $quote->budget_label }}</strong></div>
+      <div class="card"><span>{{ __('website.quote.timeline') }}</span><strong>{{ $quote->timeline_label }}</strong></div>
     </section>
 
     <section class="body-grid">
       <div class="panel">
-        <h2>Included Deliverables</h2>
+        <h2>{{ __('website.quote.proposal_ui.deliverables') }}</h2>
         <ul>
-          @foreach($quote->deliverables ?? [] as $deliverable)
+          @foreach($quote->localized_deliverables as $deliverable)
             <li>{{ $deliverable }}</li>
           @endforeach
         </ul>
       </div>
       <div class="stack">
         <div class="panel">
-          <h2>Assumptions</h2>
+          <h2>{{ __('website.quote.proposal_ui.assumptions') }}</h2>
           <ul>
-            @foreach($quote->assumptions ?? [] as $assumption)
+            @foreach($quote->localized_assumptions as $assumption)
               <li>{{ $assumption }}</li>
             @endforeach
           </ul>
         </div>
         <div class="panel">
-          <h2>Next Steps</h2>
+          <h2>{{ __('website.quote.proposal_ui.next_steps') }}</h2>
           <ul class="next-steps">
-            @foreach($quote->next_steps ?? [] as $step)
+            @foreach($quote->localized_next_steps as $step)
               <li>{{ $step }}</li>
             @endforeach
           </ul>
@@ -290,26 +290,26 @@
     </section>
 
     <div class="actions-row">
-      <a href="#">Accept Proposal</a>
-      <a href="#">Book Discovery Call</a>
+      <a href="#">{{ __('website.quote.proposal_ui.accept') }}</a>
+      <a href="#">{{ __('website.quote.proposal_ui.book_call') }}</a>
     </div>
     <div class="footer">Multitechwave - Technology, Innovation, Solutions</div>
   </article>
 
   <div class="actions">
-    <a href="{{ route('website.quote-generator.download', $quote->public_token) }}">Download PDF</a>
-    <a href="{{ route('website.quote-generator.show', $quote->public_token) }}">Back to Quote</a>
+    <a href="{{ route('website.quote-generator.download', $quote->public_token) }}">{{ __('website.quote.download') }}</a>
+    <a href="{{ route('website.quote-generator.show', $quote->public_token) }}">{{ __('website.quote.proposal_ui.back') }}</a>
   </div>
 
   @if(request()->boolean('submitted'))
     <div class="success-modal" id="quoteSuccessModal" role="dialog" aria-modal="true" aria-labelledby="quoteSuccessTitle">
       <div class="success-card">
         <i>OK</i>
-        <h2 id="quoteSuccessTitle">Quote submitted successfully.</h2>
-        <p>Your instant quotation has been saved and the PDF proposal is ready for direct download.</p>
+        <h2 id="quoteSuccessTitle">{{ __('website.quote.proposal_ui.success_title') }}</h2>
+        <p>{{ __('website.quote.proposal_ui.success_text') }}</p>
         <div class="success-actions">
-          <a href="{{ route('website.quote-generator.download', $quote->public_token) }}">Download PDF</a>
-          <button type="button" onclick="document.getElementById('quoteSuccessModal').remove()">Close</button>
+          <a href="{{ route('website.quote-generator.download', $quote->public_token) }}">{{ __('website.quote.download') }}</a>
+          <button type="button" onclick="document.getElementById('quoteSuccessModal').remove()">{{ __('website.quote.proposal_ui.close') }}</button>
         </div>
       </div>
     </div>

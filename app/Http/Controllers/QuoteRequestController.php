@@ -91,15 +91,24 @@ class QuoteRequestController extends Controller
             report($exception);
         }
 
-        return redirect()->route('website.quote-generator.proposal', [
+        $redirect = route('website.quote-generator.proposal', [
             'token' => $quote->public_token,
             'submitted' => 1,
         ]);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'message' => 'Quote request completed successfully. Opening your proposal.',
+                'redirect' => $redirect,
+            ], 201);
+        }
+
+        return redirect($redirect);
     }
 
     public function show(string $token)
     {
-        $quote = QuoteRequest::where('public_token', $token)->firstOrFail();
+        $quote = QuoteRequest::with('service')->where('public_token', $token)->firstOrFail();
         $quote->forceFill(['viewed_at' => now()])->save();
         $companySetting = CompanySetting::latest()->first();
 
@@ -108,7 +117,7 @@ class QuoteRequestController extends Controller
 
     public function proposal(string $token)
     {
-        $quote = QuoteRequest::where('public_token', $token)->firstOrFail();
+        $quote = QuoteRequest::with('service')->where('public_token', $token)->firstOrFail();
         $companySetting = CompanySetting::latest()->first();
 
         return view('website.quote-proposal', compact('quote', 'companySetting'));
@@ -128,7 +137,7 @@ class QuoteRequestController extends Controller
 
     public function index()
     {
-        $quotes = QuoteRequest::latest()->paginate(15);
+        $quotes = QuoteRequest::with('service')->latest()->paginate(15);
         $statuses = QuoteRequest::STATUSES;
 
         return view('dashboard.quotes.index', compact('quotes', 'statuses'));
@@ -136,6 +145,7 @@ class QuoteRequestController extends Controller
 
     public function dashboardShow(QuoteRequest $quote)
     {
+        $quote->load('service');
         $statuses = QuoteRequest::STATUSES;
 
         return view('dashboard.quotes.show', compact('quote', 'statuses'));

@@ -34,20 +34,20 @@
                             <td>{{ $caseStudy->id }}</td>
                             <td>
                                 @if($caseStudy->image)
-                                    <img class="admin-u-076" src="{{ asset($caseStudy->image) }}" alt="{{ $caseStudy->title }}">
+                                    <img class="admin-u-076" src="{{ asset($caseStudy->image) }}" alt="{{ $caseStudy->localized('title') }}">
                                 @else
                                     <span class="admin-u-029">-</span>
                                 @endif
                             </td>
                             <td>
-                                <strong>{{ $caseStudy->title }}</strong>
-                                <div class="admin-u-030">{{ \Illuminate\Support\Str::limit($caseStudy->summary, 70) }}</div>
+                                <strong>{{ $caseStudy->localized('title') }}</strong>
+                                <div class="admin-u-030">{{ \Illuminate\Support\Str::limit($caseStudy->localized('summary'), 70) }}</div>
                             </td>
-                            <td>{{ $caseStudy->category ?: 'N/A' }}</td>
-                            <td>{{ $caseStudy->result ?: 'N/A' }}</td>
+                            <td>{{ $caseStudy->localized('category') ?: __('website.common.not_available') }}</td>
+                            <td>{{ $caseStudy->localized('result') ?: __('website.common.not_available') }}</td>
                             <td>
                                 <span class="admin-status-pill {{ $caseStudy->is_active ? 'is-active' : 'is-inactive' }}">
-                                    {{ $caseStudy->is_active ? 'Active' : 'Hidden' }}
+                                    {{ $caseStudy->is_active ? __('website.client.status_labels.active') : __('website.client.status_labels.hidden') }}
                                 </span>
                             </td>
                             <td>{{ $caseStudy->sort_order }}</td>

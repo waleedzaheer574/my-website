@@ -1,6 +1,6 @@
 @extends('layouts.website')
 
-@section('title', $project->title)
+@section('title', $project->title_label)
 @section('hide_global_faqs', '1')
 
 @push('css')
@@ -9,7 +9,7 @@
 
 @section('content')
 @php($activeClientNav = 'projects')
-@php($clientHeaderTitle = $project->title)
+@php($clientHeaderTitle = $project->title_label)
 @php($clientHeaderSubtitle = __('website.client.workspace_subtitle'))
 <main class="tcw-client-dashboard tcw-premium-client-dashboard">
   @include('user.partials.client-sidebar')
@@ -18,11 +18,11 @@
     <div class="tcw-project-workspace">
       <section class="tcw-client-panel">
         <div class="tcw-client-panel-head">
-          <h2>{{ $project->title }}</h2>
+          <h2>{{ $project->title_label }}</h2>
           <span class="tcw-client-status is-{{ $project->status }}">{{ $project->status_label }}</span>
         </div>
         <div class="tcw-project-progress"><span style="width: {{ $project->progress }}%"></span></div>
-        <p>{{ $project->description }}</p>
+        <p>{{ $project->description_label }}</p>
         <h3>{{ __('website.client.milestones') }}</h3>
         <div class="tcw-project-timeline">
           @foreach($project->milestones as $milestone)

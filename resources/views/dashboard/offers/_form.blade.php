@@ -5,7 +5,7 @@
   <select name="service_id" id="service_id" class="form-control">
     <option value="">No linked service</option>
     @foreach($services as $service)
-      <option value="{{ $service->id }}" @selected((int) old('service_id', $offer?->service_id) === $service->id)>{{ $service->service_title }}</option>
+      <option value="{{ $service->id }}" @selected((int) old('service_id', $offer?->service_id) === $service->id)>{{ $service->localized('service_title') }}</option>
     @endforeach
   </select>
 </div>

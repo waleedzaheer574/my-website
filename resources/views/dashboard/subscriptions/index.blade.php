@@ -27,13 +27,13 @@
         @forelse($subscriptions as $subscription)
           <tr>
             <td>{{ $subscription->user?->name }}<small>{{ $subscription->user?->email }}</small></td>
-            <td>{{ $subscription->offer?->title ?? 'Custom Offer' }}</td>
+            <td>{{ $subscription->offer?->localized('title') ?? __('website.client.offer') }}</td>
             <td>{{ $subscription->order?->reference ?? '-' }}</td>
             <td>{{ $subscription->currency }} {{ number_format($subscription->amount) }}</td>
-            <td>{{ ucfirst(str_replace('_', ' ', $subscription->billing_cycle)) }}</td>
-            <td><span class="admin-status-pill {{ $subscription->status === 'active' ? 'is-active' : 'is-inactive' }}">{{ ucfirst(str_replace('_', ' ', $subscription->status)) }}</span></td>
-            <td>{{ optional($subscription->starts_at)->format('d M, Y') ?: '-' }}</td>
-            <td>{{ optional($subscription->renews_at)->format('d M, Y') ?: '-' }}</td>
+            <td>{{ __('website.dynamic.billing.'.$subscription->billing_cycle) }}</td>
+            <td><span class="admin-status-pill {{ $subscription->status === 'active' ? 'is-active' : 'is-inactive' }}">{{ __('website.client.status_labels.'.$subscription->status) }}</span></td>
+            <td>{{ $subscription->starts_at?->locale(app()->getLocale())->translatedFormat('d M, Y') ?: '-' }}</td>
+            <td>{{ $subscription->renews_at?->locale(app()->getLocale())->translatedFormat('d M, Y') ?: '-' }}</td>
           </tr>
         @empty
           <tr><td colspan="8" class="admin-u-015">No subscriptions found yet.</td></tr>

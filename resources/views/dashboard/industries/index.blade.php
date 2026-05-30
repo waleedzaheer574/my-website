@@ -34,20 +34,20 @@
                             <td>{{ $industry->id }}</td>
                             <td>
                                 @if($industry->icon)
-                                    <img class="admin-u-078" src="{{ asset($industry->icon) }}" alt="{{ $industry->title }}">
+                                    <img class="admin-u-078" src="{{ asset($industry->icon) }}" alt="{{ $industry->localized('title') }}">
                                 @else
                                     <span class="admin-u-041">-</span>
                                 @endif
                             </td>
                             <td>
-                                <strong>{{ $industry->title }}</strong>
-                                <div class="admin-u-030">{{ \Illuminate\Support\Str::limit($industry->description, 70) }}</div>
+                                <strong>{{ $industry->localized('title') }}</strong>
+                                <div class="admin-u-030">{{ \Illuminate\Support\Str::limit($industry->localized('description'), 70) }}</div>
                             </td>
-                            <td>{{ $industry->category ?: 'N/A' }}</td>
-                            <td>{{ $industry->result ?: 'N/A' }}</td>
+                            <td>{{ $industry->localized('category') ?: __('website.common.not_available') }}</td>
+                            <td>{{ $industry->localized('result') ?: __('website.common.not_available') }}</td>
                             <td>
                                 <span class="admin-status-pill {{ $industry->is_active ? 'is-active' : 'is-inactive' }}">
-                                    {{ $industry->is_active ? 'Active' : 'Hidden' }}
+                                    {{ $industry->is_active ? __('website.client.status_labels.active') : __('website.client.status_labels.hidden') }}
                                 </span>
                             </td>
                             <td>{{ $industry->sort_order }}</td>

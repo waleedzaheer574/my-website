@@ -38,10 +38,10 @@
                             </td>
                             <td>{{ $setting->email }}</td>
                             <td>{{ $setting->phone }}</td>
-                            <td>{{ $setting->whatsapp_number ?: 'N/A' }}</td>
-                            <td>{{ $setting->fax ?: 'N/A' }}</td>
+                            <td>{{ $setting->whatsapp_number ?: __('website.common.not_available') }}</td>
+                            <td>{{ $setting->fax ?: __('website.common.not_available') }}</td>
                             <td>{{ $setting->quote_link ?: url('/contact') }}</td>
-                            <td class="admin-u-069">{{ $setting->address ?: 'N/A' }}</td>
+                            <td class="admin-u-069">{{ $setting->address ?: __('website.common.not_available') }}</td>
                             <td>
                                 <div class="admin-u-013">
                                     @if($setting->facebook) <span title="Facebook">FB</span> @endif

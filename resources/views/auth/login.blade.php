@@ -39,7 +39,7 @@
                 </div>
             @endif
 
-                <form action="{{ route('login.post') }}" method="POST">
+                <form action="{{ route('login.post') }}" method="POST" data-ajax-auth-form data-success-notice-only data-processing-label="Signing In...">
                 @csrf
 
                 <div class="form-group">
@@ -80,5 +80,6 @@
         </section>
     </main>
     @include('auth.password-toggle-script')
+    @include('auth.ajax-form-script')
 </body>
 </html>

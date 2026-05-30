@@ -12,6 +12,32 @@
       <input type="search" placeholder="{{ __('website.client.search') }}">
       <kbd>Ctrl K</kbd>
     </label>
+    <details class="tcw-client-language-menu">
+      <summary aria-label="{{ __('website.language.label') }}">
+        <span class="tcw-client-language-orb"><i class="fas fa-globe"></i></span>
+        <span class="tcw-client-language-current">
+          <small>{{ __('website.language.label') }}</small>
+          <strong>{{ app()->getLocale() === 'ar' ? __('website.language.arabic') : __('website.language.english') }}</strong>
+        </span>
+        <i class="fas fa-chevron-down tcw-client-language-caret"></i>
+      </summary>
+      <div class="tcw-client-language-panel">
+        <header>
+          <i class="fas fa-language"></i>
+          <span>{{ __('website.language.label') }}</span>
+        </header>
+        <a href="{{ route('language.switch', 'en') }}" class="{{ app()->getLocale() === 'en' ? 'is-active' : '' }}" lang="en">
+          <b>EN</b>
+          <span>{{ __('website.language.english') }}</span>
+          <i class="fas fa-check"></i>
+        </a>
+        <a href="{{ route('language.switch', 'ar') }}" class="{{ app()->getLocale() === 'ar' ? 'is-active' : '' }}" lang="ar">
+          <b>AR</b>
+          <span dir="rtl">{{ __('website.language.arabic') }}</span>
+          <i class="fas fa-check"></i>
+        </a>
+      </div>
+    </details>
     <details class="tcw-client-notification-menu">
       <summary class="tcw-client-bell {{ $unreadNotificationsCount ? 'has-unread' : '' }}">
         <i class="far fa-bell"></i>
@@ -26,11 +52,18 @@
         </header>
         <section>
           @forelse($headerNotifications ?? collect() as $notification)
+            @php
+              $notificationEvent = $notification->data['event'] ?? null;
+              $notificationTitleKey = $notificationEvent ? 'website.client.notification_events.'.$notificationEvent.'.title' : null;
+              $notificationMessageKey = $notificationEvent ? 'website.client.notification_events.'.$notificationEvent.'.message' : null;
+              $notificationTitle = $notificationTitleKey && __($notificationTitleKey) !== $notificationTitleKey ? __($notificationTitleKey) : ($notification->data['title'] ?? __('website.client.update'));
+              $notificationMessage = $notificationMessageKey && __($notificationMessageKey) !== $notificationMessageKey ? __($notificationMessageKey) : ($notification->data['message'] ?? __('website.client.request_updated'));
+            @endphp
             <a href="{{ route('user.notifications.open', $notification->id) }}" class="{{ $notification->read_at ? '' : 'is-unread' }}">
               <i class="{{ $notification->data['icon'] ?? 'far fa-bell' }}"></i>
               <div>
-                <strong>{{ $notification->data['title'] ?? __('website.client.update') }}</strong>
-                <span>{{ $notification->data['message'] ?? __('website.client.request_updated') }}</span>
+                <strong>{{ $notificationTitle }}</strong>
+                <span>{{ $notificationMessage }}</span>
                 <time>{{ $notification->created_at->locale(app()->getLocale())->diffForHumans() }}</time>
               </div>
             </a>

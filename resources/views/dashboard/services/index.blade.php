@@ -28,13 +28,13 @@
                             <td>{{ $service->id }}</td>
                             <td>
                                 @if($service->icon)
-                                    <img class="admin-u-092" src="{{ asset($service->icon) }}" alt="{{ $service->service_title }}">
+                                    <img class="admin-u-092" src="{{ asset($service->icon) }}" alt="{{ $service->localized('service_title') }}">
                                 @else
-                                    <span class="admin-u-068">No image</span>
+                                    <span class="admin-u-068">{{ __('website.common.no_image') }}</span>
                                 @endif
                             </td>
-                            <td>{{ $service->service_title }}</td>
-                            <td>{{ \Illuminate\Support\Str::limit($service->service_description, 120) }}</td>
+                            <td>{{ $service->localized('service_title') }}</td>
+                            <td>{{ \Illuminate\Support\Str::limit($service->localized('service_description'), 120) }}</td>
                             <td>
                                 <div class="admin-u-031">
                                     <a class="admin-u-073" href="{{ route('services.edit', $service->id) }}">Edit</a>

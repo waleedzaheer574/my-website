@@ -26,8 +26,8 @@
                     @forelse($serviceDetails as $detail)
                         <tr>
                             <td>{{ $detail->id }}</td>
-                            <td>{{ $detail->service?->service_title ?? 'Not linked' }}</td>
-                            <td>{{ trim(($detail->title_prefix ?? '') . ' ' . ($detail->title_highlight ?? '')) }}</td>
+                            <td>{{ $detail->service?->localized('service_title') ?? __('website.common.not_available') }}</td>
+                            <td>{{ trim(($detail->localized('title_prefix') ?? '') . ' ' . ($detail->localized('title_highlight') ?? '')) }}</td>
                             <td>{{ $detail->slug }}</td>
                             <td>
                                 <div class="admin-u-031">

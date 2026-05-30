@@ -24,7 +24,25 @@ class ServiceRequestController extends Controller
     public function store(Request $request, WhatsAppNotificationService $whatsApp)
     {
         if (! $request->user()) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => 'Please login or create an account before submitting a request.',
+                    'redirect' => route('login'),
+                ], 401);
+            }
+
             return redirect()->route('login')->with('status', 'Please login or create an account before submitting a request.');
+        }
+
+        if (! $request->user()->isAdmin() && ! $request->user()->hasVerifiedEmail()) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => 'Please complete the one-time email verification for your new account.',
+                    'redirect' => route('verification.notice'),
+                ], 403);
+            }
+
+            return redirect()->route('verification.notice')->with('status', 'Please complete the one-time email verification for your new account.');
         }
 
         $validated = $request->validate([
@@ -65,7 +83,13 @@ class ServiceRequestController extends Controller
             report($exception);
         }
 
-        return back()->with('success', 'Your request has been submitted successfully.');
+        $message = 'Your request has been submitted successfully.';
+
+        if ($request->expectsJson()) {
+            return response()->json(compact('message'), 201);
+        }
+
+        return back()->with('success', $message);
     }
 
     public function updateStatus(Request $request, ServiceRequest $serviceRequest, WhatsAppNotificationService $whatsApp)

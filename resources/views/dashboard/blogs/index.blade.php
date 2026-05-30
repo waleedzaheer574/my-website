@@ -29,12 +29,12 @@
                         <tr>
                             <td>{{ $blog->id }}</td>
                             <td>
-                                <img class="admin-u-071" src="{{ asset($blog->featured_image) }}" alt="{{ $blog->title }}">
+                                <img class="admin-u-071" src="{{ asset($blog->featured_image) }}" alt="{{ $blog->localized('title') }}">
                             </td>
-                            <td>{{ $blog->title }}</td>
+                            <td>{{ $blog->localized('title') }}</td>
                             <td>{{ $blog->author_name }}</td>
-                            <td>{{ $blog->is_active ? 'Active' : 'Inactive' }}</td>
-                            <td>{{ $blog->published_at ? $blog->published_at->format('d M, Y h:i A') : 'Draft' }}</td>
+                            <td>{{ $blog->is_active ? __('website.client.status_labels.active') : __('website.client.status_labels.inactive') }}</td>
+                            <td>{{ $blog->published_at ? $blog->published_at->locale(app()->getLocale())->translatedFormat('d M, Y h:i A') : __('website.common.draft') }}</td>
                             <td>
                                 <div class="admin-u-013">
                                     <a class="admin-u-072" href="{{ route('blogs.show', $blog->slug) }}">View</a>

@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\Password as PasswordRule;
+use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
@@ -49,8 +50,16 @@ class LoginController extends Controller
 
         Auth::login($user);
         $request->session()->regenerate();
+        $user->sendEmailVerificationNotification();
 
-        return redirect()->route('user.dashboard')->with('success', 'Account created successfully.');
+        $message = 'Account created successfully. Please check your email and verify your account.';
+        $redirect = route('verification.notice');
+
+        if ($request->expectsJson()) {
+            return response()->json(compact('message', 'redirect'), 201);
+        }
+
+        return redirect($redirect)->with('status', $message);
     }
 
     public function login(Request $request)
@@ -63,12 +72,24 @@ class LoginController extends Controller
         $user = User::where('email', $credentials['email'])->first();
 
         if (! $user) {
+            if ($request->expectsJson()) {
+                throw ValidationException::withMessages([
+                    'email' => 'This email address is not registered.',
+                ]);
+            }
+
             return back()->withErrors([
                 'email' => 'This email address is not registered.',
             ])->onlyInput('email');
         }
 
         if (! Hash::check($credentials['password'], $user->password)) {
+            if ($request->expectsJson()) {
+                throw ValidationException::withMessages([
+                    'password' => 'The password you entered is incorrect.',
+                ]);
+            }
+
             return back()->withErrors([
                 'password' => 'The password you entered is incorrect.',
             ])->onlyInput('email');
@@ -78,13 +99,29 @@ class LoginController extends Controller
             $request->session()->regenerate();
 
             $route = Auth::user()->isAdmin() ? 'dashboard' : 'user.dashboard';
+            $redirect = ! Auth::user()->isAdmin() && ! Auth::user()->hasVerifiedEmail()
+                ? route('verification.notice')
+                : redirect()->intended(route($route))->getTargetUrl();
 
-            return redirect()->intended(route($route));
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'message' => Auth::user()->hasVerifiedEmail() || Auth::user()->isAdmin()
+                        ? 'Login completed successfully.'
+                        : 'Please complete the one-time email verification for your new account.',
+                    'redirect' => $redirect,
+                ]);
+            }
+
+            return redirect()->to($redirect);
         }
 
-        return back()->withErrors([
-            'email' => 'We could not sign you in. Please try again.',
-        ])->onlyInput('email');
+        if ($request->expectsJson()) {
+            throw ValidationException::withMessages([
+                'email' => 'We could not sign you in. Please try again.',
+            ]);
+        }
+
+        return back()->withErrors(['email' => 'We could not sign you in. Please try again.'])->onlyInput('email');
     }
 
     public function showForgotPasswordForm()

@@ -38,7 +38,7 @@
     <div class="form-group">
         <label for="icon">Icon Image</label>
         @if($isEdit && $whyNexa->icon)
-            <img class="admin-u-079" src="{{ asset($whyNexa->icon) }}" alt="{{ $whyNexa->title }}">
+            <img class="admin-u-079" src="{{ asset($whyNexa->icon) }}" alt="{{ $whyNexa->localized('title') }}">
         @endif
         <input type="file" name="icon" id="icon" class="form-control" accept="image/*">
         @error('icon') <small class="admin-u-021">{{ $message }}</small> @enderror

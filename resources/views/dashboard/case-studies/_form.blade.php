@@ -54,7 +54,7 @@
     <div class="form-group">
         <label for="image">Card Image</label>
         @if($isEdit && $caseStudy->image)
-            <img class="admin-u-077" src="{{ asset($caseStudy->image) }}" alt="{{ $caseStudy->title }}">
+            <img class="admin-u-077" src="{{ asset($caseStudy->image) }}" alt="{{ $caseStudy->localized('title') }}">
         @endif
         <input type="file" name="image" id="image" class="form-control" accept="image/*">
         @error('image') <small class="admin-u-021">{{ $message }}</small> @enderror
